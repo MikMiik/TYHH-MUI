@@ -5,6 +5,7 @@ const theme = extendTheme({
     styleOverrides: {
       html: {
         scrollBehavior: 'smooth',
+        boxSizing: 'border-box',
       },
       body: {
         margin: 0,
@@ -13,7 +14,7 @@ const theme = extendTheme({
         lineHeight: 1.6,
       },
       '*, *::before, *::after': {
-        boxSizing: 'border-box',
+        boxSizing: 'inherit',
       },
     },
   },

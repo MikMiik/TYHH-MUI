@@ -1,69 +1,49 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box, Typography, Stack, Paper } from '@mui/material'
 
 const TimeBox = ({ value, label }) => (
-  <Paper elevation={3} sx={{ padding: 1.5, minWidth: 60, textAlign: 'center', borderRadius: 2 }}>
-    <Typography variant="h5" color="white">
-      {value}
-    </Typography>
-    <Typography variant="caption" color="white">
+  <Stack>
+    <Paper
+      variant="outlined"
+      sx={{
+        width: '32px',
+        height: '26px',
+        textAlign: 'center',
+
+        borderRadius: '5px',
+        border: '1px solid #fff',
+      }}
+    >
+      <Typography variant="subtitle1">{value}</Typography>
+    </Paper>
+    <Typography sx={{ fontSize: '0.5rem' }} align="center" variant="caption">
       {label}
     </Typography>
-  </Paper>
+  </Stack>
 )
 
 const Test = () => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 35,
-    hours: 3,
-    minutes: 50,
-    seconds: 45,
-  })
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        let { days, hours, minutes, seconds } = prev
-
-        if (seconds > 0) seconds--
-        else {
-          seconds = 59
-          if (minutes > 0) minutes--
-          else {
-            minutes = 59
-            if (hours > 0) hours--
-            else {
-              hours = 23
-              if (days > 0) days--
-            }
-          }
-        }
-
-        return { days, hours, minutes, seconds }
-      })
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [])
-
   return (
-    <Box sx={{ backgroundColor: '#064d36', padding: 2, borderRadius: 2 }}>
-      <Stack direction="row" spacing={2} alignItems="center">
-        <TimeBox value={timeLeft.days} label="Day" />
-        <Typography variant="h5" color="white">
-          :
-        </Typography>
-        <TimeBox value={timeLeft.hours} label="Hour" />
-        <Typography variant="h5" color="white">
-          :
-        </Typography>
-        <TimeBox value={timeLeft.minutes} label="Minutes" />
-        <Typography variant="h5" color="white">
-          :
-        </Typography>
-        <TimeBox value={timeLeft.seconds} label="Seconds" />
-      </Stack>
-    </Box>
+    <Stack
+      sx={{ margin: 20, padding: 5, backgroundColor: 'green', alignItems: 'start' }}
+      direction="row"
+      spacing={1}
+      alignItems="center"
+    >
+      <TimeBox value={2} label="Day" />
+      <Typography sx={{ lineHeight: 1.2 }} variant="h6" color="warning">
+        :
+      </Typography>
+      <TimeBox value={2} label="Hour" />
+      <Typography sx={{ lineHeight: 1.2 }} variant="h6" color="warning">
+        :
+      </Typography>
+      <TimeBox value={2} label="Minutes" />
+      <Typography sx={{ lineHeight: 1.2 }} variant="h6" color="warning">
+        :
+      </Typography>
+      <TimeBox value={2} label="Seconds" />
+    </Stack>
   )
 }
 

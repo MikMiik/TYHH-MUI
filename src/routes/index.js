@@ -33,10 +33,10 @@ const routes = [
   {
     path: config.routes.login,
     component: Login,
-    layout: DefaultLayout,
+    layout: MuiLayout,
   },
   {
-    path: config.routes.liveSchedule,
+    path: config.routes.register,
     component: Register,
     layout: DefaultLayout,
   },
