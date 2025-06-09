@@ -24,9 +24,8 @@ const theme = extendTheme({
         primary: {
           main: '#034c31',
         },
-        background: {
-          default: '#fff',
-          paper: '#f5f5f5',
+        secondary: {
+          main: '#1890ff',
         },
       },
     },
@@ -41,33 +40,32 @@ const theme = extendTheme({
     MuiButton: {
       styleOverrides: {
         root: ({ theme }) => ({
-          padding: '2px 4px',
+          padding: '2px 6px',
           textTransform: 'none',
-          height: theme.customVars.btnHeight,
-          width: theme.customVars.btnWidth,
-          textShadow: '0 -1px 0 rgba(0,0,0,.12)',
-          boxShadow: '0 2px 0 rgba(0, 0, 0, .035)',
+          minHeight: theme.customVars.btnHeight,
+          minWidth: theme.customVars.btnWidth,
         }),
       },
       variants: [
         {
           props: {
-            type: 'active',
+            variant: 'activateKey',
           },
           style: {
             backgroundColor: '#ec971f',
-            width: 120,
+            color: '#fff',
             '&:hover': {
-              backgroundColor: '##e08e0b',
+              backgroundColor: '#e08e0b',
             },
           },
         },
         {
           props: {
-            type: 'register',
+            variant: 'register',
           },
           style: {
             backgroundColor: '#1890ff',
+            color: '#fff',
             '&:hover': {
               backgroundColor: '#40a9ff',
             },
@@ -75,11 +73,11 @@ const theme = extendTheme({
         },
         {
           props: {
-            type: 'login',
+            variant: 'login',
           },
           style: {
             backgroundColor: '#ff4d4f',
-
+            color: '#fff',
             '&:hover': {
               backgroundColor: '#ff7875',
             },
@@ -93,10 +91,9 @@ const theme = extendTheme({
           textTransform: 'none',
           textDecoration: 'none',
           color: 'inherit',
-          transition: '0.1s',
+          transition: 'all 0.1s',
           '&:hover': {
             color: '#f56751',
-            transition: '0.1s',
           },
         },
       },

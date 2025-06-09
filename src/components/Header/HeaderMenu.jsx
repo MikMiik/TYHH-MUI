@@ -1,47 +1,98 @@
-import { Button, Menu, MenuItem } from '@mui/material'
+import { List, ListItem, ListItemButton, ListItemText, Box, Paper, Popper } from '@mui/material'
 import { useState } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import CustomLink from '../CustomLink'
+import { AnimatePresence, motion } from 'framer-motion'
 
 function HeaderMenu() {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
-  const handleClick = (event) => {
+
+  const handleMouseEnter = (event) => {
     setAnchorEl(event.currentTarget)
   }
-  const handleClose = () => {
+  const handleMouseLeave = () => {
     setAnchorEl(null)
   }
-
   return (
-    <div>
-      <Button
+    <Box
+      sx={{
+        display: 'inline-block',
+        position: 'relative',
+        '&:after': {
+          display: open ? 'block' : 'none',
+          content: '""',
+          position: 'absolute',
+          top: '100%',
+          left: 0,
+          right: 0,
+          height: '6px',
+        },
+      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <CustomLink
         sx={{
-          padding: 0,
-          '& .MuiButton-endIcon': {
-            marginLeft: '4px',
-          },
+          display: 'flex',
+          alignItems: 'center',
         }}
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-        endIcon={<KeyboardArrowDownIcon />}
       >
         Danh mục
-      </Button>
-      <Menu
-        slotProps={{ list: { 'aria-labelledby': 'basic-button' } }}
-        id="basic-menu"
-        anchorEl={anchorEl}
+        <KeyboardArrowDownIcon />
+      </CustomLink>
+
+      <Popper
+        component={motion.div}
         open={open}
-        onClose={handleClose}
+        anchorEl={anchorEl}
+        disablePortal={true}
+        modifiers={[{ name: 'offset', options: { offset: [0, 4] } }]}
+        sx={{ minWidth: '110%', position: 'absolute', right: 0 }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
-      </Menu>
-    </div>
+        <AnimatePresence>
+          {open && (
+            <Paper
+              component={motion.div}
+              elevation={2}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
+              style={{ overflow: 'hidden' }}
+              layout
+            >
+              <List
+                disablePadding
+                sx={{
+                  py: '4px',
+                  color: 'rgba(0, 0, 0, .65)',
+                  '& .MuiListItemButton-root': {
+                    padding: '0 6px',
+                    textAlign: 'center',
+                    '&:hover': {
+                      color: '#007bff',
+                      bgcolor: '#e6f7ff',
+                    },
+                  },
+                  '& .MuiTypography-root': {
+                    fontSize: '0.875rem',
+                  },
+                }}
+              >
+                {['LIVEVIP 2K6', 'LIVEVIP 2K7', 'LIVEVIP 2K8', 'LIVEVIP 2K9'].map((text) => (
+                  <ListItem sx={{ whiteSpace: 'nowrap', width: 'auto' }} disablePadding key={text}>
+                    <ListItemButton>
+                      <ListItemText primary={text} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </Paper>
+          )}
+        </AnimatePresence>
+      </Popper>
+    </Box>
   )
 }
 

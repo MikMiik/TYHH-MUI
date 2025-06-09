@@ -1,50 +1,17 @@
-import { useEffect, useState } from 'react'
-import { Box, Typography, Stack, Paper } from '@mui/material'
-
-const TimeBox = ({ value, label }) => (
-  <Stack>
-    <Paper
-      variant="outlined"
-      sx={{
-        width: '32px',
-        height: '26px',
-        textAlign: 'center',
-
-        borderRadius: '5px',
-        border: '1px solid #fff',
-      }}
-    >
-      <Typography variant="subtitle1">{value}</Typography>
-    </Paper>
-    <Typography sx={{ fontSize: '0.5rem' }} align="center" variant="caption">
-      {label}
-    </Typography>
-  </Stack>
-)
+// import { useEffect, useState } from 'react'
+import * as React from 'react'
+import Box from '@mui/material/Box'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Divider from '@mui/material/Divider'
+import InboxIcon from '@mui/icons-material/Inbox'
+import DraftsIcon from '@mui/icons-material/Drafts'
 
 const Test = () => {
-  return (
-    <Stack
-      sx={{ margin: 20, padding: 5, backgroundColor: 'green', alignItems: 'start' }}
-      direction="row"
-      spacing={1}
-      alignItems="center"
-    >
-      <TimeBox value={2} label="Day" />
-      <Typography sx={{ lineHeight: 1.2 }} variant="h6" color="warning">
-        :
-      </Typography>
-      <TimeBox value={2} label="Hour" />
-      <Typography sx={{ lineHeight: 1.2 }} variant="h6" color="warning">
-        :
-      </Typography>
-      <TimeBox value={2} label="Minutes" />
-      <Typography sx={{ lineHeight: 1.2 }} variant="h6" color="warning">
-        :
-      </Typography>
-      <TimeBox value={2} label="Seconds" />
-    </Stack>
-  )
+  return null
 }
 
 export default Test

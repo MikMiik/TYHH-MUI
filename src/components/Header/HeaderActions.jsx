@@ -2,6 +2,8 @@ import { Button, Stack } from '@mui/material'
 import KeyIcon from '@mui/icons-material/Key'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+
+import { Link } from 'react-router-dom'
 import CustomLink from '../CustomLink'
 import config from '@/config'
 
@@ -14,25 +16,27 @@ function HeaderActions() {
           marginLeft: 1,
           '& .MuiButton-icon': {
             fontWeight: '100',
-            margin: '0 2px',
+            margin: '0 4px 0 0',
           },
         },
       }}
       direction="row"
       spacing={2}
     >
-      <Button disableElevation variant="contained" type="active" startIcon={<KeyIcon />}>
+      <Button disableElevation variant="activateKey" startIcon={<KeyIcon />}>
         Kích hoạt thẻ
       </Button>
-      <Button disableElevation variant="contained" type="register" startIcon={<PersonAddAltIcon />}>
-        <CustomLink sx={{ '&:hover': { color: 'inherit' } }} to={config.routes.register}>
-          Đăng ký
-        </CustomLink>
+      <Button
+        component={Link}
+        to={config.routes.register}
+        disableElevation
+        variant="register"
+        startIcon={<PersonAddAltIcon />}
+      >
+        Đăng ký
       </Button>
-      <Button disableElevation variant="contained" type="login" startIcon={<ExitToAppIcon />}>
-        <CustomLink sx={{ '&:hover': { color: 'inherit' } }} to={config.routes.login}>
-          Đăng nhập
-        </CustomLink>
+      <Button component={Link} to={config.routes.login} disableElevation variant="login" startIcon={<ExitToAppIcon />}>
+        Đăng nhập
       </Button>
     </Stack>
   )

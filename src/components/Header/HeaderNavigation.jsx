@@ -10,7 +10,7 @@ function HeaderNavigation() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        '& > *:not(:first-child)': {
+        '& > *:not(:first-of-type)': {
           marginLeft: (theme) => theme.spacing(2),
         },
       }}
