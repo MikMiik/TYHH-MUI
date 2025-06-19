@@ -1,17 +1,18 @@
 import { Box } from '@mui/material'
-import logo from '@/assets/images/mainlogo.png'
 
-function LogoIcon({ size = 36 }) {
+function LogoIcon({ size = 36, src, ...rest }) {
+  console.log(rest)
   return (
     <Box
       component="img"
-      src={logo}
+      src={src}
       alt="Logo"
       sx={{
         width: size,
         height: size,
         display: 'inline-block',
         verticalAlign: 'middle',
+        ...rest,
       }}
     />
   )

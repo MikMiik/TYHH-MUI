@@ -1,13 +1,14 @@
-import styles from "./TextInput.module.scss"
+// import styles from "./TextInput.module.scss"
 
-function TextInput({ type = "text", className = "", name, register = () => ({}), message = "", ...rest }) {
-    return (
-        <label>
-            <input className={styles[className]} type={type} name={name} {...register} {...rest} />
-            {message && <p style={{ color: "red" }}>{message}</p>}
-            <br />
-        </label>
-    )
+import { TextField } from '@mui/material'
+
+function TextInput({ type = 'text', name, register = () => ({}), message = '', ...rest }) {
+  return (
+    <>
+      <TextField type={type} name={name} {...register} {...rest}></TextField>
+      {message && <p style={{ color: 'red' }}>{message}</p>}
+    </>
+  )
 }
 
 export default TextInput

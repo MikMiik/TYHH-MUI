@@ -8,6 +8,7 @@ const theme = extendTheme({
         boxSizing: 'border-box',
       },
       body: {
+        fontFamily: '"Roboto", sans-serif',
         margin: 0,
         padding: 0,
         color: '#333',
@@ -25,25 +26,24 @@ const theme = extendTheme({
           main: '#034c31',
         },
         secondary: {
+          light: '#40a9ff',
           main: '#1890ff',
         },
       },
     },
   },
   customVars: {
-    headerHeight: '118px',
     headerTopBarHeight: '48px',
+    headerBottomBarHeight: '70px',
     btnWidth: '108px',
     btnHeight: '32px',
   },
   components: {
     MuiButton: {
       styleOverrides: {
-        root: ({ theme }) => ({
+        root: () => ({
           padding: '2px 6px',
           textTransform: 'none',
-          minHeight: theme.customVars.btnHeight,
-          minWidth: theme.customVars.btnWidth,
         }),
       },
       variants: [
@@ -91,10 +91,6 @@ const theme = extendTheme({
           textTransform: 'none',
           textDecoration: 'none',
           color: 'inherit',
-          transition: 'all 0.1s',
-          '&:hover': {
-            color: '#f56751',
-          },
         },
       },
     },

@@ -13,6 +13,12 @@ function HeaderNavigation() {
         '& > *:not(:first-of-type)': {
           marginLeft: (theme) => theme.spacing(2),
         },
+        '& .MuiLink-root': {
+          transition: 'all 0.1s',
+          '&:hover': {
+            color: '#f56751',
+          },
+        },
       }}
     >
       <HeaderMenu />
