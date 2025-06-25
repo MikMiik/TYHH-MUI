@@ -10,7 +10,7 @@ function MuiLayout() {
     <>
       <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
         <Header />
-        <Box sx={{ mt: (theme) => theme.customVars.headerTopBarHeight }}>
+        <Box sx={{ mt: 4 }}>
           <Outlet />
         </Box>
         <Footer />

@@ -1,7 +1,6 @@
 import { Box } from '@mui/material'
 
 function LogoIcon({ size = 36, src, ...rest }) {
-  console.log(rest)
   return (
     <Box
       component="img"

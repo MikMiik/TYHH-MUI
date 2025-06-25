@@ -27,7 +27,7 @@ function HeaderNavigation() {
       <CustomLink to={config.routes.vipDocuments}>Tài liệu VIP</CustomLink>
       <CustomLink to={config.routes.documents}>Tài liệu</CustomLink>
       <CustomLink to={config.routes.liveSchedule}>Lịch Live</CustomLink>
-      <CustomLink to={config.routes.liveSchedule}>Thanh toán</CustomLink>
+      <CustomLink>Thanh toán</CustomLink>
     </Box>
   )
 }

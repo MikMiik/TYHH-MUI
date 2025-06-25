@@ -1,5 +1,5 @@
 import { Form, TextInput } from '@/components/Forms'
-import { Link, useNavigate, useSearchParams, Navigate } from 'react-router-dom'
+import { useNavigate, useSearchParams, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import loginSchema from '@/schemas/loginSchema'
@@ -160,7 +160,7 @@ function Login() {
               variant="contained"
               type="submit"
             >
-              Đăng nhập
+              ĐĂNG NHẬP
             </Button>
             <Box
               sx={{
@@ -176,7 +176,7 @@ function Login() {
                 },
               }}
             >
-              <CustomLink to="">Đăng ký</CustomLink>
+              <CustomLink to={config.routes.register}>Đăng ký</CustomLink>
               <CustomLink to="">Quên mật khẩu?</CustomLink>
             </Box>
           </Stack>

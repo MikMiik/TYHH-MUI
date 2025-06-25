@@ -8,27 +8,27 @@ const routes = [
   {
     path: config.routes.home,
     component: Home,
-    layout: DefaultLayout,
+    layout: MuiLayout,
   },
   {
     path: config.routes.onlineLearning,
     component: OnlineLearning,
-    layout: DefaultLayout,
+    layout: MuiLayout,
   },
   {
     path: config.routes.vipDocuments,
     component: VipDocuments,
-    layout: DefaultLayout,
+    layout: MuiLayout,
   },
   {
     path: config.routes.documents,
     component: Documents,
-    layout: DefaultLayout,
+    layout: MuiLayout,
   },
   {
     path: config.routes.liveSchedule,
     component: LiveSchedule,
-    layout: DefaultLayout,
+    layout: MuiLayout,
   },
   {
     path: config.routes.login,
@@ -38,7 +38,7 @@ const routes = [
   {
     path: config.routes.register,
     component: Register,
-    layout: DefaultLayout,
+    layout: MuiLayout,
   },
   {
     path: config.routes.notFound,
