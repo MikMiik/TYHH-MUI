@@ -8,7 +8,7 @@ import PasswordIcon from '@mui/icons-material/Password'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
-import config from '@/config'
+import config from '@/routes/config'
 
 function Register() {
   const onSubmit = async (data) => {

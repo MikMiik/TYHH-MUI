@@ -15,7 +15,7 @@ const CustomLink = ({ to, children, ...props }) => {
   const location = useLocation()
   const isActive = to === '/' ? location.pathname === '/' : location.pathname.startsWith(to)
   return (
-    <StyledLink component={RouterLink} active={isActive ? 1 : 0} to={to} {...props}>
+    <StyledLink active={isActive ? 1 : 0} to={to} {...props}>
       {children}
     </StyledLink>
   )

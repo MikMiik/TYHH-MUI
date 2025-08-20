@@ -26,7 +26,6 @@ function HeaderMenu() {
           top: '100%',
           left: 0,
           right: 0,
-          height: '6px',
         },
       }}
       onMouseEnter={handleMouseEnter}
@@ -63,12 +62,11 @@ function HeaderMenu() {
               layout
             >
               <List
-                disablePadding
                 sx={{
                   py: '4px',
                   color: 'rgba(0, 0, 0, .65)',
                   '& .MuiListItemButton-root': {
-                    padding: '0 6px',
+                    padding: '2px 6px',
                     textAlign: 'center',
                     '&:hover': {
                       color: '#007bff',

@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import loginSchema from '@/schemas/loginSchema'
-import config from '@/config'
+import config from '@/routes/config'
 import { getCurrentUser } from '@/features/auth/authAsync'
 import authService from '@/services/authService'
 import { Box, Button, Container, Typography, Divider, Stack, InputAdornment } from '@mui/material'

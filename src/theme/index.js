@@ -7,16 +7,24 @@ const theme = extendTheme({
         scrollBehavior: 'smooth',
         boxSizing: 'border-box',
       },
-      body: {
-        fontFamily: '"Roboto", sans-serif',
+      body: ({ theme }) => ({
+        fontFamily: theme.typography.fontFamily,
         margin: 0,
         padding: 0,
-        color: '#333',
+        color: theme.palette.text.primary,
         lineHeight: 1.6,
-      },
+      }),
       '*, *::before, *::after': {
         boxSizing: 'inherit',
       },
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 480,
+      md: 992,
+      lg: 1140,
     },
   },
   colorSchemes: {
@@ -35,55 +43,15 @@ const theme = extendTheme({
   customVars: {
     headerTopBarHeight: '48px',
     headerBottomBarHeight: '70px',
-    btnWidth: '108px',
-    btnHeight: '32px',
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: () => ({
-          padding: '2px 6px',
+          padding: '4px 8px',
           textTransform: 'none',
         }),
       },
-      variants: [
-        {
-          props: {
-            variant: 'activateKey',
-          },
-          style: {
-            backgroundColor: '#ec971f',
-            color: '#fff',
-            '&:hover': {
-              backgroundColor: '#e08e0b',
-            },
-          },
-        },
-        {
-          props: {
-            variant: 'register',
-          },
-          style: {
-            backgroundColor: '#1890ff',
-            color: '#fff',
-            '&:hover': {
-              backgroundColor: '#40a9ff',
-            },
-          },
-        },
-        {
-          props: {
-            variant: 'login',
-          },
-          style: {
-            backgroundColor: '#ff4d4f',
-            color: '#fff',
-            '&:hover': {
-              backgroundColor: '#ff7875',
-            },
-          },
-        },
-      ],
     },
     MuiLink: {
       styleOverrides: {
