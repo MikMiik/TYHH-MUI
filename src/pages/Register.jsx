@@ -1,14 +1,14 @@
-import { Form, TextInput } from '@/components/Forms'
-
 import loginSchema from '@/schemas/loginSchema'
 import { Box, Button, Container, Typography, Stack, InputAdornment } from '@mui/material'
-import CustomLink from '@/components/CustomLink'
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
 import PasswordIcon from '@mui/icons-material/Password'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
 import config from '@/routes/config'
+import Form from '@/components/Form'
+import TextInput from '@/components/TextInput'
+import MuiLink from '@/components/MuiLink'
 
 function Register() {
   const onSubmit = async (data) => {
@@ -198,7 +198,7 @@ function Register() {
               }}
             >
               <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>Đã có tài khoản.</span>
-              <CustomLink to={config.routes.login}> Đăng nhập</CustomLink>
+              <MuiLink to={config.routes.login}> Đăng nhập</MuiLink>
             </Box>
           </Stack>
         </Form>

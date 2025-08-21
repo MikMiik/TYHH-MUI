@@ -1,4 +1,4 @@
-import HeroCarousel from '../Login/HeroCarousel'
+import HeroCarousel from '../components/HeroCarousel'
 
 const Test = () => {
   return <HeroCarousel></HeroCarousel>

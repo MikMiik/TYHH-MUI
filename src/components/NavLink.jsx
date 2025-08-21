@@ -1,5 +1,5 @@
 import { Link as RouterLink, useLocation } from 'react-router-dom'
-import { Link as MuiLink, styled } from '@mui/material'
+import { styled } from '@mui/material'
 
 const StyledLink = styled(RouterLink)(({ active }) => ({
   color: active ? '#f56751' : 'inherit',
@@ -11,7 +11,7 @@ const StyledLink = styled(RouterLink)(({ active }) => ({
   },
 }))
 
-const CustomLink = ({ to, children, ...props }) => {
+const NavLink = ({ to, children, ...props }) => {
   const location = useLocation()
   const isActive = to === '/' ? location.pathname === '/' : location.pathname.startsWith(to)
   return (
@@ -21,4 +21,4 @@ const CustomLink = ({ to, children, ...props }) => {
   )
 }
 
-export default CustomLink
+export default NavLink

@@ -1,4 +1,4 @@
-import CustomLink from '@/components/CustomLink'
+import NavLink from '@/components/NavLink'
 import config from '@/routes/config'
 import { Box } from '@mui/material'
 import HeaderMenu from './HeaderMenu'
@@ -30,12 +30,12 @@ function HeaderNavigation() {
       <HeaderMenu />
       {isLaptop || isDesktop ? (
         <>
-          <CustomLink to={config.routes.home}>Trang chủ</CustomLink>
-          <CustomLink to={config.routes.onlineLearning}>Học Online</CustomLink>
-          <CustomLink to={config.routes.vipDocuments}>Tài liệu VIP</CustomLink>
-          <CustomLink to={config.routes.documents}>Tài liệu</CustomLink>
-          <CustomLink to={config.routes.liveSchedule}>Lịch Live</CustomLink>
-          <CustomLink>Thanh toán</CustomLink>
+          <NavLink to={config.routes.home}>Trang chủ</NavLink>
+          <NavLink to={config.routes.onlineLearning}>Học Online</NavLink>
+          <NavLink to={config.routes.vipDocuments}>Tài liệu VIP</NavLink>
+          <NavLink to={config.routes.documents}>Tài liệu</NavLink>
+          <NavLink to={config.routes.liveSchedule}>Lịch Live</NavLink>
+          <NavLink>Thanh toán</NavLink>
         </>
       ) : null}
     </Box>

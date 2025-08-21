@@ -1,7 +1,12 @@
-import { Form, TextInput } from '@/components/Forms'
 import LogoIcon from '@/components/LogoIcon'
 import loginSchema from '@/schemas/loginSchema'
+import fbIcon from '@/assets/images/fbIcon.png'
+import youtubeIcon from '@/assets/images/youtubeIcon.png'
+import tiktokIcon from '@/assets/images/tiktokIcon.png'
+
 import { Box, Button, Stack, Typography, Link } from '@mui/material'
+import Form from '@/components/Form'
+import TextInput from '@/components/TextInput'
 
 function FooterBottomArea() {
   const onSubmit = async (data) => {
@@ -12,7 +17,22 @@ function FooterBottomArea() {
     }
   }
   return (
-    <Stack direction="row" spacing={2} sx={{ color: 'white', px: 24, py: 4, justifyContent: 'space-between' }}>
+    <Stack
+      direction={{
+        md: 'row',
+        xs: 'column',
+      }}
+      sx={{ color: 'white' }}
+      justifyContent="space-between"
+      flexWrap="wrap"
+      spacing={2}
+      minWidth={{
+        xs: '100%',
+        sm: '540px',
+        md: '880px',
+        lg: '1140px',
+      }}
+    >
       <Box>
         <Form
           schema={loginSchema}
@@ -65,22 +85,22 @@ function FooterBottomArea() {
         </Form>
       </Box>
 
-      <Box sx={{ textAlign: 'center' }}>
+      <Stack direction="column" justifyContent="center" alignItems="center">
         <Typography sx={{ mb: 1 }}>© Bản quyền thuộc về (Tyhh.net) | Cung cấp bởi</Typography>
         <Link href="https://www.facebook.com/hoan.phi.79" target="_blank">
           K62CL4TEAM
         </Link>
-      </Box>
+      </Stack>
 
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
         <Link href="https://www.facebook.com/hoctothoahoc" target="_blank">
-          <LogoIcon color="white" size={30} src="./src/assets/images/fbIcon.png" />
+          <LogoIcon color="white" size={30} src={fbIcon} />
         </Link>
         <Link href="https://www.youtube.com/channel/UCAddta3aiDh6u9B4xCh3w7g" target="_blank">
-          <LogoIcon color="white" size={30} src="./src/assets/images/youtubeIcon.png" />
+          <LogoIcon color="white" size={30} src={youtubeIcon} />
         </Link>
         <Link href="https://www.tiktok.com/discover/t%C3%B4i-y%C3%AAu-h%C3%B3a-h%E1%BB%8Dc" target="_blank">
-          <LogoIcon color="white" size={32} src="./src/assets/images/tiktokIcon.png" />
+          <LogoIcon color="white" size={32} src={tiktokIcon} />
         </Link>
       </Stack>
     </Stack>

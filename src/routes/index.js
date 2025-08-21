@@ -1,6 +1,5 @@
 import config from '@/routes/config'
-import { Home, OnlineLearning, VipDocuments, Documents, LiveSchedule, Login, Register } from '@/pages'
-import Test from '@/pages/test'
+import { Home, OnlineLearning, VipDocuments, Documents, LiveSchedule, Login, Register, Test } from '@/pages'
 
 const routes = [
   {

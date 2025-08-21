@@ -1,7 +1,7 @@
 import { List, ListItem, ListItemButton, ListItemText, Box, Paper, Popper } from '@mui/material'
 import { useState } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import CustomLink from '../CustomLink'
+import NavLink from '@/components/NavLink'
 import { AnimatePresence, motion } from 'framer-motion'
 
 function HeaderMenu() {
@@ -31,7 +31,7 @@ function HeaderMenu() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <CustomLink
+      <NavLink
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -39,7 +39,7 @@ function HeaderMenu() {
       >
         Danh mục
         <KeyboardArrowDownIcon />
-      </CustomLink>
+      </NavLink>
 
       <Popper
         component={motion.div}

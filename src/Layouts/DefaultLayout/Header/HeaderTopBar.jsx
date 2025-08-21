@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 
-import CountDown from '@/components/Header/CountDown'
+import CountDown from '@/components/CountDown'
 
 function HeaderTopBar() {
   return (

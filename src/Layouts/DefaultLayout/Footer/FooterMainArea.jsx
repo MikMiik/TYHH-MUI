@@ -1,18 +1,34 @@
 import LogoIcon from '@/components/LogoIcon'
+import logoImg from '@/assets/images/mainlogo.png'
+
 import { Box, ListItem, Stack, Typography } from '@mui/material'
 import HomeFilledIcon from '@mui/icons-material/HomeFilled'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
-import ListItemStack from '@/Footer/ListItemStack'
+import ListItemStack from '@/components/ListItemStack'
 
 function FooterMainArea() {
   return (
-    <Box sx={{ px: 24, py: 4 }}>
-      <LogoIcon size={126} src="./src/assets/images/mainlogo.png" />
+    <Box
+      maxWidth={{
+        xs: '100%',
+        sm: '540px',
+        md: '880px',
+        lg: '1140px',
+      }}
+    >
+      <LogoIcon size={126} src={logoImg} />
 
-      <Stack direction="row" spacing={2} sx={{ mt: 4, color: 'white' }}>
+      <Stack
+        direction={{
+          md: 'row',
+          xs: 'column',
+        }}
+        spacing={2}
+        sx={{ mt: 4, color: 'white' }}
+      >
         <ListItemStack spacing={4} sx={{ flex: 2, '& .MuiListItem-root': { display: 'flex' } }}>
           <ListItem>
             <HomeFilledIcon sx={{ mr: 1.8 }}></HomeFilledIcon>
@@ -45,7 +61,7 @@ function FooterMainArea() {
         </ListItemStack>
 
         <Stack sx={{ flex: 1 }}>
-          <Typography variant="h6" sx={{ fontWeight: 700, ml: -2.4 }}>
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
             THÔNG TIN
           </Typography>
           <ListItemStack spacing={2} sx={{ flex: 1, mt: 1, '& .MuiListItem-root': { display: 'list-item' } }}>
@@ -65,8 +81,8 @@ function FooterMainArea() {
         </Stack>
 
         <Stack sx={{ flex: 1 }}>
-          <Typography variant="h6" sx={{ fontWeight: 700, ml: -2.4 }}>
-            THÔNG TIN
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            ĐIỀU KHOẢN
           </Typography>
           <ListItemStack spacing={2} sx={{ flex: 1, mt: 1, '& .MuiListItem-root': { display: 'list-item' } }}>
             <ListItem>

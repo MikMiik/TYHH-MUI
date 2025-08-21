@@ -1,4 +1,3 @@
-import { Form, TextInput } from '@/components/Forms'
 import { useNavigate, useSearchParams, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -8,10 +7,12 @@ import { getCurrentUser } from '@/features/auth/authAsync'
 import authService from '@/services/authService'
 import { Box, Button, Container, Typography, Divider, Stack, InputAdornment } from '@mui/material'
 import LogoIcon from '@/components/LogoIcon'
-import CustomLink from '@/components/CustomLink'
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
 import PasswordIcon from '@mui/icons-material/Password'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import Form from '@/components/Form'
+import TextInput from '@/components/TextInput'
+import MuiLink from '@/components/MuiLink'
 
 function Login() {
   const [params] = useSearchParams()
@@ -176,8 +177,8 @@ function Login() {
                 },
               }}
             >
-              <CustomLink to={config.routes.register}>Đăng ký</CustomLink>
-              <CustomLink to="">Quên mật khẩu?</CustomLink>
+              <MuiLink to={config.routes.register}>Đăng ký</MuiLink>
+              <MuiLink to="">Quên mật khẩu?</MuiLink>
             </Box>
           </Stack>
         </Form>

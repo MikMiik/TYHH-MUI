@@ -10,12 +10,10 @@ import FooterBottomArea from './Footer/FooterBottomArea'
 function DefaultLayout() {
   return (
     <>
-      <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
+      <Container disableGutters maxWidth={false} sx={{ minHeight: '100vh' }}>
         {/* Header */}
-        <Box sx={{ mb: 4 }}>
-          <HeaderTopBar />
-          <HeaderBottomBar />
-        </Box>
+        <HeaderTopBar />
+        <HeaderBottomBar />
 
         {/* Body */}
         <Box>
@@ -23,10 +21,14 @@ function DefaultLayout() {
         </Box>
 
         {/* Footer */}
-        <Container maxWidth={true} disableGutters sx={{ bgcolor: 'primary.main', minHeight: '630px' }}>
-          <FooterMainArea />
+        <Container maxWidth={false} disableGutters sx={{ bgcolor: 'primary.main', minHeight: '630px' }}>
+          <Box py={5} display="flex" justifyContent="center" alignItems="center">
+            <FooterMainArea />
+          </Box>
           <Divider sx={{ borderColor: 'white' }} />
-          <FooterBottomArea />
+          <Box py={4} display="flex" justifyContent="center" alignItems="center">
+            <FooterBottomArea />
+          </Box>
         </Container>
       </Container>
     </>
