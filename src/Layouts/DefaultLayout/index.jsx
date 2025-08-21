@@ -9,29 +9,26 @@ import FooterBottomArea from './Footer/FooterBottomArea'
 
 function DefaultLayout() {
   return (
-    <>
-      <Container disableGutters maxWidth={false} sx={{ minHeight: '100vh' }}>
-        {/* Header */}
-        <HeaderTopBar />
-        <HeaderBottomBar />
+    <Box sx={{ minHeight: '100vh' }}>
+      {/* Header */}
+      <HeaderTopBar />
+      <HeaderBottomBar />
 
-        {/* Body */}
-        <Box>
-          <Outlet />
-        </Box>
+      {/* Body */}
 
-        {/* Footer */}
-        <Container maxWidth={false} disableGutters sx={{ bgcolor: 'primary.main', minHeight: '630px' }}>
-          <Box py={5} display="flex" justifyContent="center" alignItems="center">
-            <FooterMainArea />
-          </Box>
-          <Divider sx={{ borderColor: 'white' }} />
-          <Box py={4} display="flex" justifyContent="center" alignItems="center">
-            <FooterBottomArea />
-          </Box>
+      <Outlet />
+
+      {/* Footer */}
+      <Box sx={{ bgcolor: 'primary.main', minHeight: '630px' }}>
+        <Container sx={{ py: 4 }} display="flex" justifyContent="center" alignItems="center">
+          <FooterMainArea />
         </Container>
-      </Container>
-    </>
+        <Divider sx={{ borderColor: 'white' }} />
+        <Container sx={{ py: 4 }} display="flex" justifyContent="center" alignItems="center">
+          <FooterBottomArea />
+        </Container>
+      </Box>
+    </Box>
   )
 }
 

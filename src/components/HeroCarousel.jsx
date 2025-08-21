@@ -3,7 +3,7 @@ import { Box, IconButton } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 
-function HeroCarousel() {
+function HeroCarousel({ ...props }) {
   const [active, setActive] = useState(0)
 
   function onBackClick() {
@@ -32,7 +32,7 @@ function HeroCarousel() {
     }
   }, [imageSlides.length, active])
   return (
-    <Box sx={{ position: 'relative', height: 424, width: 774, overflow: 'hidden', borderRadius: 5 }}>
+    <Box sx={{ position: 'relative', height: 424, width: 774, overflow: 'hidden', borderRadius: 5 }} {...props}>
       <AnimatePresence initial={false}>
         <Box
           component={motion.div}

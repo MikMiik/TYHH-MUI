@@ -1,7 +1,7 @@
-import HeroCarousel from '../components/HeroCarousel'
+import VideoCarousel from '@/components/VideoCarousel'
 
 const Test = () => {
-  return <HeroCarousel></HeroCarousel>
+  return <VideoCarousel />
 }
 
 export default Test

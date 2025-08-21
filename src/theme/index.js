@@ -31,11 +31,20 @@ const theme = extendTheme({
     light: {
       palette: {
         primary: {
+          light: '#4caf50',
           main: '#034c31',
+          dark: '#007a33',
         },
         secondary: {
           light: '#40a9ff',
           main: '#1890ff',
+          dark: '#096dd9',
+        },
+        tertiary: {
+          light: '#fa8a75',
+          main: '#f56751',
+          dark: '#c94c3a',
+          contrastText: '#fff',
         },
       },
     },
@@ -43,6 +52,8 @@ const theme = extendTheme({
   customVars: {
     headerTopBarHeight: '48px',
     headerBottomBarHeight: '70px',
+    videoCardHeight: '360px',
+    videoCardWidth: '250px',
   },
   components: {
     MuiButton: {

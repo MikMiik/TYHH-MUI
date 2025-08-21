@@ -11,14 +11,7 @@ import ListItemStack from '@/components/ListItemStack'
 
 function FooterMainArea() {
   return (
-    <Box
-      maxWidth={{
-        xs: '100%',
-        sm: '540px',
-        md: '880px',
-        lg: '1140px',
-      }}
-    >
+    <>
       <LogoIcon size={126} src={logoImg} />
 
       <Stack
@@ -97,7 +90,7 @@ function FooterMainArea() {
           </ListItemStack>
         </Stack>
       </Stack>
-    </Box>
+    </>
   )
 }
 
