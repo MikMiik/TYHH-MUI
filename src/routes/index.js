@@ -1,5 +1,6 @@
 import config from '@/routes/config'
-import { Home, OnlineLearning, VipDocuments, Documents, LiveSchedule, Login, Register, Test } from '@/pages'
+import { Home, Courses, VipDocuments, Documents, LiveSchedule, Login, Register, Test } from '@/pages'
+import MenuLayout from '@/Layouts/MenuLayout.jsx/MenuLayout'
 
 const routes = [
   {
@@ -7,12 +8,14 @@ const routes = [
     component: Home,
   },
   {
-    path: config.routes.onlineLearning,
-    component: OnlineLearning,
+    path: config.routes.courses,
+    component: Courses,
+    // layout: MenuLayout,
   },
   {
     path: config.routes.vipDocuments,
     component: VipDocuments,
+    layout: MenuLayout,
   },
   {
     path: config.routes.documents,

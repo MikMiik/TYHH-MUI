@@ -1,5 +1,5 @@
 export { default as Home } from './Home'
-export { default as OnlineLearning } from './OnlineLearning'
+export { default as Courses } from './Courses'
 export { default as VipDocuments } from './VipDocuments'
 export { default as Documents } from './Document'
 export { default as LiveSchedule } from './LiveSchedule'

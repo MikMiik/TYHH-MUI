@@ -1,7 +1,7 @@
 const config = {
   routes: {
     home: '/',
-    onlineLearning: '/onlineLearning',
+    courses: '/courses',
     vipDocuments: '/vipdocuments',
     documents: '/document',
     liveSchedule: '/liveschedule',

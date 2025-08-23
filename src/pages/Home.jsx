@@ -7,10 +7,11 @@ import youtubeIcon from '@/assets/images/youtubeIcon.png'
 import tiktokIcon from '@/assets/images/tiktokIcon.png'
 import LogoIcon from '@/components/LogoIcon'
 import rankingBanner from '@/assets/images/ranking-banner-home.png'
-import banner from '@/assets/images/banner.png'
 import config from '@/routes/config'
 import VideoCarousel from '@/components/VideoCarousel'
 import MuiLink from '@/components/MuiLink'
+import ImageLazy from '@/components/ImageLazy'
+import VideoComp from '@/components/VideoComp'
 
 function Home() {
   return (
@@ -65,53 +66,47 @@ function Home() {
               </Typography>
               <Typography variant="subtitle2">Bứt phá điểm số cùng TYHH</Typography>
             </Stack>
-            <MuiLink color="tertiary.light" sx={{ display: 'inline-flex', alignItems: 'center', mt: 'auto' }}>
+            <MuiLink color="tertiary.light" display="inline-flex" alignItems="center" mt="auto">
               Xem tất cả khóa học
               <KeyboardArrowRightIcon fontSize="small" />
             </MuiLink>
           </Stack>
           <VideoCarousel />
         </Box>
-        <Box>
-          <Stack direction="row" justifyContent="space-between" my={1}>
-            <Stack direction="column">
-              <Typography sx={{ '& span': { fontSize: '1.25rem' } }} fontWeight={700}>
-                <Typography component="span" color="primary" fontWeight="bold">
-                  LIVEVIP
-                </Typography>{' '}
-                <Typography component="span" color="tertiary.light" fontWeight="bold">
-                  2K8
+
+        {/* Free Video */}
+        <Typography variant="h6" fontWeight={600} color="primary.main">
+          Video Miễn Phí
+        </Typography>
+        <Stack direction="row">
+          {/* Left Section: 2/3 width */}
+          <Box width="66.7%">
+            <VideoComp />
+          </Box>
+          {/* Right Section: 1/3 width */}
+          <Stack direction="column" bgcolor="#60a1d5" width="33.3%">
+            <Stack
+              p={1}
+              direction="row"
+              alignItems="center"
+              sx={{
+                ':hover': {
+                  bgcolor: '#49708d',
+                },
+              }}
+            >
+              <ImageLazy src="mini-live.png" alt="mini-live" w={200} />
+              <Box ml={1} maxWidth="calc(100% - 108px)">
+                <Typography noWrap variant="subtitle2" color="#fff" fontWeight={600}>
+                  LIVE 8: KIỂM TRA CHẤT LƯỢNG CHƯƠNG I - NGÀY 7 - KIỂM TRA CHẤT LƯỢNG CHƯƠNG I
                 </Typography>
-              </Typography>
-              <Typography variant="subtitle2">Bứt phá điểm số cùng TYHH</Typography>
-            </Stack>
-            <MuiLink color="tertiary.light" sx={{ display: 'inline-flex', alignItems: 'center', mt: 'auto' }}>
-              Xem tất cả khóa học
-              <KeyboardArrowRightIcon fontSize="small" />
-            </MuiLink>
-          </Stack>
-          <VideoCarousel />
-        </Box>
-        <Box>
-          <Stack direction="row" justifyContent="space-between" my={1}>
-            <Stack direction="column">
-              <Typography sx={{ '& span': { fontSize: '1.25rem' } }} fontWeight={700}>
-                <Typography component="span" color="primary" fontWeight="bold">
-                  LIVEVIP
-                </Typography>{' '}
-                <Typography component="span" color="tertiary.light" fontWeight="bold">
-                  2K8
+                <Typography noWrap variant="subtitle2" color="#fff" fontWeight={600}>
+                  Khoá học <MuiLink color="#66ec83">2K8 - HÓA HỌC 10 (SGK MỚI)</MuiLink>
                 </Typography>
-              </Typography>
-              <Typography variant="subtitle2">Bứt phá điểm số cùng TYHH</Typography>
+              </Box>
             </Stack>
-            <MuiLink color="tertiary.light" sx={{ display: 'inline-flex', alignItems: 'center', mt: 'auto' }}>
-              Xem tất cả khóa học
-              <KeyboardArrowRightIcon fontSize="small" />
-            </MuiLink>
           </Stack>
-          <VideoCarousel />
-        </Box>
+        </Stack>
 
         {/* Bottom Banner */}
         <Box position="relative">
@@ -135,7 +130,7 @@ function Home() {
             }}
             href={config.routes.home}
           >
-            <img src={banner} alt="banner" width="100%" />
+            <ImageLazy src="banner.png?tr=w-1920,h-700,cm-extract" alt="banner" w="100%" />
           </Link>
         </Box>
       </Container>

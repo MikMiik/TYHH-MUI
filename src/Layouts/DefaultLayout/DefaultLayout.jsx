@@ -20,11 +20,11 @@ function DefaultLayout() {
 
       {/* Footer */}
       <Box sx={{ bgcolor: 'primary.main', minHeight: '630px' }}>
-        <Container sx={{ py: 4 }} display="flex" justifyContent="center" alignItems="center">
+        <Container sx={{ py: 4 }} display="flex">
           <FooterMainArea />
         </Container>
         <Divider sx={{ borderColor: 'white' }} />
-        <Container sx={{ py: 4 }} display="flex" justifyContent="center" alignItems="center">
+        <Container sx={{ py: 4 }} display="flex">
           <FooterBottomArea />
         </Container>
       </Box>

@@ -3,13 +3,14 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { ThemeProvider } from '@mui/material/styles'
 import { CssBaseline } from '@mui/material'
-import theme from '@/theme'
+import theme from '@/theme/theme'
 
 import AppRoutes from './components/AppRoutes'
 import ScrollToTop from './components/ScrollToTop'
 
 import UserProvider from './components/UserProvider'
 import store, { persistor } from './store'
+import BackTop from './components/BackTop'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <AppRoutes />
               <UserProvider />
               <ScrollToTop />
+              <BackTop />
             </Router>
           </ThemeProvider>
         </PersistGate>

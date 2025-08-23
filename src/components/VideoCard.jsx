@@ -3,14 +3,14 @@ import videoImg from '@/assets/images/video-img.png'
 import { Card, CardContent, CardMedia, Typography, Button, Stack } from '@mui/material'
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined'
-import theme from '@/theme'
+import theme from '@/theme/theme'
 
 function VideoCard({ image, title, teacher, price, onClick }) {
   return (
     <Card
       sx={{
-        width: theme.customVars.videoCardWidth,
-        height: theme.customVars.videoCardHeight,
+        width: theme.muiVars.videoCardWidth,
+        height: theme.muiVars.videoCardHeight,
         borderRadius: 2,
         boxShadow: 2,
         display: 'flex',

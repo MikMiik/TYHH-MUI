@@ -3,7 +3,7 @@ import config from '@/routes/config'
 import { Box } from '@mui/material'
 import HeaderMenu from './HeaderMenu'
 import useResponsive from '@/hooks/useResponsive'
-import theme from '@/theme'
+import theme from '@/theme/theme'
 
 function HeaderNavigation() {
   const { isLaptop, isDesktop } = useResponsive()
@@ -31,7 +31,7 @@ function HeaderNavigation() {
       {isLaptop || isDesktop ? (
         <>
           <NavLink to={config.routes.home}>Trang chủ</NavLink>
-          <NavLink to={config.routes.onlineLearning}>Học Online</NavLink>
+          <NavLink to={config.routes.courses}>Học Online</NavLink>
           <NavLink to={config.routes.vipDocuments}>Tài liệu VIP</NavLink>
           <NavLink to={config.routes.documents}>Tài liệu</NavLink>
           <NavLink to={config.routes.liveSchedule}>Lịch Live</NavLink>

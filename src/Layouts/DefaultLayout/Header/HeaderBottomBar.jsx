@@ -6,7 +6,7 @@ import HeaderNavigation from '@/components/HeaderNavigation'
 import HeaderActions from '@/components/HeaderActions'
 
 function HeaderBottomBar() {
-  const height = (theme) => theme.customVars.headerBottomBarHeight
+  const height = (theme) => theme.muiVars.headerBottomBarHeight
   return (
     <Box
       component="nav"

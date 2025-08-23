@@ -3,6 +3,8 @@ import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 import 'videojs-contrib-quality-levels' //Plugin to handle quality levels in HLS/DASH streams
 import 'videojs-http-source-selector' // Plugin that adds quality selector UI to the player
+import 'videojs-seek-buttons'
+import 'videojs-seek-buttons/dist/videojs-seek-buttons.css'
 
 const VideoJS = (props) => {
   const videoRef = useRef(null)
@@ -15,14 +17,12 @@ const VideoJS = (props) => {
       // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode.
       const videoElement = document.createElement('video-js')
 
-      videoElement.classList.add('vjs-big-play-centered', 'video-js')
+      videoElement.classList.add('vjs-big-play-centered', 'video-js', 'vjs-default-skin')
       videoRef.current.appendChild(videoElement)
 
       const player = (playerRef.current = videojs(videoElement, options, () => {
-        videojs.log('player is ready')
         onReady && onReady(player)
       }))
-
       // ABS
       player.ready(() => {
         if (typeof player.httpSourceSelector === 'function') {
@@ -32,7 +32,7 @@ const VideoJS = (props) => {
         }
         player.seekButtons({
           forward: 10,
-          backward: 10,
+          back: 10,
         })
       })
       playerRef.current = player

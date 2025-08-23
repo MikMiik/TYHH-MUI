@@ -3,7 +3,8 @@ import VideoCard from './VideoCard'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
-import theme from '@/theme'
+import theme from '@/theme/theme'
+import useResponsive from '@/hooks/useResponsive'
 
 const videoList = [
   {
@@ -64,10 +65,12 @@ const videoList = [
   },
 ]
 
-function VideoCarousel({ maxVisible = 4 }) {
+function VideoCarousel() {
   const [startIdx, setStartIdx] = useState(0)
+  const { isMobile, isTablet, isLaptop, isDesktop } = useResponsive()
 
-  const CARD_WIDTH = parseInt(theme.customVars.videoCardWidth, 10)
+  const maxVisible = isMobile ? 1 : isTablet ? 2 : isLaptop ? 3 : isDesktop ? 4 : 4
+  const CARD_WIDTH = parseInt(theme.muiVars.videoCardWidth, 10)
   const GAP = 16 // px
   const STEP = CARD_WIDTH + GAP
 
@@ -93,7 +96,7 @@ function VideoCarousel({ maxVisible = 4 }) {
         sx={{
           position: 'absolute',
           left: 0,
-          top: '38%',
+          top: '40%',
           zIndex: 2,
           bgcolor: 'white',
           border: '2px solid',
@@ -109,7 +112,7 @@ function VideoCarousel({ maxVisible = 4 }) {
         sx={{
           overflow: 'hidden',
           position: 'relative',
-          height: theme.customVars.videoCardHeight,
+          height: theme.muiVars.videoCardHeight,
           borderRadius: 2,
           width: STEP * maxVisible - GAP,
           mx: 'auto',
@@ -121,7 +124,7 @@ function VideoCarousel({ maxVisible = 4 }) {
           spacing={2}
           style={{
             width: `${videoList.length * STEP - GAP}px`,
-            height: theme.customVars.videoCardHeight,
+            height: theme.muiVars.videoCardHeight,
             willChange: 'transform',
           }}
           animate={{ x: -startIdx * STEP }}
@@ -139,7 +142,7 @@ function VideoCarousel({ maxVisible = 4 }) {
         sx={{
           position: 'absolute',
           right: 0,
-          top: '38%',
+          top: '40%',
           zIndex: 2,
           bgcolor: 'white',
           border: '2px solid',

@@ -22,7 +22,7 @@ const theme = extendTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 480,
+      sm: 768,
       md: 992,
       lg: 1140,
     },
@@ -49,11 +49,11 @@ const theme = extendTheme({
       },
     },
   },
-  customVars: {
+  muiVars: {
     headerTopBarHeight: '48px',
     headerBottomBarHeight: '70px',
     videoCardHeight: '360px',
-    videoCardWidth: '250px',
+    videoCardWidth: '249px',
   },
   components: {
     MuiButton: {

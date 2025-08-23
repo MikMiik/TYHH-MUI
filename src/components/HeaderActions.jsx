@@ -6,7 +6,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import { Link } from 'react-router-dom'
 import config from '@/routes/config'
 import useResponsive from '@/hooks/useResponsive'
-import theme from '@/theme'
+import theme from '@/theme/theme'
 
 function HeaderActions() {
   const { isDesktop, isLaptop } = useResponsive()

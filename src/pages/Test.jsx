@@ -1,50 +1,30 @@
-import VideoJS from '@/components/VideoJS'
-import { useRef } from 'react'
-import videojs from 'video.js'
+import CourseList from '@/components/CourseList'
+import Selection from '@/components/Selection'
+import VideoCard from '@/components/VideoCard'
+import { Container, Typography, Box, Stack } from '@mui/material'
 
 const Test = () => {
-  const playerRef = useRef(null)
-
-  const videoJsOptions = {
-    autoplay: true,
-    controls: true,
-    responsive: true,
-    controlBar: {
-      skipButtons: {
-        forward: 10,
-        backward: 10,
-      },
-    },
-
-    playbackRates: [0.25, 0.5, 1, 1.5, 2],
-    fluid: true,
-    inactivityTimeout: 2000,
-    sources: [
-      {
-        src: '../src/assets/video/video-test.mp4',
-        type: 'video/mp4',
-      },
-    ],
-  }
-
-  const handlePlayerReady = (player) => {
-    playerRef.current = player
-
-    // You can handle player events here, for example:
-    player.on('waiting', () => {
-      videojs.log('player is waiting')
-    })
-
-    player.on('dispose', () => {
-      videojs.log('player will dispose')
-    })
-  }
-
   return (
     <>
-      <div>Rest of app here</div>
-      <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
-      <div>Rest of app here</div>
+      <Container>
+        <Typography variant="h6" fontWeight={700} my={2}>
+          DANH MỤC
+        </Typography>
+        <Selection />
+        <Stack direction="row">
+          <Box flex="0 0 25%" maxWidth="25%">
+            <CourseList items={['LIVEVIP 2K8', 'LIVEVIP 2K9', 'LIVEVIP 2K10']} />
+          </Box>
+          <Stack direction="row" flexWrap="wrap" gap={3} justifyContent="end" flex="0 0 75%" maxWidth="75%">
+            <VideoCard />
+            <VideoCard />
+            <VideoCard />
+            <VideoCard />
+            <VideoCard />
+            <VideoCard />
+          </Stack>
+        </Stack>
+      </Container>
     </>
   )
 }
