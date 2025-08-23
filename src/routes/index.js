@@ -10,7 +10,7 @@ const routes = [
   {
     path: config.routes.courses,
     component: Courses,
-    // layout: MenuLayout,
+    layout: MenuLayout,
   },
   {
     path: config.routes.vipDocuments,

@@ -12,8 +12,13 @@ function AppRoutes() {
         const Component = route.component
         return (
           <Route key={route.path} element={<DefaultLayout />}>
-            {Layout && <Route path={route.path} element={<Layout />} />}
-            <Route path={route.path} element={<Component />} />
+            {Layout ? (
+              <Route path={route.path} element={<Layout />}>
+                <Route index element={<Component />} />
+              </Route>
+            ) : (
+              <Route path={route.path} element={<Component />} />
+            )}
           </Route>
         )
       })}

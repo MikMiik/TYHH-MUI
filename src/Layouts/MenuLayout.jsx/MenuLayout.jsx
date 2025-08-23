@@ -21,9 +21,8 @@ function MenuLayout() {
         <Box flex="0 0 25%" maxWidth="25%">
           <CourseList items={['LIVEVIP 2K8', 'LIVEVIP 2K9', 'LIVEVIP 2K10']} />
         </Box>
-        <Box>
-          <Outlet />
-        </Box>
+
+        <Outlet />
       </Stack>
     </Container>
   )
