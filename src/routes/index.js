@@ -1,5 +1,5 @@
 import config from '@/routes/config'
-import { Home, Courses, VipDocuments, Documents, LiveSchedule, Login, Register, Test } from '@/pages'
+import { Home, Courses, VipDocuments, Documents, LiveSchedule, Login, Register, Test, Profile } from '@/pages'
 import MenuLayout from '@/Layouts/MenuLayout.jsx/MenuLayout'
 
 const routes = [
@@ -33,6 +33,10 @@ const routes = [
   {
     path: config.routes.register,
     component: Register,
+  },
+  {
+    path: config.routes.profile,
+    component: Profile,
   },
   {
     path: config.routes.notFound,

@@ -1,12 +1,36 @@
-import { TextField } from '@mui/material'
+import { TextField, InputAdornment, IconButton } from '@mui/material'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import { useState } from 'react'
 
 function TextInput({ type = 'text', name, register = () => ({}), error, helperText, ...rest }) {
+  const [showPassword, setShowPassword] = useState(false)
+  const isPassword = type === 'password'
+  const inputType = isPassword ? (showPassword ? 'text' : 'password') : type
   return (
-    <>
-      <TextField type={type} name={name} {...register} {...rest} error={error} helperText={helperText}></TextField>
-      {/* truyền vào object: socials.facebook, socials.twitter */}
-      {/* truyền vào mảng: phoneNumbers.0, phoneNumbers.1 */}
-    </>
+    <TextField
+      type={inputType}
+      name={name}
+      {...register}
+      {...rest}
+      error={error}
+      helperText={helperText}
+      slotProps={{
+        input: {
+          endAdornment: isPassword ? (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+                onClick={() => setShowPassword((v) => !v)}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ) : undefined,
+        },
+      }}
+    />
   )
 }
 

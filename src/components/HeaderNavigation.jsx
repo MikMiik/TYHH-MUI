@@ -13,14 +13,14 @@ function HeaderNavigation() {
   return (
     <Box
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 2,
         [theme.breakpoints.down('md')]: {
           position: 'absolute',
           right: 8,
           textWrap: 'nowrap',
         },
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2,
         '& .MuiLink-root': {
           transition: 'all 0.1s',
           display: 'block',

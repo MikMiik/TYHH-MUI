@@ -8,6 +8,7 @@ const config = {
     login: '/login',
     register: '/register',
     ranking: '/ranking',
+    profile: '/profile',
     notFound: '*',
     test: '/test',
   },
