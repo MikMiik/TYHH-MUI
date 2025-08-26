@@ -1,7 +1,7 @@
 export { default as Home } from './Home'
 export { default as Courses } from './Courses'
 export { default as VipDocuments } from './VipDocuments'
-export { default as Documents } from './Document'
+export { default as Documents } from './Documents'
 export { default as LiveSchedule } from './LiveSchedule'
 export { default as Login } from './Login'
 export { default as Register } from './Register'

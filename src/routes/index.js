@@ -20,6 +20,7 @@ const routes = [
   {
     path: config.routes.documents,
     component: Documents,
+    layout: MenuLayout,
   },
   {
     path: config.routes.liveSchedule,

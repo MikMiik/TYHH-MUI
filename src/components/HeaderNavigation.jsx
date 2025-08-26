@@ -1,12 +1,15 @@
 import NavLink from '@/components/NavLink'
 import config from '@/routes/config'
 import { Box } from '@mui/material'
+import React, { useState } from 'react'
 import HeaderMenu from './HeaderMenu'
 import useResponsive from '@/hooks/useResponsive'
 import theme from '@/theme/theme'
+import PaymentModal from './PaymentModal'
 
 function HeaderNavigation() {
   const { isLaptop, isDesktop } = useResponsive()
+  const [openModal, setOpenModal] = useState(false)
   return (
     <Box
       sx={{
@@ -35,9 +38,10 @@ function HeaderNavigation() {
           <NavLink to={config.routes.vipDocuments}>Tài liệu VIP</NavLink>
           <NavLink to={config.routes.documents}>Tài liệu</NavLink>
           <NavLink to={config.routes.liveSchedule}>Lịch Live</NavLink>
-          <NavLink>Thanh toán</NavLink>
+          <NavLink onClick={() => setOpenModal(true)}>Thanh toán</NavLink>
         </>
       ) : null}
+      <PaymentModal open={openModal} onClose={() => setOpenModal(false)} />
     </Box>
   )
 }

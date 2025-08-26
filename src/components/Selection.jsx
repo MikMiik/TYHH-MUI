@@ -26,6 +26,7 @@ export default function Selection() {
           sx={{
             padding: '2px 10px',
             minWidth: 180,
+            maxHeight: 36,
             fontSize: 14,
             color: '#000000a6',
             '& .MuiSelect-select': {

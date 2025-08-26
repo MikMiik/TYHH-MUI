@@ -10,7 +10,6 @@ function handleClick() {
 const breadcrumbs = [
   { link: '/', label: 'Home', key: '1' },
   { link: '/courses', label: 'Courses', key: '2' },
-  { link: '/documents', label: 'Documents', key: '3' },
 ]
 export default function BreadCrumbsPath() {
   return (

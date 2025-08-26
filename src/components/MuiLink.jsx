@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom'
 import { Link as MuiBaseLink } from '@mui/material'
 
-const MuiLink = ({ to, children, color, onClick, ...props }) => {
+const MuiLink = ({ to, children, color, onClick, sx = {}, ...props }) => {
   return (
     <MuiBaseLink
       component={RouterLink}
@@ -11,8 +11,9 @@ const MuiLink = ({ to, children, color, onClick, ...props }) => {
       sx={{
         textTransform: 'none',
         textDecoration: 'none',
-        ...props,
+        ...sx,
       }}
+      {...props}
     >
       {children}
     </MuiBaseLink>

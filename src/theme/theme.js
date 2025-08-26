@@ -25,6 +25,7 @@ const theme = extendTheme({
       sm: 768,
       md: 992,
       lg: 1140,
+      xl: 1536,
     },
   },
   colorSchemes: {

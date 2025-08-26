@@ -5,19 +5,19 @@ import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined'
 import theme from '@/theme/theme'
 
-function VideoCard({ image, title, teacher, price, onClick }) {
+function VideoCard({ image, title, teacher, price, onClick, width, sx }) {
   return (
     <Card
       sx={{
-        width: theme.muiVars.videoCardWidth,
-        height: theme.muiVars.videoCardHeight,
-        borderRadius: 2,
+        width: width || (sx && sx.width) || theme.muiVars.videoCardWidth,
+        borderRadius: 1,
         boxShadow: 2,
         display: 'flex',
         flexDirection: 'column',
+        ...sx,
       }}
     >
-      <CardMedia component="img" height="160" image={image || videoImg} alt={title} sx={{ objectFit: 'cover' }} />
+      <CardMedia component="img" height="auto" image={image || videoImg} alt={title} sx={{ objectFit: 'cover' }} />
       <CardContent sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Typography variant="subtitle2" fontWeight={600} sx={{ mb: 2 }}>
           {title}

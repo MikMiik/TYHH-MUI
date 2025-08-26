@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Stack, Typography } from '@mui/material'
+import MuiLink from './MuiLink'
 
 const CourseList = ({ items = [] }) => {
   return (
@@ -37,9 +38,17 @@ const CourseList = ({ items = [] }) => {
               />
             </svg>
           </Box>
-          <Typography variant="subtitle2" fontWeight={500}>
+          <MuiLink
+            variant="subtitle2"
+            fontWeight={600}
+            sx={{
+              '&:hover': {
+                color: 'primary.main',
+              },
+            }}
+          >
             {item}
-          </Typography>
+          </MuiLink>
         </Box>
       ))}
     </Stack>
