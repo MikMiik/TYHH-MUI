@@ -22,8 +22,8 @@ const BackTop = () => {
         sx={{
           position: 'fixed',
           right: 24,
-          bottom: 24,
-          zIndex: 1300,
+          bottom: 56,
+          zIndex: 20,
         }}
       >
         <IconButton

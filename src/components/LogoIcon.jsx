@@ -3,21 +3,19 @@ import { Link } from 'react-router-dom'
 
 function LogoIcon({ size = 36, src, sx, ...rest }) {
   return (
-    <Link to="/">
-      <Box
-        component="img"
-        src={src}
-        alt="Logo"
-        sx={{
-          width: size,
-          height: size,
-          display: 'inline-block',
-          verticalAlign: 'middle',
-          ...sx,
-        }}
-        {...rest}
-      />
-    </Link>
+    <Box
+      component="img"
+      src={src}
+      alt="Logo"
+      sx={{
+        width: size,
+        height: size,
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        ...sx,
+      }}
+      {...rest}
+    />
   )
 }
 

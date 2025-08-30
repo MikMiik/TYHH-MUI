@@ -4,6 +4,7 @@ import logoImg from '@/assets/images/mainlogo.png'
 
 import HeaderNavigation from '@/components/HeaderNavigation'
 import HeaderActions from '@/components/HeaderActions'
+import { Link } from 'react-router-dom'
 
 function HeaderBottomBar() {
   const height = (theme) => theme.muiVars.headerBottomBarHeight
@@ -11,7 +12,10 @@ function HeaderBottomBar() {
     <Box
       component="nav"
       sx={{
-        position: 'sticky',
+        position: {
+          xs: 'static', // màn hình nhỏ (mobile)
+          md: 'sticky',
+        },
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -24,8 +28,9 @@ function HeaderBottomBar() {
         boxShadow: '0 4px 4px 0 rgba(199,194,194,.25)',
       }}
     >
-      <LogoIcon size={height} src={logoImg} />
-
+      <Link to="/">
+        <LogoIcon size={height} src={logoImg} />
+      </Link>
       <HeaderNavigation />
       <HeaderActions />
     </Box>

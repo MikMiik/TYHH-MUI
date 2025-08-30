@@ -6,6 +6,7 @@ import HeaderTopBar from './Header/HeaderTopBar'
 import HeaderBottomBar from './Header/HeaderBottomBar'
 import FooterMainArea from './Footer/FooterMainArea'
 import FooterBottomArea from './Footer/FooterBottomArea'
+import MuiBottomNavigation from '@/components/MuiBottomNavigation'
 
 function DefaultLayout() {
   return (
@@ -13,7 +14,7 @@ function DefaultLayout() {
       {/* Header */}
       <HeaderTopBar />
       <HeaderBottomBar />
-
+      <MuiBottomNavigation />
       {/* Body */}
 
       <Outlet />

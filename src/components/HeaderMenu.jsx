@@ -47,7 +47,7 @@ function HeaderMenu() {
         anchorEl={anchorEl}
         disablePortal={true}
         modifiers={[{ name: 'offset', options: { offset: [0, 4] } }]}
-        sx={{ minWidth: '110%', position: 'absolute', right: 0 }}
+        sx={{ minWidth: '110%', position: 'absolute', right: 0, zIndex: 20 }}
       >
         <AnimatePresence>
           {open && (
