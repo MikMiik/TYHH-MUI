@@ -47,6 +47,11 @@ const theme = extendTheme({
           dark: '#c94c3a',
           contrastText: '#fff',
         },
+        icon: {
+          light: '#999',
+          main: '#666',
+          dark: '#333',
+        },
       },
     },
   },

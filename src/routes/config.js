@@ -9,6 +9,7 @@ const config = {
     register: '/register',
     ranking: '/ranking',
     profile: '/profile',
+    courseDetail: '/courses/:id',
     notFound: '*',
     test: '/test',
   },

@@ -25,6 +25,7 @@ function HeaderBottomBar() {
       }}
     >
       <LogoIcon size={height} src={logoImg} />
+
       <HeaderNavigation />
       <HeaderActions />
     </Box>

@@ -1,5 +1,16 @@
 import config from '@/routes/config'
-import { Home, Courses, VipDocuments, Documents, LiveSchedule, Login, Register, Test, Profile } from '@/pages'
+import {
+  Home,
+  Courses,
+  VipDocuments,
+  Documents,
+  LiveSchedule,
+  Login,
+  Register,
+  Test,
+  Profile,
+  CourseDetail,
+} from '@/pages'
 import MenuLayout from '@/Layouts/MenuLayout.jsx/MenuLayout'
 
 const routes = [
@@ -37,6 +48,10 @@ const routes = [
   {
     path: config.routes.profile,
     component: Profile,
+  },
+  {
+    path: config.routes.courseDetail,
+    component: CourseDetail,
   },
   {
     path: config.routes.notFound,
