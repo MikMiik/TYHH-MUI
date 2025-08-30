@@ -7,14 +7,16 @@ import HeaderBottomBar from './Header/HeaderBottomBar'
 import FooterMainArea from './Footer/FooterMainArea'
 import FooterBottomArea from './Footer/FooterBottomArea'
 import MuiBottomNavigation from '@/components/MuiBottomNavigation'
+import useResponsive from '@/hooks/useResponsive'
 
 function DefaultLayout() {
+  const { isMobile, isTablet } = useResponsive()
   return (
     <Box sx={{ minHeight: '100vh' }}>
       {/* Header */}
       <HeaderTopBar />
       <HeaderBottomBar />
-      <MuiBottomNavigation />
+      {(isMobile || isTablet) && <MuiBottomNavigation />}
       {/* Body */}
 
       <Outlet />
