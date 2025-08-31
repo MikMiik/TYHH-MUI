@@ -79,6 +79,25 @@ const theme = extendTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        input: {
+          '&:-webkit-autofill': {
+            boxShadow: '0 0 0 1000px transparent inset',
+            WebkitTextFillColor: 'inherit',
+            caretColor: 'inherit',
+          },
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          mt: 1,
+          fontSize: '0.8rem',
+        },
+      },
+    },
   },
 })
 

@@ -18,7 +18,7 @@ function TextInput({ type = 'text', name, register = () => ({}), error, helperTe
       slotProps={{
         input: {
           endAdornment: isPassword ? (
-            <InputAdornment position="end">
+            <InputAdornment position="end absolute">
               <IconButton
                 aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
                 onClick={() => setShowPassword((v) => !v)}

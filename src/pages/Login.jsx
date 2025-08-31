@@ -37,15 +37,15 @@ function Login() {
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        py: 3,
-      }}
-    >
-      <Container disableGutters sx={{ textAlign: 'center', mx: 60 }}>
+    <Container>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          py: 3,
+        }}
+      >
         <Form
           schema={loginSchema}
           defaultValues={{
@@ -182,8 +182,8 @@ function Login() {
             </Box>
           </Stack>
         </Form>
-      </Container>
-    </Box>
+      </Box>
+    </Container>
   )
 }
 

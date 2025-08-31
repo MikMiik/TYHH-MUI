@@ -1,4 +1,3 @@
-import loginSchema from '@/schemas/loginSchema'
 import { Box, Button, Container, Typography, Stack, InputAdornment } from '@mui/material'
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
 import PasswordIcon from '@mui/icons-material/Password'
@@ -9,6 +8,7 @@ import config from '@/routes/config'
 import Form from '@/components/Form'
 import TextInput from '@/components/TextInput'
 import MuiLink from '@/components/MuiLink'
+import registerSchema from '@/schemas/registerSchame'
 
 function Register() {
   const onSubmit = async (data) => {
@@ -19,20 +19,17 @@ function Register() {
     }
   }
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        py: 3,
-      }}
-    >
-      <Container disableGutters sx={{ textAlign: 'center', mx: 60 }}>
+    <Container>
+      <Box mx="auto" maxWidth={500} textAlign="center" my={2}>
         <Form
-          schema={loginSchema}
+          schema={registerSchema}
           defaultValues={{
+            name: '',
+            username: '',
             email: '',
+            phone: '',
             password: '',
+            confirmPassword: '',
           }}
           onSubmit={onSubmit}
         >
@@ -81,6 +78,7 @@ function Register() {
               placeholder="Tên tài khoản"
               fullWidth
               size="small"
+              autoComplete="username"
               slotProps={{
                 input: {
                   startAdornment: (
@@ -96,6 +94,7 @@ function Register() {
               name="email"
               placeholder="Email"
               fullWidth
+              autoComplete="email"
               size="small"
               slotProps={{
                 input: {
@@ -112,6 +111,7 @@ function Register() {
               name="phone"
               placeholder="Số điện thoại"
               fullWidth
+              autoComplete="tel"
               size="small"
               slotProps={{
                 input: {
@@ -124,86 +124,55 @@ function Register() {
               }}
             ></TextInput>
             {/* passowrd */}
-            <TextInput
-              name="password"
-              type="password"
-              placeholder="Mật khẩu"
-              fullWidth
-              size="small"
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PasswordIcon sx={{ fontSize: 20 }} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <VisibilityOffIcon sx={{ fontSize: 20 }} />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            ></TextInput>
+            <TextInput name="password" type="password" placeholder="Mật khẩu" fullWidth size="small"></TextInput>
             {/* confirm_password */}
             <TextInput
-              name="password"
+              name="confirmPassword"
               type="password"
               placeholder="Nhập lại mật khẩu"
               fullWidth
               size="small"
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PasswordIcon sx={{ fontSize: 20 }} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <VisibilityOffIcon sx={{ fontSize: 20 }} />
-                    </InputAdornment>
-                  ),
-                },
-              }}
             ></TextInput>
-
-            <Button
-              disableElevation
-              color="secondary"
-              sx={{
-                padding: 1,
-                transition: 'all .3s cubic-bezier(.645,.045,.355,1)',
-                '&:hover': {
-                  bgcolor: 'secondary.light',
-                },
-              }}
-              fullWidth
-              variant="contained"
-              type="submit"
-            >
-              ĐĂNG KÝ
-            </Button>
-            <Box
-              sx={{
-                textAlign: 'center',
-                fontSize: 14,
-                color: 'secondary.dark',
-                '& .MuiLink-root': {
-                  transition: 'all 0.1s',
-                  '&:hover': {
-                    color: 'secondary.main',
-                  },
-                },
-              }}
-            >
-              <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>Đã có tài khoản.</span>
-              <MuiLink to={config.routes.login}> Đăng nhập</MuiLink>
-            </Box>
           </Stack>
+
+          <Button
+            disableElevation
+            color="secondary"
+            sx={{
+              p: 1,
+              my: 2,
+              transition: 'all .3s cubic-bezier(.645,.045,.355,1)',
+              '&:hover': {
+                bgcolor: 'secondary.light',
+              },
+            }}
+            fullWidth
+            variant="contained"
+            type="submit"
+          >
+            ĐĂNG KÝ
+          </Button>
+          <Box
+            sx={{
+              textAlign: 'center',
+              fontSize: 14,
+              '& .MuiLink-root': {
+                transition: 'all 0.1s',
+                '&:hover': {
+                  color: 'secondary.main',
+                },
+              },
+            }}
+          >
+            <span>Đã có tài khoản.</span>
+            <MuiLink color="secondary.dark" to={config.routes.login}>
+              {' '}
+              Đăng nhập
+            </MuiLink>
+          </Box>
         </Form>
-      </Container>
-    </Box>
+      </Box>
+    </Container>
   )
 }
 

@@ -75,10 +75,6 @@ const Profile = () => {
                 '& .MuiInputLabel-root.MuiFormLabel-filled': {
                   color: 'secondary.main', // màu khi đã có value (label nằm trên)
                 },
-                '.MuiOutlinedInput-input:-webkit-autofill': {
-                  '-webkit-box-shadow': '0 0 0 1000px rgba(24, 144, 255, .2) inset',
-                  '-webkit-text-fill-color': '#333',
-                },
               }}
             >
               <TextInput size="small" name="username" label="Tài khoản" required fullWidth />
