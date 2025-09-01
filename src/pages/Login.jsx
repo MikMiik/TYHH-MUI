@@ -3,7 +3,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import loginSchema from '@/schemas/loginSchema'
 import config from '@/routes/config'
 import authService, { verifyEmailToken } from '@/services/authService'
-import { Box, Button, Container, Typography, Divider, Stack, InputAdornment } from '@mui/material'
+import {
+  Box,
+  Button,
+  Container,
+  Typography,
+  Divider,
+  Stack,
+  InputAdornment,
+  Checkbox,
+  FormControlLabel,
+} from '@mui/material'
 import LogoIcon from '@/components/LogoIcon'
 import Form from '@/components/Form'
 import TextInput from '@/components/TextInput'
@@ -48,8 +58,8 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       const res = await authService.login(data)
-      localStorage.setItem('token', res.data.access_token)
-      localStorage.setItem('refresh_token', res.data.refresh_token)
+      localStorage.setItem('token', res.data.accessToken)
+      localStorage.setItem('refreshToken', res.data.refreshToken)
       dispatch(getCurrentUser())
       navigate(params.get('continue') || config.routes.home)
     } catch (error) {
@@ -134,6 +144,12 @@ function Login() {
               size="small"
               autoComplete="current-password"
             ></TextInput>
+
+            <FormControlLabel
+              sx={{ '& .MuiButtonBase-root.MuiCheckbox-root': { p: 0, color: 'secondary.dark' } }}
+              control={<Checkbox defaultChecked />}
+              label="Remember me"
+            />
 
             <Button
               disableElevation

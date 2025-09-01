@@ -4,18 +4,38 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import config from '@/routes/config'
 import useResponsive from '@/hooks/useResponsive'
 import DropAvatar from './DropAvatar'
 import NotiDrop from './NotiDrop'
 import { useCurrentUser } from '@/utils/useCurrentUser'
+import { logout } from '@/services/authService'
+import { useDispatch } from 'react-redux'
+import { removeCurrentUser } from '@/features/auth/authSlice'
+import { useState } from 'react'
 
 function HeaderActions() {
   const { isDesktop, isLaptop } = useResponsive()
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+  const dispatch = useDispatch()
   const currentUser = useCurrentUser()
+  const navigate = useNavigate()
 
-  console.log(currentUser)
+  const handleLogout = async () => {
+    const refreshToken = localStorage.getItem('refreshToken')
+    if (refreshToken) {
+      await logout({ refreshToken })
+      localStorage.removeItem('token')
+      localStorage.removeItem('refreshToken')
+      dispatch(removeCurrentUser())
+    } else {
+      localStorage.removeItem('token')
+      dispatch(removeCurrentUser())
+    }
+    setIsNotificationOpen(false)
+    navigate('/')
+  }
 
   if (isDesktop || isLaptop) {
     return (
@@ -69,21 +89,38 @@ function HeaderActions() {
                 Đăng ký
               </Button>
             )}
-            <Button
-              component={Link}
-              to={config.routes.login}
-              disableElevation
-              startIcon={<ExitToAppIcon />}
-              sx={{
-                backgroundColor: '#ff4d4f',
-                color: '#fff',
-                '&:hover': {
-                  backgroundColor: '#ff7875',
-                },
-              }}
-            >
-              {currentUser ? 'Đăng xuất' : 'Đăng nhập'}
-            </Button>
+            {currentUser ? (
+              <Button
+                onClick={handleLogout}
+                disableElevation
+                startIcon={<ExitToAppIcon />}
+                sx={{
+                  backgroundColor: '#ff4d4f',
+                  color: '#fff',
+                  '&:hover': {
+                    backgroundColor: '#ff7875',
+                  },
+                }}
+              >
+                Đăng xuất
+              </Button>
+            ) : (
+              <Button
+                component={Link}
+                to={config.routes.login}
+                disableElevation
+                startIcon={<ExitToAppIcon />}
+                sx={{
+                  backgroundColor: '#ff4d4f',
+                  color: '#fff',
+                  '&:hover': {
+                    backgroundColor: '#ff7875',
+                  },
+                }}
+              >
+                Đăng nhập
+              </Button>
+            )}
           </Stack>
         ) : (
           <Stack
