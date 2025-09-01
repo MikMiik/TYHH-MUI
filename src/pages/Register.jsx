@@ -1,19 +1,33 @@
 import { Box, Button, Container, Typography, Stack, InputAdornment } from '@mui/material'
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
-import PasswordIcon from '@mui/icons-material/Password'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
 import config from '@/routes/config'
 import Form from '@/components/Form'
 import TextInput from '@/components/TextInput'
 import MuiLink from '@/components/MuiLink'
-import registerSchema from '@/schemas/registerSchame'
+import registerSchema from '@/schemas/registerSchema'
+import authService from '@/services/authService'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 function Register() {
+  const navigate = useNavigate()
+  const [submitError, setSubmitError] = useState(null)
+
   const onSubmit = async (data) => {
     try {
-      console.log('send', data)
+      const res = await authService.register(data)
+      if (res.success) {
+        navigate('/login', {
+          replace: true,
+          state: {
+            message: 'Đăng kí thành công. Vui lòng kiểm tra email để xác thực tài khoản.',
+          },
+        })
+      } else {
+        setSubmitError(res.message || 'Đăng ký không thành công. Vui lòng thử lại sau.')
+      }
     } catch (error) {
       console.error(error)
     }
@@ -134,7 +148,11 @@ function Register() {
               size="small"
             ></TextInput>
           </Stack>
-
+          {submitError && (
+            <Typography color="error" variant="body2" sx={{ mt: 2 }}>
+              {submitError}
+            </Typography>
+          )}
           <Button
             disableElevation
             color="secondary"

@@ -9,11 +9,14 @@ import config from '@/routes/config'
 import useResponsive from '@/hooks/useResponsive'
 import DropAvatar from './DropAvatar'
 import NotiDrop from './NotiDrop'
-
-const isAuth = false
+import { useCurrentUser } from '@/utils/useCurrentUser'
 
 function HeaderActions() {
   const { isDesktop, isLaptop } = useResponsive()
+  const currentUser = useCurrentUser()
+
+  console.log(currentUser)
+
   if (isDesktop || isLaptop) {
     return (
       <>
@@ -44,7 +47,7 @@ function HeaderActions() {
             >
               Kích hoạt thẻ
             </Button>
-            {isAuth ? (
+            {currentUser ? (
               <Stack direction="row" spacing={1} alignItems="center">
                 <DropAvatar bgcolor="tertiary.main" width={32} height={32} />
                 <NotiDrop />
@@ -79,7 +82,7 @@ function HeaderActions() {
                 },
               }}
             >
-              {isAuth ? 'Đăng xuất' : 'Đăng nhập'}
+              {currentUser ? 'Đăng xuất' : 'Đăng nhập'}
             </Button>
           </Stack>
         ) : (
@@ -107,7 +110,7 @@ function HeaderActions() {
             >
               <KeyIcon fontSize="small" />
             </IconButton>
-            {isAuth ? (
+            {currentUser ? (
               <Stack direction="row" spacing={1} alignItems="center">
                 <DropAvatar bgcolor="tertiary.main" width={32} height={32} />
                 <NotificationsOutlinedIcon fontSize="medium" />

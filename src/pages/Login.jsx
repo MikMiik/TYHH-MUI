@@ -1,27 +1,48 @@
-import { useNavigate, useSearchParams, Navigate } from 'react-router-dom'
+import { useNavigate, useSearchParams, Navigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-
 import loginSchema from '@/schemas/loginSchema'
 import config from '@/routes/config'
-import { getCurrentUser } from '@/features/auth/authAsync'
-import authService from '@/services/authService'
+import authService, { verifyEmailToken } from '@/services/authService'
 import { Box, Button, Container, Typography, Divider, Stack, InputAdornment } from '@mui/material'
 import LogoIcon from '@/components/LogoIcon'
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
-import PasswordIcon from '@mui/icons-material/Password'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Form from '@/components/Form'
 import TextInput from '@/components/TextInput'
 import MuiLink from '@/components/MuiLink'
+import { useEffect, useState } from 'react'
+import { getCurrentUser } from '@/features/auth/authSlice'
 
 function Login() {
   const [params] = useSearchParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
+  const [isTokenValid, setIsTokenValid] = useState(null)
   const currentUser = useSelector((state) => state.auth.currentUser)
+  const token = params.get('token')
 
-  if (currentUser) {
-    return <Navigate to={params.get('continue') || config.routes.home} />
+  useEffect(() => {
+    if (!token) return
+    const verifyToken = async () => {
+      try {
+        const res = await verifyEmailToken(token)
+        if (res.success) {
+          setIsTokenValid(true)
+          localStorage.setItem('token', res.data.accessToken)
+          dispatch(getCurrentUser())
+        } else {
+          setIsTokenValid(false)
+        }
+      } catch (err) {
+        console.error(err)
+        setIsTokenValid(null)
+      }
+    }
+
+    verifyToken()
+  }, [token, dispatch])
+
+  if ((currentUser && localStorage.getItem('token')) || isTokenValid === true) {
+    return <Navigate to={params.get('continue') || '/'} />
   }
 
   const onSubmit = async (data) => {
@@ -38,14 +59,7 @@ function Login() {
 
   return (
     <Container>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          py: 3,
-        }}
-      >
+      <Box mx="auto" maxWidth={500} textAlign="center" my={2}>
         <Form
           schema={loginSchema}
           defaultValues={{
@@ -77,6 +91,7 @@ function Login() {
             }}
             spacing={2.5}
           >
+            <Typography color="success.light">{location.state?.message}</Typography>
             <Button
               sx={{
                 mt: 2,
@@ -110,41 +125,14 @@ function Login() {
               OR
             </Divider>
 
-            <TextInput
-              name="email"
-              placeholder="Tên TK/Email"
-              fullWidth
-              size="small"
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PermIdentityOutlinedIcon sx={{ fontSize: 20 }} />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            ></TextInput>
+            <TextInput name="email" placeholder="Email" fullWidth size="small" autoComplete="email"></TextInput>
             <TextInput
               name="password"
               type="password"
               placeholder="Mật khẩu"
               fullWidth
               size="small"
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PasswordIcon sx={{ fontSize: 20 }} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <VisibilityOffIcon sx={{ fontSize: 20 }} />
-                    </InputAdornment>
-                  ),
-                },
-              }}
+              autoComplete="current-password"
             ></TextInput>
 
             <Button

@@ -1,16 +1,16 @@
-import { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
-import { getCurrentUser } from "@/features/auth/authAsync"
+import { getCurrentUser } from '@/features/auth/authSlice'
 
 function UserProvider() {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(getCurrentUser())
-    }, [dispatch])
+  useEffect(() => {
+    dispatch(getCurrentUser())
+  }, [dispatch])
 
-    return null
+  return null
 }
 
 export default UserProvider
