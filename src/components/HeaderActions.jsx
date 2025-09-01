@@ -10,7 +10,7 @@ import useResponsive from '@/hooks/useResponsive'
 import DropAvatar from './DropAvatar'
 import NotiDrop from './NotiDrop'
 import { useCurrentUser } from '@/utils/useCurrentUser'
-import { logout } from '@/services/authService'
+import authService from '@/services/authService'
 import { useDispatch } from 'react-redux'
 import { removeCurrentUser } from '@/features/auth/authSlice'
 import { useState } from 'react'
@@ -25,7 +25,7 @@ function HeaderActions() {
   const handleLogout = async () => {
     const refreshToken = localStorage.getItem('refreshToken')
     if (refreshToken) {
-      await logout({ refreshToken })
+      await authService.logout({ refreshToken })
       localStorage.removeItem('token')
       localStorage.removeItem('refreshToken')
       dispatch(removeCurrentUser())

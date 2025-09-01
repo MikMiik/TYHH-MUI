@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams, Navigate, useLocation } from 'react-route
 import { useDispatch, useSelector } from 'react-redux'
 import loginSchema from '@/schemas/loginSchema'
 import config from '@/routes/config'
-import authService, { verifyEmailToken } from '@/services/authService'
+import authService from '@/services/authService'
 import {
   Box,
   Button,
@@ -27,6 +27,7 @@ function Login() {
   const dispatch = useDispatch()
   const location = useLocation()
   const [isTokenValid, setIsTokenValid] = useState(null)
+  const [submitError, setSubmitError] = useState(null)
   const currentUser = useSelector((state) => state.auth.currentUser)
   const token = params.get('token')
 
@@ -34,7 +35,7 @@ function Login() {
     if (!token) return
     const verifyToken = async () => {
       try {
-        const res = await verifyEmailToken(token)
+        const res = await authService.verifyEmailToken(token)
         if (res.success) {
           setIsTokenValid(true)
           localStorage.setItem('token', res.data.accessToken)
@@ -58,6 +59,10 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       const res = await authService.login(data)
+      if (!res.success) {
+        setSubmitError(res.message || 'Đăng nhập không thành công')
+        return
+      }
       localStorage.setItem('token', res.data.accessToken)
       localStorage.setItem('refreshToken', res.data.refreshToken)
       dispatch(getCurrentUser())
@@ -75,6 +80,7 @@ function Login() {
           defaultValues={{
             email: '',
             password: '',
+            rememberMe: false,
           }}
           onSubmit={onSubmit}
         >
@@ -146,10 +152,17 @@ function Login() {
             ></TextInput>
 
             <FormControlLabel
+              name="rememberMe"
               sx={{ '& .MuiButtonBase-root.MuiCheckbox-root': { p: 0, color: 'secondary.dark' } }}
               control={<Checkbox defaultChecked />}
               label="Remember me"
             />
+
+            {submitError && (
+              <Typography color="error" variant="body2" sx={{ mt: 2 }}>
+                {submitError}
+              </Typography>
+            )}
 
             <Button
               disableElevation
@@ -182,7 +195,7 @@ function Login() {
               }}
             >
               <MuiLink to={config.routes.register}>Đăng ký</MuiLink>
-              <MuiLink to="">Quên mật khẩu?</MuiLink>
+              <MuiLink to={config.routes.forgotPassword}>Quên mật khẩu?</MuiLink>
             </Box>
           </Stack>
         </Form>

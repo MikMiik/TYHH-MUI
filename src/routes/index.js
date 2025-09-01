@@ -7,6 +7,8 @@ import {
   LiveSchedule,
   Login,
   Register,
+  ForgotPassword,
+  ResetPassword,
   Test,
   Profile,
   CourseDetail,
@@ -44,6 +46,14 @@ const routes = [
   {
     path: config.routes.register,
     component: Register,
+  },
+  {
+    path: config.routes.forgotPassword,
+    component: ForgotPassword,
+  },
+  {
+    path: config.routes.resetPassword,
+    component: ResetPassword,
   },
   {
     path: config.routes.profile,

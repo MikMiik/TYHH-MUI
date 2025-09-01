@@ -100,6 +100,7 @@ function VideoCarousel() {
           bgcolor: 'white',
           border: '2px solid',
           borderColor: 'secondary.light',
+          zIndex: 1,
         }}
         size="small"
       >
