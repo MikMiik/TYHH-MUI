@@ -11,23 +11,29 @@ import ScrollToTop from './components/ScrollToTop'
 import UserProvider from './components/UserProvider'
 import store, { persistor } from './store'
 import BackTop from './components/BackTop'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
   return (
     <>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Router>
-              <AppRoutes />
-              <UserProvider />
-              <ScrollToTop />
-              <BackTop />
-            </Router>
-          </ThemeProvider>
-        </PersistGate>
-      </Provider>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
+        <ErrorBoundary>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <Router>
+                  <AppRoutes />
+                  <UserProvider />
+                  <ScrollToTop />
+                  <BackTop />
+                </Router>
+              </ThemeProvider>
+            </PersistGate>
+          </Provider>
+        </ErrorBoundary>
+      </GoogleOAuthProvider>
     </>
   )
 }

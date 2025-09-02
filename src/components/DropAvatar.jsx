@@ -5,6 +5,7 @@ import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined'
 
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const DropAvatar = ({ bgcolor, width, height }) => {
   const [anchorEl, setAnchorEl] = useState(null)
@@ -29,6 +30,7 @@ const DropAvatar = ({ bgcolor, width, height }) => {
           left: 0,
           right: 0,
         },
+        cursor: 'pointer',
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -71,7 +73,12 @@ const DropAvatar = ({ bgcolor, width, height }) => {
                   },
                 }}
               >
-                <ListItem sx={{ whiteSpace: 'nowrap', width: 'auto' }} disablePadding>
+                <ListItem
+                  component={Link}
+                  to="/profile"
+                  sx={{ whiteSpace: 'nowrap', width: 'auto', color: 'inherit' }}
+                  disablePadding
+                >
                   <ListItemButton>
                     <ListItemIcon sx={{ mr: 1, minWidth: 'auto' }}>
                       <AccountCircleOutlinedIcon fontSize="small" />
@@ -79,7 +86,12 @@ const DropAvatar = ({ bgcolor, width, height }) => {
                     <ListItemText primary={'Thông tin cá nhân'} />
                   </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ whiteSpace: 'nowrap', width: 'auto' }} disablePadding>
+                <ListItem
+                  component={Link}
+                  to="/my-courses"
+                  sx={{ whiteSpace: 'nowrap', width: 'auto', color: 'inherit' }}
+                  disablePadding
+                >
                   <ListItemButton>
                     <ListItemIcon sx={{ mr: 1, minWidth: 'auto' }}>
                       <VideocamOutlinedIcon fontSize="small" />

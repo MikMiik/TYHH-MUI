@@ -20,6 +20,7 @@ import TextInput from '@/components/TextInput'
 import MuiLink from '@/components/MuiLink'
 import { useEffect, useState } from 'react'
 import { getCurrentUser } from '@/features/auth/authSlice'
+import { useGoogleLogin } from '@react-oauth/google'
 
 function Login() {
   const [params] = useSearchParams()
@@ -51,6 +52,22 @@ function Login() {
 
     verifyToken()
   }, [token, dispatch])
+
+  const handleLoginWithGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const res = await authService.googleLogin(tokenResponse.access_token)
+      if (res.success) {
+        setSubmitError(null)
+        localStorage.setItem('token', res.data.accessToken)
+        localStorage.setItem('refreshToken', res.data.refreshToken || '')
+        dispatch(getCurrentUser())
+        navigate(params.get('continue') || '/')
+      } else {
+        setSubmitError('Login with Google error')
+      }
+    },
+    onError: () => setSubmitError('Login with Google error'),
+  })
 
   if ((currentUser && localStorage.getItem('token')) || isTokenValid === true) {
     return <Navigate to={params.get('continue') || '/'} />
@@ -123,6 +140,7 @@ function Login() {
                   borderColor: 'secondary.light',
                 },
               }}
+              onClick={handleLoginWithGoogle}
               disableRipple
               fullWidth
               variant="outlined"
@@ -153,7 +171,7 @@ function Login() {
 
             <FormControlLabel
               name="rememberMe"
-              sx={{ '& .MuiButtonBase-root.MuiCheckbox-root': { p: 0, color: 'secondary.dark' } }}
+              sx={{ '& .MuiButtonBase-root.MuiCheckbox-root': { p: 0, mr: 1, color: 'secondary.dark' } }}
               control={<Checkbox defaultChecked />}
               label="Remember me"
             />
