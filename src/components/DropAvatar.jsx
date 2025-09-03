@@ -6,11 +6,12 @@ import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined'
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useCurrentUser } from '@/utils/useCurrentUser'
 
 const DropAvatar = ({ bgcolor, width, height }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
-
+  const currentUser = useCurrentUser()
   const handleMouseEnter = (event) => {
     setAnchorEl(event.currentTarget)
   }
@@ -35,7 +36,7 @@ const DropAvatar = ({ bgcolor, width, height }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Avatar sx={{ bgcolor, width, height }}></Avatar>
+      <Avatar src={currentUser.avatar} sx={{ bgcolor, width, height }}></Avatar>
 
       <Popper
         component={motion.div}

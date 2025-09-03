@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const httpRequest = axios.create({
-  baseURL: import.meta.env.VITE_LOCAL_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
@@ -35,7 +35,7 @@ httpRequest.interceptors.response.use(
         isRefreshing = true
         // isRefreshing để chỉ 1 response lỗi đầu tiên mới refresh
         try {
-          const res = await axios.post(`${import.meta.env.VITE_LOCAL_URL}/auth/refresh-token`, {
+          const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/refresh-token`, {
             refreshToken,
           })
           const data = res.data.data

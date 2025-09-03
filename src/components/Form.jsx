@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Children, cloneElement } from 'react'
 import * as yup from 'yup'
 import TextInput from './TextInput'
+import AutocompleteField from './AutocompleteField'
 import { Button, FormControlLabel, Stack, TextField, Box, Checkbox } from '@mui/material'
 
 function Form({ schema = yup.object({}), defaultValues = {}, formProps, onSubmit, children }) {
@@ -15,6 +16,7 @@ function Form({ schema = yup.object({}), defaultValues = {}, formProps, onSubmit
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isDirty, isSubmitting },
   } = useForm(config)
 
@@ -22,7 +24,7 @@ function Form({ schema = yup.object({}), defaultValues = {}, formProps, onSubmit
     console.log('Form submission error:', error)
   }
 
-  const allowedComponents = [TextInput, TextField, Stack, Box, FormControlLabel]
+  const allowedComponents = [TextInput, TextField, Stack, Box, FormControlLabel, AutocompleteField]
 
   // Recursive function to handle nested components and register inputs
   const processChild = (child) => {
@@ -51,9 +53,20 @@ function Form({ schema = yup.object({}), defaultValues = {}, formProps, onSubmit
       }
     }
 
-    // Handle input components (TextInput, TextField)
+    // Handle input components (TextInput, TextField, AutocompleteField)
     if (allowedComponents.includes(child.type) && child.props.name) {
       const hasError = !!errors[child.props.name]
+
+      // Special handling for AutocompleteField
+      if (child.type === AutocompleteField) {
+        return cloneElement(child, {
+          control,
+          error: hasError ? true : undefined,
+          helperText: hasError ? errors[child.props.name]?.message : undefined,
+        })
+      }
+
+      // Regular handling for other input components
       return cloneElement(child, {
         register: register(child.props.name, child.props.registerOptions),
         error: hasError ? true : undefined,

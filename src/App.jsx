@@ -13,7 +13,8 @@ import store, { persistor } from './store'
 import BackTop from './components/BackTop'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import ErrorBoundary from './components/ErrorBoundary'
-
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 function App() {
   return (
     <>
@@ -28,6 +29,18 @@ function App() {
                   <UserProvider />
                   <ScrollToTop />
                   <BackTop />
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                  />
                 </Router>
               </ThemeProvider>
             </PersistGate>
