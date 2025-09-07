@@ -6,66 +6,7 @@ import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 import theme from '@/theme/theme'
 import useResponsive from '@/hooks/useResponsive'
 
-const videoList = [
-  {
-    id: 1,
-    image: '',
-    title: 'VẬN DỤNG CAO 9+ | TYHH',
-    teacher: 'THẦY PHẠM THẮNG',
-    price: '1',
-  },
-  {
-    id: 2,
-    image: '',
-    title: 'CHUYÊN ĐỀ LIVE T (NỀN TẢNG 12)',
-    teacher: 'THẦY PHẠM THẮNG',
-    price: '2',
-  },
-  {
-    id: 3,
-    image: '',
-    title: '2K8 - HÓA HỌC 10 (SGK MỚI)',
-    teacher: 'THẦY NGỌC ANH',
-    price: '3',
-  },
-  {
-    id: 4,
-    image: '',
-    title: '2K8 - HÓA HỌC 11 (SGK MỚI)',
-    teacher: 'THẦY NGỌC ANH',
-    price: '4',
-  },
-  {
-    id: 5,
-    image: '',
-    title: '2K8 - HÓA HỌC 10 (SGK MỚI)',
-    teacher: 'THẦY NGỌC ANH',
-    price: '5',
-  },
-  {
-    id: 6,
-    image: '',
-    title: '2K8 - HÓA HỌC 11 (SGK MỚI)',
-    teacher: 'THẦY NGỌC ANH',
-    price: '6',
-  },
-  {
-    id: 7,
-    image: '',
-    title: '2K8 - HÓA HỌC 10 (SGK MỚI)',
-    teacher: 'THẦY NGỌC ANH',
-    price: '7',
-  },
-  {
-    id: 8,
-    image: '',
-    title: '2K8 - HÓA HỌC 11 (SGK MỚI)',
-    teacher: 'THẦY NGỌC ANH',
-    price: '8',
-  },
-]
-
-function VideoCarousel() {
+function VideoCarousel({ videoList = [] }) {
   const [startIdx, setStartIdx] = useState(0)
   const { isMobile, isTablet, isLaptop, isDesktop } = useResponsive()
 
@@ -76,10 +17,10 @@ function VideoCarousel() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      handleNext()
+      setStartIdx((prev) => (prev + 1) % videoList.length)
     }, 3000)
     return () => clearInterval(timer)
-  }, [startIdx])
+  }, [startIdx, videoList.length])
 
   const handleBack = () => {
     setStartIdx((prev) => (prev - 1 + videoList.length) % videoList.length)
@@ -89,7 +30,7 @@ function VideoCarousel() {
   }
 
   return (
-    <Box sx={{ position: 'relative', width: '100%' }}>
+    <Box position="relative" width="100%">
       {/* Nút back */}
       <IconButton
         onClick={handleBack}
@@ -103,6 +44,7 @@ function VideoCarousel() {
           zIndex: 1,
         }}
         size="small"
+        disabled={videoList.length <= maxVisible}
       >
         <LuChevronLeft color={theme.palette.secondary.light} size={26} />
       </IconButton>
@@ -148,6 +90,7 @@ function VideoCarousel() {
           borderColor: 'secondary.light',
         }}
         size="small"
+        disabled={videoList.length <= maxVisible}
       >
         <LuChevronRight color={theme.palette.secondary.light} size={26} />
       </IconButton>

@@ -9,6 +9,7 @@ import LogoIcon from '@/components/LogoIcon'
 import rankingBanner from '@/assets/images/ranking-banner-home.png'
 import config from '@/routes/config'
 import VideoCarousel from '@/components/VideoCarousel'
+import { useGetAllCoursesQuery } from '@/features/api/courseApi'
 import MuiLink from '@/components/MuiLink'
 import ImageLazy from '@/components/ImageLazy'
 import VideoComp from '@/components/VideoComp'
@@ -16,6 +17,7 @@ import { useGetSocialsQuery } from '@/features/api/siteInfoApi'
 
 function Home() {
   const { data: socials, isSuccess: socialsLoaded } = useGetSocialsQuery()
+  const { data: courses = [], isSuccess: coursesLoaded } = useGetAllCoursesQuery()
   return (
     <Box>
       {/* Head Banner */}
@@ -35,11 +37,11 @@ function Home() {
       {/* Main Content */}
       <Container>
         {/* Socials */}
-        <Stack direction="row" spacing={2} my={2} alignItems="center" justifyContent="center">
+        <Stack direction="row" spacing={3} my={2} alignItems="center" justifyContent="center">
           {socialsLoaded &&
             socials.map((social) => (
-              <>
-                <Link key={social.id} href={social.url} target="_blank">
+              <Link key={social.id} href={social.url} target="_blank">
+                <Stack direction="row" alignItems="center" spacing={1} key={social.id}>
                   {(() => {
                     switch (social.platform) {
                       case 'facebook':
@@ -52,9 +54,9 @@ function Home() {
                         return null
                     }
                   })()}
-                </Link>
-                <Typography fontWeight={700}>Thầy Phạm Thắng</Typography>
-              </>
+                  <Typography fontWeight={700}>Thầy Phạm Thắng</Typography>
+                </Stack>
+              </Link>
             ))}
         </Stack>
         {/* Ranking */}
@@ -81,7 +83,7 @@ function Home() {
               <KeyboardArrowRightIcon fontSize="small" />
             </MuiLink>
           </Stack>
-          <VideoCarousel />
+          <VideoCarousel videoList={coursesLoaded ? courses : []} />
         </Box>
 
         {/* Free Video */}

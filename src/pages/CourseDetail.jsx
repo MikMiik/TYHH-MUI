@@ -14,7 +14,6 @@ const CourseDetail = () => {
   const { data: course, isLoading, error } = useGetCourseQuery(courseId)
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
-  console.log(course)
 
   return (
     <Container>
@@ -108,7 +107,9 @@ const CourseDetail = () => {
             <Chip label="Đề cương khóa học" size="medium" color="secondary" sx={{ fontSize: '1rem', p: 2 }} />
           </Divider>
           <Stack spacing={2}>
-            <CourseOutlineItem></CourseOutlineItem>
+            {course?.outlines?.map((outline) => (
+              <CourseOutlineItem key={outline.id} title={outline.title} livestreams={outline.livestreams} />
+            ))}
           </Stack>
         </Box>
       </Box>

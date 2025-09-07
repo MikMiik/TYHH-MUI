@@ -3,10 +3,10 @@ import { useState } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import NavLink from '@/components/NavLink'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useGetTopicsQuery } from '@/features/api/topicApi'
+import { useGetAllTopicsQuery } from '@/features/api/topicApi'
 
 function HeaderMenu() {
-  const { data: topics, isSuccess: isTopicsLoaded } = useGetTopicsQuery()
+  const { data: topics, isSuccess: isTopicsLoaded } = useGetAllTopicsQuery()
 
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)

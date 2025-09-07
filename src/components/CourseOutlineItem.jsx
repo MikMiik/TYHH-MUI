@@ -1,10 +1,4 @@
-import { styled } from '@mui/material/styles'
-const GreenCircleStepIcon = styled('span')(() => ({
-  width: 20,
-  height: 20,
-  borderRadius: '50%',
-  border: '3px solid #4caf50',
-}))
+import GreenCircleStepIcon from './GreenCircleStepIcon'
 
 import {
   Accordion,
@@ -20,21 +14,15 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded'
 import CircularDeterminate from './CircularDeterminate'
-import PlayCircleIcon from '@mui/icons-material/PlayCircle'
-import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined'
 import EditDocumentIcon from '@mui/icons-material/EditDocument'
+import { Link } from 'react-router-dom'
 
-const lessons = [
-  { title: 'BIỆN LUẬN CTCT & SƠ ĐỒ CHUYỂN HÓA ESTER | VIP1', views: 5791 },
-  { title: 'BIỆN LUẬN CTCT & SƠ ĐỒ CHUYỂN HÓA ESTER | VIP2', views: 2796 },
-  { title: 'BIỆN LUẬN CTCT & SƠ ĐỒ CHUYỂN HÓA ESTER | VIP3', views: 1793 },
-  { title: 'BIỆN LUẬN CTCT & SƠ ĐỒ CHUYỂN HÓA ESTER | VIP4', views: 1255 },
-]
+const CourseOutlineItem = ({ title, livestreams = [] }) => {
+  // Tính phần trăm hoàn thành dựa trên số livestream đã xem
+  const seenCount = livestreams.filter((item) => item.isSeen).length
+  const totalCount = livestreams.length
+  const completionPercentage = totalCount > 0 ? (seenCount / totalCount) * 100 : 0
 
-const CourseOutlineItem = ({
-  mainTitle = 'BIỆN LUẬN CTCT & SƠ ĐỒ CHUYỂN HÓA HỢP CHẤT HỮU CƠ',
-  lessonsData = lessons,
-}) => {
   return (
     <>
       <Accordion
@@ -55,9 +43,9 @@ const CourseOutlineItem = ({
           }}
         >
           <Stack direction="row" alignItems="center" spacing={1}>
-            <CircularDeterminate size={20} thickness={5} color="primary" />
+            <CircularDeterminate size={20} thickness={5} color="primary" progress={completionPercentage} />
             <Typography variant="subtitle2" fontWeight={600}>
-              {mainTitle}
+              {title}
             </Typography>
           </Stack>
         </AccordionSummary>
@@ -68,33 +56,29 @@ const CourseOutlineItem = ({
             activeStep={-1}
             sx={{ pl: 2, pr: 0, '& .MuiStepConnector-root, & .MuiStepContent-root': { ml: '10px' } }}
           >
-            {lessonsData.map((item) => (
+            {livestreams.map((item) => (
               <Step key={item.title} expanded>
-                <StepLabel slots={{ stepIcon: GreenCircleStepIcon }}>
+                <StepLabel slots={{ stepIcon: (props) => <GreenCircleStepIcon isSeen={item.isSeen} {...props} /> }}>
                   <Typography variant="body2" fontWeight={600}>
                     {item.title}
                   </Typography>
                 </StepLabel>
                 <StepContent>
                   <Stack direction="row" alignItems="center" spacing={1}>
-                    <PlayCircleIcon sx={{ color: '#999' }} fontSize="smaller" />
+                    {Array.isArray(item.documents) && item.documents.length > 0 ? (
+                      <Link to={item.documents[0].url} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                        <EditDocumentIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
+                      </Link>
+                    ) : (
+                      <EditDocumentIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
+                    )}
                     <Typography fontSize={14} color="#888">
-                      1
+                      {Array.isArray(item.documents) ? item.documents.length : 0}
                     </Typography>
 
-                    <PictureAsPdfOutlinedIcon sx={{ color: '#999' }} fontSize="smaller" />
+                    <RemoveRedEyeRoundedIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
                     <Typography fontSize={14} color="#888">
-                      1
-                    </Typography>
-
-                    <EditDocumentIcon sx={{ color: '#999' }} fontSize="smaller" />
-                    <Typography fontSize={14} color="#888">
-                      1
-                    </Typography>
-
-                    <RemoveRedEyeRoundedIcon sx={{ color: '#999' }} fontSize="smaller" />
-                    <Typography fontSize={14} color="#888">
-                      {item.views}
+                      {item.view || 0}
                     </Typography>
                   </Stack>
                 </StepContent>

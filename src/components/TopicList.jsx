@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Stack, Typography } from '@mui/material'
-import MuiLink from './MuiLink'
+import { Link } from 'react-router-dom'
 
 const TopicList = ({ items = [] }) => {
   return (
@@ -38,17 +38,17 @@ const TopicList = ({ items = [] }) => {
               />
             </svg>
           </Box>
-          <MuiLink
-            variant="subtitle2"
-            fontWeight={500}
-            sx={{
-              '&:hover': {
-                color: 'primary.main',
-              },
+          <Link
+            to={`/topics/${item.slug}`}
+            style={{
+              textDecoration: 'none',
+              color: 'inherit',
+              fontWeight: 500,
+              fontSize: '1rem',
             }}
           >
-            {item}
-          </MuiLink>
+            {item.title}
+          </Link>
         </Box>
       ))}
     </Stack>

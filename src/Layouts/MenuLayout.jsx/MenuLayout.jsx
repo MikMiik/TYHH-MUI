@@ -2,12 +2,14 @@ import { Box, Container, Stack, Typography } from '@mui/material'
 import { Outlet } from 'react-router-dom'
 import BreadCrumbsPath from '@/components/BreadCrumbsPath'
 import Selection from '@/components/Selection'
-import CourseList from '@/components/CourseList'
+import TopicList from '@/components/TopicList'
+import { useGetAllTopicsQuery } from '@/features/api/topicApi'
 import useResponsive from '@/hooks/useResponsive'
 import ImageLazy from '@/components/ImageLazy'
 
 function MenuLayout() {
   const { isMobile } = useResponsive()
+  const { data: topics = [], isSuccess } = useGetAllTopicsQuery()
   return (
     <Container sx={{ my: 2 }}>
       <BreadCrumbsPath />
@@ -27,7 +29,7 @@ function MenuLayout() {
       <Stack direction="row">
         {!isMobile && (
           <Box flex="0 0 25%" maxWidth="25%">
-            <CourseList items={['LIVEVIP 2K8', 'LIVEVIP 2K9', 'LIVEVIP 2K10']} />
+            <TopicList items={isSuccess ? topics : []} />
           </Box>
         )}
 

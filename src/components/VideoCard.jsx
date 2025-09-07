@@ -26,7 +26,7 @@ function VideoCard({ image, title, teacher, price, onClick, width, sx }) {
           <Stack direction="row" alignItems="center" spacing={1}>
             <PersonOutlinedIcon fontSize="small" />
             <Typography variant="body2" color="secondary" fontWeight={500}>
-              {teacher}
+              {teacher?.name?.toUpperCase() || 'Unknown Teacher'}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
