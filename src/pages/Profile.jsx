@@ -88,7 +88,11 @@ const Profile = () => {
                     sx={{ position: 'absolute', right: 8, top: 8, bgcolor: '#fff', boxShadow: 1 }}
                     disabled={isUploading}
                   >
-                    {isUploading ? <CircularProgress size={16} /> : <PhotoCameraIcon fontSize="small" />}
+                    {isUploading ? (
+                      <CircularProgress color="secondary" size={16} />
+                    ) : (
+                      <PhotoCameraIcon fontSize="small" />
+                    )}
                     <input
                       hidden
                       accept="image/*"
@@ -125,7 +129,7 @@ const Profile = () => {
                         sx={{
                           width: `${progress}%`,
                           height: '100%',
-                          bgcolor: 'primary.main',
+                          bgcolor: 'secondary.main',
                           transition: 'width 0.3s ease',
                         }}
                       />

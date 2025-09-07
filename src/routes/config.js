@@ -11,7 +11,7 @@ const config = {
     resetPassword: '/reset-password',
     ranking: '/ranking',
     profile: '/profile',
-    courseDetail: '/courses/:id',
+    courseDetail: '/courses/:courseId',
     notFound: '*',
     test: '/test',
   },

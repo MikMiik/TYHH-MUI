@@ -15,6 +15,7 @@ import PopoverMenu from './PopoverMenu'
 export default function MuiBottomNavigation() {
   const location = useLocation()
   const [popoverAnchor, setPopoverAnchor] = React.useState(null)
+  const [hideNav, setHideNav] = React.useState(false)
   const navigate = useNavigate()
 
   // Map pathname to navigation index
@@ -54,6 +55,25 @@ export default function MuiBottomNavigation() {
   const handlePopoverClose = () => {
     setPopoverAnchor(null)
   }
+
+  // Hide nav when scroll to bottom
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset
+      const windowHeight = window.innerHeight
+      const docHeight = document.documentElement.scrollHeight
+      // 10px threshold for floating point errors
+      if (scrollY + windowHeight >= docHeight - 10) {
+        setHideNav(true)
+      } else {
+        setHideNav(false)
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  if (hideNav) return null
 
   return (
     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 15 }} elevation={3}>

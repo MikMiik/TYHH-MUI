@@ -12,8 +12,10 @@ import VideoCarousel from '@/components/VideoCarousel'
 import MuiLink from '@/components/MuiLink'
 import ImageLazy from '@/components/ImageLazy'
 import VideoComp from '@/components/VideoComp'
+import { useGetSocialsQuery } from '@/features/api/siteInfoApi'
 
 function Home() {
+  const { data: socials, isSuccess: socialsLoaded } = useGetSocialsQuery()
   return (
     <Box>
       {/* Head Banner */}
@@ -34,18 +36,26 @@ function Home() {
       <Container>
         {/* Socials */}
         <Stack direction="row" spacing={2} my={2} alignItems="center" justifyContent="center">
-          <Link href="https://www.facebook.com/hoctothoahoc" target="_blank">
-            <LogoIcon color="white" size={30} src={fbIcon} />
-          </Link>
-          <Typography fontWeight={700}>Thầy Phạm Thắng</Typography>
-          <Link href="https://www.youtube.com/channel/UCAddta3aiDh6u9B4xCh3w7g" target="_blank">
-            <LogoIcon color="white" size={30} src={youtubeIcon} />
-          </Link>
-          <Typography fontWeight={700}>Thầy Phạm Thắng</Typography>
-          <Link href="https://www.tiktok.com/discover/t%C3%B4i-y%C3%AAu-h%C3%B3a-h%E1%BB%8Dc" target="_blank">
-            <LogoIcon color="white" size={32} src={tiktokIcon} />
-          </Link>
-          <Typography fontWeight={700}>Thầy Phạm Thắng</Typography>
+          {socialsLoaded &&
+            socials.map((social) => (
+              <>
+                <Link key={social.id} href={social.url} target="_blank">
+                  {(() => {
+                    switch (social.platform) {
+                      case 'facebook':
+                        return <LogoIcon color="white" size={30} src={fbIcon} />
+                      case 'youtube':
+                        return <LogoIcon color="white" size={30} src={youtubeIcon} />
+                      case 'tiktok':
+                        return <LogoIcon color="white" size={30} src={tiktokIcon} />
+                      default:
+                        return null
+                    }
+                  })()}
+                </Link>
+                <Typography fontWeight={700}>Thầy Phạm Thắng</Typography>
+              </>
+            ))}
         </Stack>
         {/* Ranking */}
         <Box component="a" href={config.routes.ranking}>

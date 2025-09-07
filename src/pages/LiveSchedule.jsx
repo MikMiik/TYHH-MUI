@@ -1,11 +1,11 @@
 import BreadCrumbsPath from '@/components/BreadCrumbsPath'
 import ImageLazy from '@/components/ImageLazy'
+import { useGetSchedulesQuery } from '@/features/api/scheduleApi'
 import { Box, Tabs, Tab, Container } from '@mui/material'
 import { useState } from 'react'
 
-const tabData = [{ label: 'HÓA 12' }, { label: 'HÓA 11' }, { label: 'HÓA 10' }]
-
 function LiveSchedule() {
+  const { data: schedules, isSuccess: isSchedulesLoaded } = useGetSchedulesQuery()
   const [tab, setTab] = useState(0)
   return (
     <Container>
@@ -36,11 +36,9 @@ function LiveSchedule() {
             },
           }}
         >
-          {tabData.map((t) => (
-            <Tab key={t.label} label={t.label} />
-          ))}
+          {isSchedulesLoaded && schedules && schedules.map((t) => <Tab key={t.id} label={t.target} />)}
         </Tabs>
-        <ImageLazy src="live-schedule.png" w="100%" />
+        {isSchedulesLoaded && schedules && schedules[tab] && <ImageLazy src={schedules[tab].url} w="100%" />}
       </Box>
     </Container>
   )

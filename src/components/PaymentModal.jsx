@@ -11,6 +11,9 @@ function PaymentModal({ open, onClose }) {
       slotProps={{ backdrop: { timeout: 300 } }}
       sx={{
         overflowY: 'auto',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Fade in={open} timeout={300}>
@@ -24,13 +27,14 @@ function PaymentModal({ open, onClose }) {
             boxShadow: 24,
             borderRadius: 1,
             outline: 'none',
+            p: 2,
           }}
         >
           <IconButton onClick={onClose} sx={{ position: 'absolute', top: 8, right: 8 }} aria-label="close">
             <CloseIcon />
           </IconButton>
           <MuiBox textAlign="center" mt={2}>
-            <Typography variant="h6" color="primary" fontWeight={700} mb={2}>
+            <Typography variant="subtitle1" color="primary" fontWeight={700} mb={1}>
               THÔNG TIN CHUYỂN KHOẢN
             </Typography>
             <ImageLazy src="transfer-info.jpg" w="100%" />

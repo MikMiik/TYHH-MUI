@@ -3,8 +3,11 @@ import { useState } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import NavLink from '@/components/NavLink'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useGetTopicsQuery } from '@/features/api/topicApi'
 
 function HeaderMenu() {
+  const { data: topics, isSuccess: isTopicsLoaded } = useGetTopicsQuery()
+
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
@@ -78,13 +81,14 @@ function HeaderMenu() {
                   },
                 }}
               >
-                {['LIVEVIP 2K6', 'LIVEVIP 2K7', 'LIVEVIP 2K8', 'LIVEVIP 2K9'].map((text) => (
-                  <ListItem sx={{ whiteSpace: 'nowrap', width: 'auto' }} disablePadding key={text}>
-                    <ListItemButton>
-                      <ListItemText primary={text} />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
+                {isTopicsLoaded &&
+                  topics.map((topic) => (
+                    <ListItem sx={{ whiteSpace: 'nowrap', width: 'auto' }} disablePadding key={topic.id}>
+                      <ListItemButton>
+                        <ListItemText primary={topic.title} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
               </List>
             </Paper>
           )}
