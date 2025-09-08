@@ -17,7 +17,7 @@ import { useGetSocialsQuery } from '@/features/api/siteInfoApi'
 
 function Home() {
   const { data: socials, isSuccess: socialsLoaded } = useGetSocialsQuery()
-  const { data: courses = [], isSuccess: coursesLoaded } = useGetAllCoursesQuery()
+  const { data: { courses } = [], isSuccess: coursesLoaded } = useGetAllCoursesQuery()
   return (
     <Box>
       {/* Head Banner */}

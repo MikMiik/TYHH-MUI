@@ -21,7 +21,7 @@ const routes = [
     component: Home,
   },
   {
-    path: config.routes.topics,
+    path: config.routes.courses,
     component: Courses,
     layout: MenuLayout,
   },

@@ -28,6 +28,7 @@ function VideoCarousel({ videoList = [] }) {
   const handleNext = () => {
     setStartIdx((prev) => (prev + 1) % videoList.length)
   }
+  console.log(videoList)
 
   return (
     <Box position="relative" width="100%">
@@ -73,7 +74,7 @@ function VideoCarousel({ videoList = [] }) {
           transition={{ type: 'spring', stiffness: 200, damping: 30 }}
         >
           {videoList.map((item) => (
-            <VideoCard key={item.id} {...item} />
+            <VideoCard key={item.id} course={item} />
           ))}
         </Stack>
       </Box>

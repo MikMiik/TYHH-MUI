@@ -22,7 +22,7 @@ export default function MuiBottomNavigation() {
   const getNavValue = React.useCallback(() => {
     const { pathname } = location
     if (pathname === config.routes.home) return 0
-    if (pathname === config.routes.topics) return 1
+    if (pathname === config.routes.courses) return 1
     if (pathname === config.routes.liveSchedule) return 2
     if (pathname === config.routes.documents) return 3
     return -1
@@ -36,7 +36,7 @@ export default function MuiBottomNavigation() {
         navigate(config.routes.home)
         break
       case 1:
-        navigate(config.routes.topics)
+        navigate(config.routes.courses)
         break
       case 2:
         navigate(config.routes.liveSchedule)

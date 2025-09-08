@@ -3,13 +3,25 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 export default function Selection() {
-  const [sort, setSort] = useState('Mới nhất')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const currentSort = searchParams.get('sort') || 'newest'
+
+  const sortOptions = {
+    newest: 'Mới nhất',
+    oldest: 'Cũ nhất',
+    popularity: 'Phổ biến',
+  }
 
   const handleChange = (event) => {
-    setSort(event.target.value)
+    const newSort = event.target.value
+    const currentParams = Object.fromEntries(searchParams)
+    setSearchParams({
+      ...currentParams,
+      sort: newSort,
+    })
   }
 
   return (
@@ -20,7 +32,7 @@ export default function Selection() {
           labelId="sort"
           name="sort"
           id="sort"
-          value={sort}
+          value={currentSort}
           label="sort"
           onChange={handleChange}
           sx={{
@@ -68,9 +80,9 @@ export default function Selection() {
             },
           }}
         >
-          <MenuItem value={'Mới nhất'}>Mới nhất</MenuItem>
-          <MenuItem value={'Cũ nhất'}>Cũ nhất</MenuItem>
-          <MenuItem value={'Phổ biến'}>Phổ biến</MenuItem>
+          <MenuItem value="newest">{sortOptions.newest}</MenuItem>
+          <MenuItem value="oldest">{sortOptions.oldest}</MenuItem>
+          <MenuItem value="popularity">{sortOptions.popularity}</MenuItem>
         </Select>
       </FormControl>
     </Box>

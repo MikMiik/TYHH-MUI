@@ -34,7 +34,7 @@ function HeaderNavigation() {
       {isLaptop || isDesktop ? (
         <>
           <NavLink to={config.routes.home}>Trang chủ</NavLink>
-          <NavLink to={config.routes.topics}>Học Online</NavLink>
+          <NavLink to={config.routes.courses}>Học Online</NavLink>
           <NavLink to={config.routes.vipDocuments}>Tài liệu VIP</NavLink>
           <NavLink to={config.routes.documents}>Tài liệu</NavLink>
           <NavLink to={config.routes.liveSchedule}>Lịch Live</NavLink>
