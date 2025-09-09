@@ -6,7 +6,7 @@ import React from 'react'
 
 function Courses() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const topic = searchParams.get('topic')
+  const topic = searchParams.get('topic') || ''
   const page = parseInt(searchParams.get('page')) || 1
   const sort = searchParams.get('sort') || 'newest'
   const pageSize = 6

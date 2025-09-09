@@ -84,7 +84,7 @@ function HeaderMenu() {
                 {isTopicsLoaded &&
                   topics.map((topic) => (
                     <ListItem sx={{ whiteSpace: 'nowrap', width: 'auto' }} disablePadding key={topic.id}>
-                      <ListItemButton>
+                      <ListItemButton component={NavLink} to={`/courses?topic=${topic.slug}`}>
                         <ListItemText primary={topic.title} />
                       </ListItemButton>
                     </ListItem>

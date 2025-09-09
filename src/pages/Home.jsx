@@ -82,7 +82,13 @@ function Home() {
                   </Typography>
                   <Typography variant="subtitle2">Bứt phá điểm số cùng TYHH</Typography>
                 </Stack>
-                <MuiLink color="tertiary.light" display="inline-flex" alignItems="center" mt="auto">
+                <MuiLink
+                  to={`/courses?topic=${topic.slug}`}
+                  color="tertiary.light"
+                  display="inline-flex"
+                  alignItems="center"
+                  mt="auto"
+                >
                   Xem tất cả khóa học
                   <KeyboardArrowRightIcon fontSize="small" />
                 </MuiLink>
@@ -126,7 +132,7 @@ function Home() {
         </Stack>
 
         {/* Bottom Banner */}
-        <Box position="relative">
+        <Box position="relative" my={2}>
           <Link
             sx={{
               ':before': {
