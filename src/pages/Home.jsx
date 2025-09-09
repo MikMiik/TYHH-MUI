@@ -9,15 +9,19 @@ import LogoIcon from '@/components/LogoIcon'
 import rankingBanner from '@/assets/images/ranking-banner-home.png'
 import config from '@/routes/config'
 import VideoCarousel from '@/components/VideoCarousel'
-import { useGetAllCoursesQuery } from '@/features/api/courseApi'
 import MuiLink from '@/components/MuiLink'
 import ImageLazy from '@/components/ImageLazy'
 import VideoComp from '@/components/VideoComp'
 import { useGetSocialsQuery } from '@/features/api/siteInfoApi'
+import { useGetAllTopicsQuery } from '@/features/api/topicApi'
 
 function Home() {
   const { data: socials, isSuccess: socialsLoaded } = useGetSocialsQuery()
-  const { data: { courses } = [], isSuccess: coursesLoaded } = useGetAllCoursesQuery()
+  const { data: topics = [], isLoading: topicsLoading, isSuccess: topicsLoaded } = useGetAllTopicsQuery()
+  if (topicsLoading) {
+    return <div>Loading topics...</div>
+  }
+  console.log(topics)
   return (
     <Box>
       {/* Head Banner */}
@@ -64,27 +68,28 @@ function Home() {
           <img src={rankingBanner} alt="rankingBanner" width="100%" />
         </Box>
 
-        {/* Video Carousel */}
-        <Box>
-          <Stack direction="row" justifyContent="space-between" my={1}>
-            <Stack direction="column">
-              <Typography sx={{ '& span': { fontSize: '1.25rem' } }} fontWeight={700}>
-                <Typography component="span" color="primary" fontWeight="bold">
-                  LIVEVIP
-                </Typography>{' '}
-                <Typography component="span" color="tertiary.light" fontWeight="bold">
-                  2K8
-                </Typography>
-              </Typography>
-              <Typography variant="subtitle2">Bứt phá điểm số cùng TYHH</Typography>
-            </Stack>
-            <MuiLink color="tertiary.light" display="inline-flex" alignItems="center" mt="auto">
-              Xem tất cả khóa học
-              <KeyboardArrowRightIcon fontSize="small" />
-            </MuiLink>
-          </Stack>
-          <VideoCarousel videoList={coursesLoaded ? courses : []} />
-        </Box>
+        {/* Video Carousels by Topic */}
+        {topicsLoaded &&
+          Array.isArray(topics) &&
+          topics.map((topic) => (
+            <Box key={topic.id} mb={4}>
+              <Stack direction="row" justifyContent="space-between" my={1}>
+                <Stack direction="column">
+                  <Typography sx={{ '& span': { fontSize: '1.25rem' } }} fontWeight={700}>
+                    <Typography component="span" color="primary" fontWeight="bold">
+                      {topic.title}
+                    </Typography>
+                  </Typography>
+                  <Typography variant="subtitle2">Bứt phá điểm số cùng TYHH</Typography>
+                </Stack>
+                <MuiLink color="tertiary.light" display="inline-flex" alignItems="center" mt="auto">
+                  Xem tất cả khóa học
+                  <KeyboardArrowRightIcon fontSize="small" />
+                </MuiLink>
+              </Stack>
+              <VideoCarousel videoList={topic.courses || []} />
+            </Box>
+          ))}
 
         {/* Free Video */}
         <Typography variant="h6" fontWeight={600} color="primary.main">

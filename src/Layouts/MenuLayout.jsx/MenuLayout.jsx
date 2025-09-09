@@ -35,7 +35,9 @@ function MenuLayout() {
 
         <Outlet />
       </Stack>
-      <ImageLazy src="banner.png?tr=w-1920,h-700,cm-extract" alt="banner" w="100%" />
+      <Box mt={4}>
+        <ImageLazy src="banner.png?tr=w-1920,h-700,cm-extract" alt="banner" w="100%" />
+      </Box>
     </Container>
   )
 }

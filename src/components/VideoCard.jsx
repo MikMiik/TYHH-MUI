@@ -1,20 +1,25 @@
 import videoImg from '@/assets/images/video-img.png'
 
 import { Card, CardContent, CardMedia, Typography, Button, Stack } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import theme from '@/theme/theme'
 
-function VideoCard({ image, title, course, onClick, width, sx }) {
+function VideoCard({ image, title, course, width, sx }) {
   return (
     <Card
+      component={RouterLink}
+      to={course?.slug ? `/courses/${course.slug}` : '#'}
       sx={{
         width: width || (sx && sx.width) || theme.muiVars.videoCardWidth,
         borderRadius: 1,
         boxShadow: 2,
         display: 'flex',
         flexDirection: 'column',
+        textDecoration: 'none',
+        cursor: 'pointer',
         ...sx,
       }}
     >
@@ -53,7 +58,7 @@ function VideoCard({ image, title, course, onClick, width, sx }) {
             color="secondary"
             fullWidth
             sx={{ borderRadius: 2, textTransform: 'none', fontWeight: 600, mt: 1 }}
-            onClick={onClick}
+            // Remove onClick, button is now just visual
           >
             Vào học ngay
           </Button>

@@ -66,7 +66,10 @@ const CourseOutlineItem = ({ title, livestreams = [] }) => {
                 <StepContent>
                   <Stack direction="row" alignItems="center" spacing={1}>
                     {Array.isArray(item.documents) && item.documents.length > 0 ? (
-                      <Link to={item.documents[0].url} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <Link
+                        to={`/documents/${item.documents[0].slug}`}
+                        style={{ display: 'inline-flex', alignItems: 'center' }}
+                      >
                         <EditDocumentIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
                       </Link>
                     ) : (

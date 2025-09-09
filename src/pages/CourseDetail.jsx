@@ -10,8 +10,8 @@ import { useGetCourseQuery } from '@/features/api/courseApi'
 import { useParams } from 'react-router-dom'
 
 const CourseDetail = () => {
-  const { courseId } = useParams()
-  const { data: course, isLoading, error } = useGetCourseQuery(courseId)
+  const { slug } = useParams()
+  const { data: course, isLoading, error } = useGetCourseQuery(slug)
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
 

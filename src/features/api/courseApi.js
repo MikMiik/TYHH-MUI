@@ -10,7 +10,7 @@ export const courseApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
     }),
     getCourse: builder.query({
-      query: (id) => `/courses/${id}`,
+      query: (slug) => `/courses/${slug}`,
       transformResponse: (response) => response.data,
     }),
   }),

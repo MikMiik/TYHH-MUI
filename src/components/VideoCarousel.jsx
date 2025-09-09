@@ -16,11 +16,14 @@ function VideoCarousel({ videoList = [] }) {
   const STEP = CARD_WIDTH + GAP
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setStartIdx((prev) => (prev + 1) % videoList.length)
-    }, 3000)
-    return () => clearInterval(timer)
-  }, [startIdx, videoList.length])
+    if (videoList.length > maxVisible) {
+      const timer = setInterval(() => {
+        setStartIdx((prev) => (prev + 1) % videoList.length)
+      }, 3000)
+      return () => clearInterval(timer)
+    }
+    return undefined
+  }, [startIdx, videoList.length, maxVisible])
 
   const handleBack = () => {
     setStartIdx((prev) => (prev - 1 + videoList.length) % videoList.length)
@@ -28,7 +31,6 @@ function VideoCarousel({ videoList = [] }) {
   const handleNext = () => {
     setStartIdx((prev) => (prev + 1) % videoList.length)
   }
-  console.log(videoList)
 
   return (
     <Box position="relative" width="100%">
@@ -65,6 +67,7 @@ function VideoCarousel({ videoList = [] }) {
           component={motion.div}
           direction="row"
           spacing={2}
+          py={0.5}
           style={{
             width: `${videoList.length * STEP - GAP}px`,
             height: theme.muiVars.videoCardHeight,
