@@ -1,5 +1,6 @@
 import { Avatar, Chip, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from '@mui/material'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import DownloadIcon from '@mui/icons-material/Download'
 import ImageLazy from './ImageLazy'
 function DocumentListItem({ doc }) {
   return (
@@ -19,12 +20,20 @@ function DocumentListItem({ doc }) {
           </Stack>
         }
         secondary={
-          <Stack component="span" direction="row" alignItems="center" spacing={0.5} sx={{ mt: 1 }}>
-            <AccessTimeIcon fontSize="smaller" />
-            <Typography component="span" variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              {doc.createdAt ? new Date(doc.createdAt).toLocaleDateString() : ''}
-            </Typography>
-          </Stack>
+          <>
+            <Stack component="span" direction="row" alignItems="center" spacing={0.5} sx={{ mt: 1 }}>
+              <AccessTimeIcon fontSize="smaller" />
+              <Typography component="span" variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                {doc.createdAt ? new Date(doc.createdAt).toLocaleDateString() : ''}
+              </Typography>
+            </Stack>
+            <Stack component="span" direction="row" alignItems="center" spacing={0.5} sx={{ mt: 0.5 }}>
+              <DownloadIcon fontSize="smaller" sx={{ color: 'text.secondary' }} />
+              <Typography component="span" variant="body2" color="text.secondary">
+                {doc.downloadCount ?? 0}
+              </Typography>
+            </Stack>
+          </>
         }
         sx={{ mb: 0, ml: 2 }}
       />

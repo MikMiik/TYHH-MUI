@@ -10,7 +10,7 @@ function VipDocuments() {
   const topic = searchParams.get('topic') || ''
   const pageSize = 6
   const { data: { documents, totalPages } = {}, isLoading } = useGetAllDocumentsQuery(
-    { page, limit: pageSize, sort, vip: true, topic },
+    { page, limit: pageSize, sort, vip: 1, topic },
     { refetchOnMountOrArgChange: true }
   )
 

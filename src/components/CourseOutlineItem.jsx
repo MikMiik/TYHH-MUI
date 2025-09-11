@@ -16,6 +16,7 @@ import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded'
 import CircularDeterminate from './CircularDeterminate'
 import EditDocumentIcon from '@mui/icons-material/EditDocument'
 import { Link } from 'react-router-dom'
+import MuiLink from './MuiLink'
 
 const CourseOutlineItem = ({ title, livestreams = [] }) => {
   // Tính phần trăm hoàn thành dựa trên số livestream đã xem
@@ -57,35 +58,37 @@ const CourseOutlineItem = ({ title, livestreams = [] }) => {
             sx={{ pl: 2, pr: 0, '& .MuiStepConnector-root, & .MuiStepContent-root': { ml: '10px' } }}
           >
             {livestreams.map((item) => (
-              <Step key={item.title} expanded>
-                <StepLabel slots={{ stepIcon: (props) => <GreenCircleStepIcon isSeen={item.isSeen} {...props} /> }}>
-                  <Typography variant="body2" fontWeight={600}>
-                    {item.title}
-                  </Typography>
-                </StepLabel>
-                <StepContent>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    {Array.isArray(item.documents) && item.documents.length > 0 ? (
-                      <Link
-                        to={`/documents/${item.documents[0].slug}`}
-                        style={{ display: 'inline-flex', alignItems: 'center' }}
-                      >
+              <MuiLink to={`/livestreams/${item.slug}`}>
+                <Step key={item.title} expanded>
+                  <StepLabel slots={{ stepIcon: (props) => <GreenCircleStepIcon isSeen={item.isSeen} {...props} /> }}>
+                    <Typography variant="body2" fontWeight={600}>
+                      {item.title}
+                    </Typography>
+                  </StepLabel>
+                  <StepContent>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      {Array.isArray(item.documents) && item.documents.length > 0 ? (
+                        <Link
+                          to={`/documents/${item.documents[0].slug}`}
+                          style={{ display: 'inline-flex', alignItems: 'center' }}
+                        >
+                          <EditDocumentIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
+                        </Link>
+                      ) : (
                         <EditDocumentIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
-                      </Link>
-                    ) : (
-                      <EditDocumentIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
-                    )}
-                    <Typography fontSize={14} color="#888">
-                      {Array.isArray(item.documents) ? item.documents.length : 0}
-                    </Typography>
+                      )}
+                      <Typography fontSize={14} color="#888">
+                        {Array.isArray(item.documents) ? item.documents.length : 0}
+                      </Typography>
 
-                    <RemoveRedEyeRoundedIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
-                    <Typography fontSize={14} color="#888">
-                      {item.view || 0}
-                    </Typography>
-                  </Stack>
-                </StepContent>
-              </Step>
+                      <RemoveRedEyeRoundedIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
+                      <Typography fontSize={14} color="#888">
+                        {item.view || 0}
+                      </Typography>
+                    </Stack>
+                  </StepContent>
+                </Step>
+              </MuiLink>
             ))}
           </Stepper>
         </AccordionDetails>
