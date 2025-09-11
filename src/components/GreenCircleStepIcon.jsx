@@ -6,7 +6,7 @@ const GreenCircleStepIcon = ({ isSeen, ...props }) => {
   const { active, completed, error, icon, className, ownerState, ...rest } = props
   return (
     <span
-      className={className}
+      className={`green-circle-step-icon ${className || ''}`}
       style={{
         width: 20,
         height: 20,
@@ -19,7 +19,7 @@ const GreenCircleStepIcon = ({ isSeen, ...props }) => {
       }}
       {...rest}
     >
-      {isSeen && <CheckIcon sx={{ fontSize: 16, color: '#4caf50' }} />}
+      {isSeen && <CheckIcon sx={{ fontSize: 12, color: '#4caf50' }} />}
     </span>
   )
 }

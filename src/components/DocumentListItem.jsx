@@ -2,6 +2,8 @@ import { Avatar, Chip, ListItem, ListItemAvatar, ListItemText, Stack, Typography
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import DownloadIcon from '@mui/icons-material/Download'
 import ImageLazy from './ImageLazy'
+import { Link } from 'react-router-dom'
+
 function DocumentListItem({ doc }) {
   return (
     <ListItem alignItems="flex-start" sx={{ borderBottom: '1px solid #eee', px: 0 }}>
@@ -11,9 +13,20 @@ function DocumentListItem({ doc }) {
       <ListItemText
         primary={
           <Stack component="span" direction="row" alignItems="center" spacing={2}>
-            <Typography component="span" variant="subtitle2" fontWeight={700} color="text.primary">
-              {doc.title}
-            </Typography>
+            <Link to={`/documents/${doc.slug}`} style={{ textDecoration: 'none' }}>
+              <Typography
+                component="span"
+                variant="subtitle2"
+                fontWeight={700}
+                color="primary.main"
+                sx={{
+                  cursor: 'pointer',
+                  ':hover': { textDecoration: 'underline' },
+                }}
+              >
+                {doc.title}
+              </Typography>
+            </Link>
             {doc.vip && (
               <Chip label="VIP" size="small" sx={{ bgcolor: '#ffb300', color: '#fff', fontWeight: 700, ml: 1 }} />
             )}

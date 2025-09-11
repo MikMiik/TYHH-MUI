@@ -9,7 +9,11 @@ export const documentApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response) => response.data,
     }),
+    getDocumentBySlug: builder.query({
+      query: (slug) => `documents/${slug}`,
+      transformResponse: (response) => response.data,
+    }),
   }),
 })
 
-export const { useGetAllDocumentsQuery } = documentApi
+export const { useGetAllDocumentsQuery, useGetDocumentBySlugQuery } = documentApi

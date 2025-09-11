@@ -4,6 +4,7 @@ const config = {
     courses: '/courses',
     vipDocuments: '/vipdocuments',
     documents: '/document',
+    documentDetail: '/documents/:slug',
     liveSchedule: '/liveschedule',
     login: '/login',
     register: '/register',

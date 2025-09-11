@@ -4,6 +4,7 @@ import {
   Courses,
   VipDocuments,
   Documents,
+  DocumentDetail,
   LiveSchedule,
   Login,
   Register,
@@ -35,6 +36,10 @@ const routes = [
     path: config.routes.documents,
     component: Documents,
     layout: MenuLayout,
+  },
+  {
+    path: config.routes.documentDetail,
+    component: DocumentDetail,
   },
   {
     path: config.routes.liveSchedule,
