@@ -1,4 +1,16 @@
-import { Button, IconButton, Stack } from '@mui/material'
+import {
+  Button,
+  Chip,
+  IconButton,
+  Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  CircularProgress,
+  Alert,
+} from '@mui/material'
 import KeyIcon from '@mui/icons-material/Key'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
@@ -18,6 +30,11 @@ import { useState } from 'react'
 function HeaderActions() {
   const { isDesktop, isLaptop } = useResponsive()
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+  const [openActivate, setOpenActivate] = useState(false)
+  const [keyValue, setKeyValue] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
   const dispatch = useDispatch()
   const currentUser = useCurrentUser()
   const navigate = useNavigate()
@@ -37,6 +54,31 @@ function HeaderActions() {
     navigate('/')
   }
 
+  const handleActivate = async () => {
+    setLoading(true)
+    setErrorMsg('')
+    setSuccessMsg('')
+    try {
+      const res = await authService.checkKey(keyValue)
+      // res.data: { success, message, activeKey }
+      if (res?.data?.activeKey) {
+        setSuccessMsg(res.data.message || 'Kích hoạt thẻ thành công!')
+        setErrorMsg('')
+        setTimeout(() => {
+          setOpenActivate(false)
+          setSuccessMsg('')
+          window.location.reload()
+        }, 1500)
+      } else {
+        setErrorMsg(res?.data?.message || 'Mã kích hoạt không hợp lệ hoặc đã được sử dụng.')
+        setSuccessMsg('')
+      }
+    } catch (err) {
+      setErrorMsg(err.response?.data?.message || 'Kích hoạt thất bại')
+    }
+    setLoading(false)
+  }
+
   if (isDesktop || isLaptop) {
     return (
       <>
@@ -54,19 +96,63 @@ function HeaderActions() {
             direction="row"
             spacing={2}
           >
-            <Button
-              disableElevation
-              startIcon={<KeyIcon />}
-              sx={{
-                backgroundColor: '#ec971f',
-                color: '#fff',
-                '&:hover': {
-                  backgroundColor: '#e08e0b',
-                },
-              }}
-            >
-              Kích hoạt thẻ
-            </Button>
+            {!currentUser.activeKey ? (
+              <>
+                <Button
+                  disableElevation
+                  startIcon={<KeyIcon />}
+                  sx={{
+                    backgroundColor: '#ec971f',
+                    color: '#fff',
+                    '&:hover': {
+                      backgroundColor: '#e08e0b',
+                    },
+                  }}
+                  onClick={() => setOpenActivate(true)}
+                >
+                  Kích hoạt thẻ
+                </Button>
+                <Dialog open={openActivate} onClose={() => setOpenActivate(false)}>
+                  <DialogTitle>Kích hoạt thẻ VIP</DialogTitle>
+                  <DialogContent>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      label="Nhập mã kích hoạt"
+                      fullWidth
+                      value={keyValue}
+                      onChange={(e) => setKeyValue(e.target.value)}
+                      disabled={loading}
+                    />
+                    {errorMsg && (
+                      <Alert severity="error" sx={{ mt: 2 }}>
+                        {errorMsg}
+                      </Alert>
+                    )}
+                    {successMsg && (
+                      <Alert severity="success" sx={{ mt: 2 }}>
+                        {successMsg}
+                      </Alert>
+                    )}
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={() => setOpenActivate(false)} disabled={loading}>
+                      Đóng
+                    </Button>
+                    <Button
+                      onClick={handleActivate}
+                      disabled={loading || !keyValue}
+                      variant="contained"
+                      color="primary"
+                    >
+                      {loading ? <CircularProgress size={20} /> : 'Xác nhận'}
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </>
+            ) : (
+              <Chip label="VIP" color="tertiary" variant="contained" />
+            )}
             {currentUser ? (
               <Stack direction="row" spacing={1} alignItems="center">
                 <DropAvatar bgcolor="tertiary.main" width={32} height={32} />
@@ -136,17 +222,52 @@ function HeaderActions() {
             direction="row"
             spacing={2}
           >
-            <IconButton
-              sx={{
-                backgroundColor: '#ec971f',
-                color: '#fff',
-                '&:hover': {
-                  backgroundColor: '#e08e0b',
-                },
-              }}
-            >
-              <KeyIcon fontSize="small" />
-            </IconButton>
+            {!currentUser.activeKey && (
+              <IconButton
+                sx={{
+                  backgroundColor: '#ec971f',
+                  color: '#fff',
+                  '&:hover': {
+                    backgroundColor: '#e08e0b',
+                  },
+                }}
+                onClick={() => setOpenActivate(true)}
+              >
+                <KeyIcon fontSize="small" />
+              </IconButton>
+            )}
+            <Dialog open={openActivate} onClose={() => setOpenActivate(false)}>
+              <DialogTitle>Kích hoạt thẻ VIP</DialogTitle>
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="Nhập mã kích hoạt"
+                  fullWidth
+                  value={keyValue}
+                  onChange={(e) => setKeyValue(e.target.value)}
+                  disabled={loading}
+                />
+                {errorMsg && (
+                  <Alert severity="error" sx={{ mt: 2 }}>
+                    {errorMsg}
+                  </Alert>
+                )}
+                {successMsg && (
+                  <Alert severity="success" sx={{ mt: 2 }}>
+                    {successMsg}
+                  </Alert>
+                )}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenActivate(false)} disabled={loading}>
+                  Đóng
+                </Button>
+                <Button onClick={handleActivate} disabled={loading || !keyValue} variant="contained" color="primary">
+                  {loading ? <CircularProgress size={20} /> : 'Xác nhận'}
+                </Button>
+              </DialogActions>
+            </Dialog>
             {currentUser ? (
               <Stack direction="row" spacing={1} alignItems="center">
                 <DropAvatar bgcolor="tertiary.main" width={32} height={32} />

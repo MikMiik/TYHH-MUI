@@ -45,6 +45,10 @@ const authService = {
     const res = await httpRequest.post('/auth/forgot-password', data)
     return res
   },
+  checkKey: async (key) => {
+    const res = await httpRequest.post(`/auth/check-key`, { key })
+    return res
+  },
 }
 
 export default authService

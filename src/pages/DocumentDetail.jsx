@@ -163,24 +163,27 @@ const DocumentDetail = () => {
                   color="primary"
                   size="large"
                   startIcon={<DownloadIcon />}
-                  onClick={() => {
-                    // TODO: Implement PDF download logic
-                    console.log('Download PDF:', document.slug)
-                  }}
+                  component="a"
+                  href={document.url ? `${import.meta.env.VITE_SERVER_URL}${document.url}` : undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  disabled={!document.url}
                 >
                   Tải PDF
                 </Button>
 
-                {document.livestream && (
+                {document.slidenote && (
                   <Button
-                    component={Link}
-                    to={`/livestreams/${document.livestream.slug}`}
-                    variant="outlined"
+                    variant="contained"
                     color="primary"
                     size="large"
-                    startIcon={<PlayCircleOutlineIcon />}
+                    startIcon={<DownloadIcon />}
+                    component="a"
+                    href={`${import.meta.env.VITE_SERVER_URL}${document.slidenote}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    Xem Livestream
+                    Tải slidenote
                   </Button>
                 )}
               </Stack>
