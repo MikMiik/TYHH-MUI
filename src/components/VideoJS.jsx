@@ -5,11 +5,12 @@ import 'videojs-contrib-quality-levels' //Plugin to handle quality levels in HLS
 import 'videojs-http-source-selector' // Plugin that adds quality selector UI to the player
 import 'videojs-seek-buttons'
 import 'videojs-seek-buttons/dist/videojs-seek-buttons.css'
+import livestreamService from '@/services/livestreamService'
 
 const VideoJS = (props) => {
   const videoRef = useRef(null)
   const playerRef = useRef(null)
-  const { options, onReady } = props
+  const { options, onReady, livestreamSlug } = props
 
   useEffect(() => {
     // Make sure Video.js player is only initialized once
@@ -34,6 +35,38 @@ const VideoJS = (props) => {
           forward: 10,
           back: 10,
         })
+
+        // Track view khi user click play video
+        if (livestreamSlug) {
+          let hasTrackedView = false
+
+          const trackViewOnPlay = () => {
+            if (!hasTrackedView) {
+              hasTrackedView = true
+              livestreamService
+                .trackViewDebounced(livestreamSlug)
+                .then((result) => {
+                  if (result.success && result.tracked) {
+                    console.log(`📊 Tracked view for livestream: ${livestreamSlug}`)
+                  }
+                })
+                .catch((error) => {
+                  console.error('Error tracking view:', error)
+                  hasTrackedView = false // Reset để có thể thử lại
+                })
+            }
+          }
+
+          // Track view khi play lần đầu
+          player.one('play', trackViewOnPlay)
+
+          // Backup: Track view khi user click play button
+          player.on('useractive', () => {
+            if (!player.paused() && !hasTrackedView) {
+              trackViewOnPlay()
+            }
+          })
+        }
       })
       playerRef.current = player
 
@@ -45,7 +78,7 @@ const VideoJS = (props) => {
       player.autoplay(options.autoplay)
       player.src(options.sources)
     }
-  }, [options, videoRef, onReady])
+  }, [options, videoRef, onReady, livestreamSlug])
 
   // Dispose the Video.js player when the functional component unmounts
   useEffect(() => {

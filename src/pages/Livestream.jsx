@@ -25,7 +25,7 @@ const Livestream = () => {
         <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" gap={1} my={1}>
           {/* Left */}
           <Box width={{ md: '66.7%', xs: '100%' }}>
-            <VideoComp />
+            <VideoComp livestreamSlug={livestream?.slug} />
           </Box>
 
           {/* Right */}

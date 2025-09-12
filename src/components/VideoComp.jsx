@@ -1,7 +1,7 @@
 import VideoJS from '@/components/VideoJS'
 import { useRef } from 'react'
 
-const VideoComp = ({ src, poster, options }) => {
+const VideoComp = ({ src, poster, options, livestreamSlug }) => {
   const playerRef = useRef(null)
 
   const videoJsOptions = {
@@ -25,7 +25,7 @@ const VideoComp = ({ src, poster, options }) => {
     playerRef.current = player
   }
 
-  return <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+  return <VideoJS options={videoJsOptions} onReady={handlePlayerReady} livestreamSlug={livestreamSlug} />
 }
 
 export default VideoComp
