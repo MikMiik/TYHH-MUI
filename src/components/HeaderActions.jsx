@@ -15,6 +15,7 @@ import KeyIcon from '@mui/icons-material/Key'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
+import LoginIcon from '@mui/icons-material/Login'
 
 import { Link, useNavigate } from 'react-router-dom'
 import config from '@/routes/config'
@@ -29,7 +30,6 @@ import { useState } from 'react'
 
 function HeaderActions() {
   const { isDesktop, isLaptop } = useResponsive()
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false)
   const [openActivate, setOpenActivate] = useState(false)
   const [keyValue, setKeyValue] = useState('')
   const [loading, setLoading] = useState(false)
@@ -40,18 +40,15 @@ function HeaderActions() {
   const navigate = useNavigate()
 
   const handleLogout = async () => {
-    const refreshToken = localStorage.getItem('refreshToken')
-    if (refreshToken) {
-      await authService.logout({ refreshToken })
-      localStorage.removeItem('token')
-      localStorage.removeItem('refreshToken')
+    try {
       dispatch(removeCurrentUser())
-    } else {
-      localStorage.removeItem('token')
-      dispatch(removeCurrentUser())
+      await authService.logout()
+      navigate('/')
+    } catch (error) {
+      // Even if logout API fails, user is logged out from frontend
+      console.error('Logout error:', error)
+      navigate('/')
     }
-    setIsNotificationOpen(false)
-    navigate('/')
   }
 
   const handleActivate = async () => {
@@ -195,12 +192,12 @@ function HeaderActions() {
                 component={Link}
                 to={config.routes.login}
                 disableElevation
-                startIcon={<ExitToAppIcon />}
+                startIcon={<LoginIcon />}
                 sx={{
-                  backgroundColor: '#ff4d4f',
+                  backgroundColor: '#1890ff',
                   color: '#fff',
                   '&:hover': {
-                    backgroundColor: '#ff7875',
+                    backgroundColor: '#40a9ff',
                   },
                 }}
               >
@@ -272,36 +269,50 @@ function HeaderActions() {
               <Stack direction="row" spacing={1} alignItems="center">
                 <DropAvatar bgcolor="tertiary.main" width={32} height={32} />
                 <NotificationsOutlinedIcon fontSize="medium" />
+                <IconButton
+                  component={Link}
+                  to={config.routes.login}
+                  sx={{
+                    backgroundColor: '#ff4d4f',
+                    color: '#fff',
+                    '&:hover': {
+                      backgroundColor: '#ff7875',
+                    },
+                  }}
+                >
+                  <ExitToAppIcon fontSize="small" />
+                </IconButton>
               </Stack>
             ) : (
-              <IconButton
-                component={Link}
-                to={config.routes.register}
-                sx={{
-                  backgroundColor: '#1890ff',
-                  color: '#fff',
-                  '&:hover': {
-                    backgroundColor: '#40a9ff',
-                  },
-                }}
-              >
-                <PersonAddAltIcon fontSize="small" />
-              </IconButton>
+              <>
+                <IconButton
+                  component={Link}
+                  to={config.routes.register}
+                  sx={{
+                    backgroundColor: '#1890ff',
+                    color: '#fff',
+                    '&:hover': {
+                      backgroundColor: '#40a9ff',
+                    },
+                  }}
+                >
+                  <PersonAddAltIcon fontSize="small" />
+                </IconButton>
+                <IconButton
+                  component={Link}
+                  to={config.routes.login}
+                  sx={{
+                    backgroundColor: '#1890ff',
+                    color: '#fff',
+                    '&:hover': {
+                      backgroundColor: '#40a9ff',
+                    },
+                  }}
+                >
+                  <LoginIcon fontSize="small" />
+                </IconButton>
+              </>
             )}
-
-            <IconButton
-              component={Link}
-              to={config.routes.login}
-              sx={{
-                backgroundColor: '#ff4d4f',
-                color: '#fff',
-                '&:hover': {
-                  backgroundColor: '#ff7875',
-                },
-              }}
-            >
-              <ExitToAppIcon fontSize="small" />
-            </IconButton>
           </Stack>
         )}
       </>

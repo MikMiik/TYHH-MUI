@@ -21,7 +21,6 @@ function Home() {
   if (topicsLoading) {
     return <div>Loading topics...</div>
   }
-  console.log(topics)
   return (
     <Box>
       {/* Head Banner */}

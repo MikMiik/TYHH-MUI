@@ -2,17 +2,13 @@ import axios from 'axios'
 
 const httpRequest = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
-  },
+  withCredentials: true, // Enable cookies for cross-origin requests
 })
-// access token
+// access token - cookies are sent automatically, no need to set Authorization header
 httpRequest.interceptors.request.use(
   function (config) {
-    const token = localStorage.getItem('token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+    // Cookies are sent automatically with withCredentials: true
+    // No need to manually set Authorization header
     return config
   },
   function (error) {
@@ -28,19 +24,22 @@ httpRequest.interceptors.response.use(
   },
   async function (error) {
     const originalConfig = error.config
-    const refreshToken = localStorage.getItem('refreshToken')
-    const shouldRenewToken = error.response?.status === 401 && refreshToken
+    const shouldRenewToken = error.response?.status === 401
     if (shouldRenewToken) {
       if (!isRefreshing) {
         isRefreshing = true
         // isRefreshing để chỉ 1 response lỗi đầu tiên mới refresh
         try {
-          const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/refresh-token`, {
-            refreshToken,
-          })
-          const data = res.data.data
-          localStorage.setItem('token', data.accessToken)
-          localStorage.setItem('refreshToken', data.refreshToken)
+          // Cookies are sent automatically, no need to pass refreshToken in body
+          await axios.post(
+            `${import.meta.env.VITE_API_URL}/auth/refresh-token`,
+            {},
+            {
+              withCredentials: true,
+            }
+          )
+
+          // Cookies are set automatically by backend, no need to store in localStorage
 
           tokenListeners.forEach((listener) => listener())
 
@@ -54,8 +53,7 @@ httpRequest.interceptors.response.use(
           // nếu refresh token gửi đi lỗi hay không hợp lệ
           isRefreshing = false
           tokenListeners = []
-          localStorage.removeItem('token')
-          localStorage.removeItem('refreshToken')
+          // Cookies will be cleared by backend on error
         }
       } else {
         // trong khi api đầu tiên refresh, các api lỗi khác sẽ vào đây

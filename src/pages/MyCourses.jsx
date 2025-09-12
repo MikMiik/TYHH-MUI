@@ -30,7 +30,7 @@ const MyCourses = () => {
       <Box py={3}>
         <BreadCrumbsPath />
 
-        <Paper elevation={1} sx={{ mt: 3, p: 4 }}>
+        <Paper elevation={2} sx={{ mt: 3, p: 4 }}>
           <Stack spacing={3}>
             <Box>
               <Typography variant="h4" fontWeight={700} color="primary.main" gutterBottom>

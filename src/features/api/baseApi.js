@@ -4,14 +4,8 @@ export const baseApi = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_URL,
-    credentials: 'include',
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token')
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`)
-      }
-      return headers
-    },
+    credentials: 'include', // Send cookies automatically
+    // No need for prepareHeaders since cookies are sent automatically
   }),
   endpoints: () => ({}),
 })

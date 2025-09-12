@@ -44,7 +44,7 @@ const DropAvatar = ({ bgcolor, width, height }) => {
         anchorEl={anchorEl}
         disablePortal={true}
         modifiers={[{ name: 'offset', options: { offset: [0, 4] } }]}
-        sx={{ minWidth: '140%', position: 'absolute', right: 0, top: '120%' }}
+        sx={{ minWidth: 180, position: 'absolute', right: 0, top: '120%' }}
       >
         <AnimatePresence>
           {open && (
@@ -57,6 +57,7 @@ const DropAvatar = ({ bgcolor, width, height }) => {
               transition={{ duration: 0.2, ease: 'easeInOut' }}
               style={{ overflow: 'hidden' }}
               layout
+              sx={{ minWidth: 180 }}
             >
               <List
                 sx={{
@@ -67,6 +68,7 @@ const DropAvatar = ({ bgcolor, width, height }) => {
                     textAlign: 'center',
                     '&:hover': {
                       bgcolor: '#e6f7ff',
+                      borderRadius: 1,
                     },
                   },
                   '& .MuiTypography-root': {

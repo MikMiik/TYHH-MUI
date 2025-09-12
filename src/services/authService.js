@@ -13,9 +13,14 @@ const authService = {
     const res = await httpRequest.post('/auth/google', { token })
     return res
   },
-  logout: async (data) => {
-    const res = await httpRequest.post('/auth/logout', data)
-    return res
+  logout: async () => {
+    try {
+      const res = await httpRequest.post('/auth/logout')
+      return res
+    } catch (error) {
+      console.error('Logout service error:', error)
+      return { success: true, message: 'Logout completed' }
+    }
   },
   register: async (registerInfo, config) => {
     const res = await httpRequest.post('/auth/register', registerInfo, config)

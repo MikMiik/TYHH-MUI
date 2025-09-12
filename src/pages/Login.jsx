@@ -29,7 +29,7 @@ function Login() {
         const res = await authService.verifyEmailToken(token)
         if (res.success) {
           setIsTokenValid(true)
-          localStorage.setItem('token', res.data.accessToken)
+          // Cookies are set automatically by backend, no need to store in localStorage
           dispatch(getCurrentUser())
         } else {
           setIsTokenValid(false)
@@ -48,8 +48,7 @@ function Login() {
       const res = await authService.googleLogin(tokenResponse.access_token)
       if (res.success) {
         setSubmitError(null)
-        localStorage.setItem('token', res.data.accessToken)
-        localStorage.setItem('refreshToken', res.data.refreshToken || '')
+        // Cookies are set automatically by backend, no need to store in localStorage
         dispatch(getCurrentUser())
         navigate(params.get('continue') || '/')
       } else {
@@ -59,7 +58,7 @@ function Login() {
     onError: () => setSubmitError('Login with Google error'),
   })
 
-  if ((currentUser && localStorage.getItem('token')) || isTokenValid === true) {
+  if (currentUser || isTokenValid === true) {
     return <Navigate to={params.get('continue') || '/'} />
   }
 
@@ -70,8 +69,7 @@ function Login() {
         setSubmitError(res.message || 'Đăng nhập không thành công')
         return
       }
-      localStorage.setItem('token', res.data.accessToken)
-      localStorage.setItem('refreshToken', res.data.refreshToken)
+      // Cookies are set automatically by backend, no need to store in localStorage
       dispatch(getCurrentUser())
       navigate(params.get('continue') || config.routes.home)
     } catch (error) {

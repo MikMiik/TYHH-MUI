@@ -23,7 +23,6 @@ const CourseOutlineItemCompact = ({ title, livestreams = [] }) => {
   const seenCount = livestreams.filter((item) => item.isSeen).length
   const totalCount = livestreams.length
   const completionPercentage = totalCount > 0 ? (seenCount / totalCount) * 100 : 0
-  console.log(livestreams)
 
   return (
     <Accordion
