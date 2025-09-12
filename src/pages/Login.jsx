@@ -3,17 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import loginSchema from '@/schemas/loginSchema'
 import config from '@/routes/config'
 import authService from '@/services/authService'
-import {
-  Box,
-  Button,
-  Container,
-  Typography,
-  Divider,
-  Stack,
-  InputAdornment,
-  Checkbox,
-  FormControlLabel,
-} from '@mui/material'
+import { Box, Button, Container, Typography, Divider, Stack, Checkbox, FormControlLabel } from '@mui/material'
 import LogoIcon from '@/components/LogoIcon'
 import Form from '@/components/Form'
 import TextInput from '@/components/TextInput'

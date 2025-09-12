@@ -1,5 +1,6 @@
 export { default as Home } from './Home'
 export { default as Courses } from './Courses'
+export { default as MyCourses } from './MyCourses'
 export { default as VipDocuments } from './VipDocuments'
 export { default as Documents } from './Documents'
 export { default as DocumentDetail } from './DocumentDetail'

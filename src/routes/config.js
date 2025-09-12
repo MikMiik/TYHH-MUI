@@ -2,6 +2,7 @@ const config = {
   routes: {
     home: '/',
     courses: '/courses',
+    myCourses: '/my-courses',
     vipDocuments: '/vipdocuments',
     documents: '/document',
     documentDetail: '/documents/:slug',

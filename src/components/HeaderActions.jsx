@@ -96,7 +96,7 @@ function HeaderActions() {
             direction="row"
             spacing={2}
           >
-            {!currentUser.activeKey ? (
+            {!currentUser?.activeKey ? (
               <>
                 <Button
                   disableElevation
@@ -222,7 +222,7 @@ function HeaderActions() {
             direction="row"
             spacing={2}
           >
-            {!currentUser.activeKey && (
+            {!currentUser?.activeKey && (
               <IconButton
                 sx={{
                   backgroundColor: '#ec971f',
