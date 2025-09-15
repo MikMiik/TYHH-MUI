@@ -12,16 +12,16 @@ class LivestreamService {
     }
   }
 
-  // Track view khi user click play video
+  // Track view khi user xem đủ nửa thời lượng video
   async trackView(slug) {
     try {
       const response = await httpRequest.post(`/livestreams/${slug}/view`)
 
-      if (response.success && response.data?.tracked) {
+      if (response.success) {
         console.log('✅ Livestream view tracked successfully')
         return { success: true, tracked: true }
       } else {
-        console.log('ℹ️ Livestream view already tracked or user not logged in')
+        console.log('ℹ️ Livestream view tracking failed')
         return { success: true, tracked: false }
       }
     } catch (error) {
@@ -30,39 +30,6 @@ class LivestreamService {
       return { success: false, tracked: false, error: error.message }
     }
   }
-
-  // Track view với debounce để tránh multiple calls
-  trackViewDebounced = (() => {
-    let timeoutId = null
-    let hasTracked = new Set() // Track đã gọi cho slug nào
-
-    return (slug) => {
-      // Nếu đã track cho slug này rồi thì skip
-      if (hasTracked.has(slug)) {
-        return Promise.resolve({ success: true, tracked: false, reason: 'already_tracked_in_session' })
-      }
-
-      // Clear timeout cũ nếu có
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-
-      // Debounce 1 giây để tránh spam clicks
-      return new Promise((resolve) => {
-        timeoutId = setTimeout(async () => {
-          try {
-            const result = await this.trackView(slug)
-            if (result.success) {
-              hasTracked.add(slug) // Mark là đã track
-            }
-            resolve(result)
-          } catch (error) {
-            resolve({ success: false, tracked: false, error: error.message })
-          }
-        }, 1000)
-      })
-    }
-  })()
 }
 
 export default new LivestreamService()

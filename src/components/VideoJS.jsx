@@ -36,18 +36,52 @@ const VideoJS = (props) => {
           back: 10,
         })
 
-        // Track view khi user click play video
+        // Track view dựa trên thời gian thực sự đã xem (watch time)
         if (livestreamSlug) {
           let hasTrackedView = false
+          let viewTrackingInterval = null
+          let totalWatchTime = 0 // Tổng thời gian đã xem (giây)
+          let lastCurrentTime = 0 // Vị trí video ở lần check trước
 
-          const trackViewOnPlay = () => {
-            if (!hasTrackedView) {
+          const checkViewProgress = () => {
+            if (hasTrackedView || player.paused()) {
+              return
+            }
+
+            const currentTime = player.currentTime()
+            const duration = player.duration()
+
+            if (!duration) return
+
+            // Chỉ tính watch time khi video đang phát liên tục
+            // Nếu currentTime tăng không quá 2 giây so với lần trước (tránh seek/tua)
+            const timeDiff = currentTime - lastCurrentTime
+            if (timeDiff > 0 && timeDiff <= 2) {
+              totalWatchTime += timeDiff
+            }
+            lastCurrentTime = currentTime
+
+            // Kiểm tra xem đã xem đủ 50% thời lượng video chưa
+            const requiredWatchTime = duration * 0.5
+            if (totalWatchTime >= requiredWatchTime) {
               hasTrackedView = true
+
+              // Clear interval để không check nữa
+              if (viewTrackingInterval) {
+                clearInterval(viewTrackingInterval)
+                viewTrackingInterval = null
+              }
+
+              // Track view
               livestreamService
-                .trackViewDebounced(livestreamSlug)
+                .trackView(livestreamSlug)
                 .then((result) => {
                   if (result.success && result.tracked) {
-                    console.log(`📊 Tracked view for livestream: ${livestreamSlug}`)
+                    console.log(
+                      `📊 View tracked after watching ${totalWatchTime.toFixed(1)}s/${requiredWatchTime.toFixed(
+                        1
+                      )}s for: ${livestreamSlug}`
+                    )
                   }
                 })
                 .catch((error) => {
@@ -57,13 +91,33 @@ const VideoJS = (props) => {
             }
           }
 
-          // Track view khi play lần đầu
-          player.one('play', trackViewOnPlay)
+          // Bắt đầu check progress khi play
+          player.on('play', () => {
+            if (!hasTrackedView && !viewTrackingInterval) {
+              lastCurrentTime = player.currentTime() // Reset vị trí bắt đầu
+              viewTrackingInterval = setInterval(checkViewProgress, 1000) // Check mỗi giây
+            }
+          })
 
-          // Backup: Track view khi user click play button
-          player.on('useractive', () => {
-            if (!player.paused() && !hasTrackedView) {
-              trackViewOnPlay()
+          // Dừng check khi pause
+          player.on('pause', () => {
+            if (viewTrackingInterval) {
+              clearInterval(viewTrackingInterval)
+              viewTrackingInterval = null
+            }
+          })
+
+          // Reset watch time khi seek (tua video)
+          player.on('seeked', () => {
+            lastCurrentTime = player.currentTime() // Reset vị trí sau khi tua
+            console.log(`🔄 User seeked to ${lastCurrentTime.toFixed(1)}s, watch time: ${totalWatchTime.toFixed(1)}s`)
+          })
+
+          // Cleanup interval khi component unmount
+          player.on('dispose', () => {
+            if (viewTrackingInterval) {
+              clearInterval(viewTrackingInterval)
+              viewTrackingInterval = null
             }
           })
         }
