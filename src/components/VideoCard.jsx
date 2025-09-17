@@ -25,7 +25,7 @@ function VideoCard({ image, title, course, width, sx }) {
     >
       <CardMedia component="img" height="auto" image={image || videoImg} alt={title} sx={{ objectFit: 'cover' }} />
       <CardContent sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <Typography variant="subtitle2" fontWeight={600} sx={{ mb: 2 }}>
+        <Typography noWrap variant="subtitle2" fontWeight={600} sx={{ mb: 2 }}>
           {course.title}
         </Typography>
         <Stack direction="column" justifyContent="flex-end" flex={1} spacing={1} sx={{ mt: 'auto' }}>

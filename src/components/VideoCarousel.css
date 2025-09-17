@@ -1,0 +1,31 @@
+/* Embla Carousel specific styles */
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  /* Gap được handle bằng MUI sx prop */
+}
+
+.embla__slide {
+  flex: 0 0 auto;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Smooth transitions */
+.embla__container {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Remove default drag behavior on images */
+.embla img {
+  pointer-events: none;
+}
+
+/* Optional: Add focus styles for accessibility */
+.embla button:focus-visible {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}

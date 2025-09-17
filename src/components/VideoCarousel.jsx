@@ -1,100 +1,156 @@
-import { Box, IconButton, Stack } from '@mui/material'
+import { Box, IconButton, useMediaQuery } from '@mui/material'
 import VideoCard from './VideoCard'
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useCallback, useState, useEffect } from 'react'
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 import theme from '@/theme/theme'
-import useResponsive from '@/hooks/useResponsive'
+import useEmblaCarousel from 'embla-carousel-react'
+import AutoPlay from 'embla-carousel-autoplay'
+import './VideoCarousel.css'
 
 function VideoCarousel({ videoList = [] }) {
-  const [startIdx, setStartIdx] = useState(0)
-  const { isMobile, isTablet, isLaptop, isDesktop } = useResponsive()
+  // Sử dụng useMediaQuery trực tiếp để responsive chính xác hơn
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')) // < 768px
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg')) // 768px - 1139px
 
-  const maxVisible = isMobile ? 1 : isTablet ? 2 : isLaptop ? 3 : isDesktop ? 4 : 4
-  const CARD_WIDTH = parseInt(theme.muiVars.videoCardWidth, 10)
-  const GAP = 16 // px
-  const STEP = CARD_WIDTH + GAP
+  const [viewportWidth, setViewportWidth] = useState(() => {
+    return typeof window !== 'undefined' ? window.innerWidth : 1200
+  })
 
   useEffect(() => {
-    if (videoList.length > maxVisible) {
-      const timer = setInterval(() => {
-        setStartIdx((prev) => (prev + 1) % videoList.length)
-      }, 3000)
-      return () => clearInterval(timer)
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth)
     }
-    return undefined
-  }, [startIdx, videoList.length, maxVisible])
 
-  const handleBack = () => {
-    setStartIdx((prev) => (prev - 1 + videoList.length) % videoList.length)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Tính số slides hiển thị dựa trên responsive breakpoints
+  // Mobile (< 768px): 1 slide, Tablet (768px-1139px): 2-3 slides, Desktop (>=1140px): 4 slides
+  let slidesToShow = 4 // default for desktop
+  if (isMobile) {
+    slidesToShow = 1
+  } else if (isTablet) {
+    // Tính toán động dựa trên viewport width để responsive tốt hơn
+    if (viewportWidth < 900) {
+      slidesToShow = 2
+    } else {
+      slidesToShow = 3
+    }
   }
-  const handleNext = () => {
-    setStartIdx((prev) => (prev + 1) % videoList.length)
+
+  // AutoPlay plugin - đơn giản hóa cấu hình
+  const plugins = []
+  if (videoList.length > slidesToShow) {
+    plugins.push(
+      AutoPlay({
+        delay: 3000,
+        stopOnMouseEnter: true,
+        stopOnInteraction: false,
+      })
+    )
   }
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: videoList.length > slidesToShow,
+      align: 'start',
+      slidesToScroll: 1,
+      containScroll: 'trimSnaps',
+      dragFree: false,
+    },
+    plugins
+  )
+
+  // Reinitialize carousel when responsive changes
+  useEffect(() => {
+    if (emblaApi) {
+      emblaApi.reInit()
+    }
+  }, [emblaApi, slidesToShow])
+
+  // Navigation handlers
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev()
+  }, [emblaApi])
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext()
+  }, [emblaApi])
+
+  // Check if we have enough slides to show controls
+  const showControls = videoList.length > slidesToShow
 
   return (
     <Box position="relative" width="100%">
       {/* Nút back */}
       <IconButton
-        onClick={handleBack}
+        onClick={scrollPrev}
         sx={{
           position: 'absolute',
-          left: 0,
-          top: '40%',
+          left: -10,
+          top: '50%',
+          transform: 'translateY(-50%)',
           bgcolor: 'white',
           border: '2px solid',
           borderColor: 'secondary.light',
           zIndex: 1,
+          opacity: showControls ? 1 : 0.3,
         }}
         size="small"
-        disabled={videoList.length <= maxVisible}
+        disabled={!showControls}
       >
         <LuChevronLeft color={theme.palette.secondary.light} size={26} />
       </IconButton>
 
-      {/* Carousel container */}
+      {/* Embla Carousel container */}
       <Box
+        ref={emblaRef}
+        className="embla"
         sx={{
           overflow: 'hidden',
           position: 'relative',
-          height: theme.muiVars.videoCardHeight,
-          borderRadius: 2,
-          width: STEP * maxVisible - GAP,
-          mx: 'auto',
+          px: { xs: 1, sm: 1.5 }, // Padding để tạo space
         }}
       >
-        <Stack
-          component={motion.div}
-          direction="row"
-          spacing={2}
-          py={0.5}
-          style={{
-            width: `${videoList.length * STEP - GAP}px`,
-            height: theme.muiVars.videoCardHeight,
-            willChange: 'transform',
+        <Box
+          className="embla__container"
+          sx={{
+            display: 'flex',
+            mx: { xs: -1, sm: -1.5 }, // Negative margin để bù padding
           }}
-          animate={{ x: -startIdx * STEP }}
-          transition={{ type: 'spring', stiffness: 200, damping: 30 }}
         >
           {videoList.map((item) => (
-            <VideoCard key={item.id} course={item} />
+            <Box
+              key={item.id}
+              className="embla__slide"
+              sx={{
+                flex: `0 0 ${100 / slidesToShow}%`, // Simple percentage
+                minWidth: 0,
+                px: { xs: 1, sm: 1.5 }, // Padding tạo gap
+              }}
+            >
+              <VideoCard course={item} sx={{ width: '100%' }} />
+            </Box>
           ))}
-        </Stack>
+        </Box>
       </Box>
 
       {/* Nút next */}
       <IconButton
-        onClick={handleNext}
+        onClick={scrollNext}
         sx={{
           position: 'absolute',
-          right: 0,
-          top: '40%',
+          right: -10,
+          top: '50%',
+          transform: 'translateY(-50%)',
           bgcolor: 'white',
           border: '2px solid',
           borderColor: 'secondary.light',
+          opacity: showControls ? 1 : 0.3,
         }}
         size="small"
-        disabled={videoList.length <= maxVisible}
+        disabled={!showControls}
       >
         <LuChevronRight color={theme.palette.secondary.light} size={26} />
       </IconButton>
