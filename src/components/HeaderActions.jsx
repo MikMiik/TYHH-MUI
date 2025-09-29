@@ -270,6 +270,7 @@ function HeaderActions() {
                 <DropAvatar bgcolor="tertiary.main" width={32} height={32} />
                 <NotificationsOutlinedIcon fontSize="medium" />
                 <IconButton
+                  onClick={handleLogout}
                   component={Link}
                   to={config.routes.login}
                   sx={{

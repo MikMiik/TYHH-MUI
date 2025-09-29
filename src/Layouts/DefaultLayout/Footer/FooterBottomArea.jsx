@@ -1,5 +1,4 @@
 import LogoIcon from '@/components/LogoIcon'
-import loginSchema from '@/schemas/loginSchema'
 import fbIcon from '@/assets/images/fbIcon.png'
 import youtubeIcon from '@/assets/images/youtubeIcon.png'
 import tiktokIcon from '@/assets/images/tiktokIcon.png'
@@ -35,7 +34,6 @@ function FooterBottomArea() {
     >
       <Box>
         <Form
-          schema={loginSchema}
           defaultValues={{
             email: '',
           }}

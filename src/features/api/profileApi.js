@@ -12,7 +12,6 @@ export const profileApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body: data,
       }),
-      transformResponse: (response) => response.data,
     }),
   }),
 })
