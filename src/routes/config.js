@@ -16,7 +16,6 @@ const config = {
     courseDetail: '/courses/:slug',
     livestream: '/livestreams/:slug',
     notFound: '*',
-    test: '/test',
   },
 }
 

@@ -10,11 +10,11 @@ import {
   Register,
   ForgotPassword,
   ResetPassword,
-  Test,
   Profile,
   CourseDetail,
   Livestream,
   MyCourses,
+  NotFound,
 } from '@/pages'
 import MenuLayout from '@/Layouts/MenuLayout.jsx/MenuLayout'
 
@@ -80,10 +80,7 @@ const routes = [
   },
   {
     path: config.routes.notFound,
-  },
-  {
-    path: config.routes.test,
-    component: Test,
+    component: NotFound,
   },
 ]
 

@@ -7,6 +7,7 @@ import theme from '@/theme/theme'
 
 import AppRoutes from './components/AppRoutes'
 import ScrollToTop from './components/ScrollToTop'
+import ComponentPreloader from './components/ComponentPreloader'
 
 import UserProvider from './components/UserProvider'
 import store, { persistor } from './store'
@@ -46,6 +47,9 @@ function App() {
             </PersistGate>
           </Provider>
         </ErrorBoundary>
+
+        {/* Preload important components in background */}
+        <ComponentPreloader />
       </GoogleOAuthProvider>
     </>
   )

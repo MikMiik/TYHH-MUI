@@ -8,112 +8,123 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration'
 import CourseOutlineItem from '@/components/CourseOutlineItem'
 import { useGetCourseQuery } from '@/features/api/courseApi'
 import { useParams } from 'react-router-dom'
+import { useLoadingState } from '@/components/withLoadingState'
 
 const CourseDetail = () => {
   const { slug } = useParams()
-  const { data: course, isLoading, error } = useGetCourseQuery(slug)
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
+  const queryResult = useGetCourseQuery(slug)
+  const { data: course, LoadingStateComponent } = useLoadingState(queryResult, {
+    variant: 'page',
+    loadingText: 'Đang tải thông tin khóa học...',
+    emptyText: 'Không tìm thấy khóa học này',
+  })
 
   return (
-    <Container>
-      <Box width="100%" my={2}>
-        <BreadCrumbsPath />
-        <Typography my={2} variant="h6" fontWeight={600}>
-          {course?.title || 'No title available'}
-        </Typography>
-        <Stack direction="row" alignItems="center" gap={1} my={2}>
-          <ArticleOutlinedIcon fontSize="smaller" />
-          <Typography>{course?.description || 'No description available'} </Typography>
-        </Stack>
-        <Stack direction="row" alignItems="center" gap={1} my={1}>
-          <PersonOutlineOutlinedIcon fontSize="smaller" />
-          <Typography variant="subtitle2" color="secondary.main">
-            {course?.teacher?.name?.toUpperCase() || 'Unknown Teacher'}
+    <LoadingStateComponent>
+      <Container>
+        <Box width="100%" my={2}>
+          <BreadCrumbsPath />
+          <Typography my={2} variant="h6" fontWeight={600}>
+            {course?.title || 'No title available'}
           </Typography>
-        </Stack>
-        <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" gap={1} my={1}>
-          {/* Left */}
-          <Box width={{ md: '66.7%', xs: '100%' }}>
-            <VideoComp />
-          </Box>
-
-          {/* Right */}
-          <Stack direction="column" justifyContent="flex-start" alignItems="center" width={{ md: '33.3%', xs: '100%' }}>
-            <Typography variant="subtitle1" fontWeight={600} color="secondary.main">
-              Học trọn gói cả năm chỉ với
+          <Stack direction="row" alignItems="center" gap={1} my={2}>
+            <ArticleOutlinedIcon fontSize="smaller" />
+            <Typography>{course?.description || 'No description available'} </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" gap={1} my={1}>
+            <PersonOutlineOutlinedIcon fontSize="smaller" />
+            <Typography variant="subtitle2" color="secondary.main">
+              {course?.teacher?.name?.toUpperCase() || 'Unknown Teacher'}
             </Typography>
+          </Stack>
+          <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" gap={1} my={1}>
+            {/* Left */}
+            <Box width={{ md: '66.7%', xs: '100%' }}>
+              <VideoComp />
+            </Box>
 
-            <Typography
-              variant="h5"
-              fontWeight={600}
-              color="primary.dark"
-              mt={2}
-              sx={course?.discount ? { textDecoration: 'line-through' } : {}}
+            {/* Right */}
+            <Stack
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="center"
+              width={{ md: '33.3%', xs: '100%' }}
             >
-              {course?.price ? `${parseInt(course.price, 10).toLocaleString('vi-VN')}₫` : 'No updated price'}
-            </Typography>
-            {course?.discount && (
-              <Typography variant="h5" mb={2} fontWeight={700} color="tertiary.main">
-                {`${parseInt(course.discount, 10).toLocaleString('vi-VN')}₫`}
+              <Typography variant="subtitle1" fontWeight={600} color="secondary.main">
+                Học trọn gói cả năm chỉ với
               </Typography>
-            )}
 
-            <Stack direction="row" gap={2} flexWrap="wrap" justifyContent="center">
-              <Button startIcon={<AppRegistrationIcon />} variant="contained" color="tertiary">
-                Đăng ký khóa học
-              </Button>
-              <Button
-                startIcon={<FacebookOutlinedIcon />}
-                variant="contained"
-                color="secondary"
-                rel="noopener noreferrer"
+              <Typography
+                variant="h5"
+                fontWeight={600}
+                color="primary.dark"
+                mt={2}
+                sx={course?.discount ? { textDecoration: 'line-through' } : {}}
               >
-                Tư vấn viên
-              </Button>
+                {course?.price ? `${parseInt(course.price, 10).toLocaleString('vi-VN')}₫` : 'No updated price'}
+              </Typography>
+              {course?.discount && (
+                <Typography variant="h5" mb={2} fontWeight={700} color="tertiary.main">
+                  {`${parseInt(course.discount, 10).toLocaleString('vi-VN')}₫`}
+                </Typography>
+              )}
 
-              <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<FacebookOutlinedIcon />}
-                component="a"
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Facebook giáo viên
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<FacebookOutlinedIcon />}
-                component="a"
-                href="https://www.facebook.com/groups/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Group học tập
-              </Button>
+              <Stack direction="row" gap={2} flexWrap="wrap" justifyContent="center">
+                <Button startIcon={<AppRegistrationIcon />} variant="contained" color="tertiary">
+                  Đăng ký khóa học
+                </Button>
+                <Button
+                  startIcon={<FacebookOutlinedIcon />}
+                  variant="contained"
+                  color="secondary"
+                  rel="noopener noreferrer"
+                >
+                  Tư vấn viên
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<FacebookOutlinedIcon />}
+                  component="a"
+                  href="https://www.facebook.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Facebook giáo viên
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<FacebookOutlinedIcon />}
+                  component="a"
+                  href="https://www.facebook.com/groups/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Group học tập
+                </Button>
+              </Stack>
             </Stack>
           </Stack>
-        </Stack>
 
-        <Box>
-          <Divider sx={{ mt: 6, mb: 4 }}>
-            <Chip label="Mô tả khóa học" size="medium" color="secondary" sx={{ fontSize: '1rem', p: 2 }} />
-          </Divider>
-          <Typography>{course?.content || 'No content available'}</Typography>
-          <Divider sx={{ my: 4 }}>
-            <Chip label="Đề cương khóa học" size="medium" color="secondary" sx={{ fontSize: '1rem', p: 2 }} />
-          </Divider>
-          <Stack spacing={2}>
-            {course?.outlines?.map((outline) => (
-              <CourseOutlineItem key={outline.id} title={outline.title} livestreams={outline.livestreams} />
-            ))}
-          </Stack>
+          <Box>
+            <Divider sx={{ mt: 6, mb: 4 }}>
+              <Chip label="Mô tả khóa học" size="medium" color="secondary" sx={{ fontSize: '1rem', p: 2 }} />
+            </Divider>
+            <Typography>{course?.content || 'No content available'}</Typography>
+            <Divider sx={{ my: 4 }}>
+              <Chip label="Đề cương khóa học" size="medium" color="secondary" sx={{ fontSize: '1rem', p: 2 }} />
+            </Divider>
+            <Stack spacing={2}>
+              {course?.outlines?.map((outline) => (
+                <CourseOutlineItem key={outline.id} title={outline.title} livestreams={outline.livestreams} />
+              ))}
+            </Stack>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </LoadingStateComponent>
   )
 }
 

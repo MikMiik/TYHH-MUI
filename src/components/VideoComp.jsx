@@ -1,5 +1,8 @@
-import VideoJS from '@/components/VideoJS'
-import { useRef } from 'react'
+import { lazy, Suspense, useRef } from 'react'
+import { CircularProgress, Box } from '@mui/material'
+
+// Lazy load VideoJS component
+const VideoJS = lazy(() => import('@/components/VideoJS'))
 
 const VideoComp = ({ src, poster, options, livestreamSlug }) => {
   const playerRef = useRef(null)
@@ -25,7 +28,26 @@ const VideoComp = ({ src, poster, options, livestreamSlug }) => {
     playerRef.current = player
   }
 
-  return <VideoJS options={videoJsOptions} onReady={handlePlayerReady} livestreamSlug={livestreamSlug} />
+  const VideoLoadingFallback = () => (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: 200,
+        bgcolor: 'grey.100',
+        borderRadius: 1,
+      }}
+    >
+      <CircularProgress size={40} />
+    </Box>
+  )
+
+  return (
+    <Suspense fallback={<VideoLoadingFallback />}>
+      <VideoJS options={videoJsOptions} onReady={handlePlayerReady} livestreamSlug={livestreamSlug} />
+    </Suspense>
+  )
 }
 
 export default VideoComp

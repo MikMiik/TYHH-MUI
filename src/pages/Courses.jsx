@@ -2,6 +2,7 @@ import VideoCard from '@/components/VideoCard'
 import { Box, Stack, Pagination } from '@mui/material'
 import { useSearchParams } from 'react-router-dom'
 import { useGetAllCoursesQuery } from '@/features/api/courseApi'
+import { useLoadingState } from '@/components/withLoadingState'
 import React from 'react'
 
 function Courses() {
@@ -11,7 +12,7 @@ function Courses() {
   const sort = searchParams.get('sort') || 'newest'
   const pageSize = 6
 
-  const { data: { courses, totalPages } = {}, isSuccess } = useGetAllCoursesQuery(
+  const queryResult = useGetAllCoursesQuery(
     {
       ...(topic ? { topic } : {}),
       page,
@@ -22,6 +23,16 @@ function Courses() {
       refetchOnMountOrArgChange: true,
     }
   )
+
+  const { data: { courses, totalPages } = {}, LoadingStateComponent } = useLoadingState(queryResult, {
+    variant: 'section',
+    loadingText: 'Đang tải khóa học...',
+    emptyText: 'Chưa có khóa học nào',
+    skeletonType: 'card',
+    skeletonCount: 6,
+    dataKey: 'courses',
+    hasDataCheck: (courses) => courses && courses.length > 0,
+  })
 
   const handlePageChange = (_, value) => {
     const newParams = {
@@ -34,32 +45,32 @@ function Courses() {
 
   return (
     <Box width="100%">
-      <Stack
-        direction="row"
-        flexWrap="wrap"
-        ml={{ xs: 0, sm: 2, md: 3 }}
-        gap={{ xs: 1, sm: 2, md: 2 }}
-        justifyContent={{ sm: 'space-between', xs: 'center' }}
-      >
-        {isSuccess && courses && courses.length > 0 ? (
-          courses.map((course) => (
-            <VideoCard
-              key={course.id}
-              course={course}
-              sx={{
-                width: { xs: '70%', sm: '48%', lg: '249px' },
-              }}
-            />
-          ))
-        ) : (
-          <Box>No courses available.</Box>
+      <LoadingStateComponent>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          ml={{ xs: 0, sm: 2, md: 3 }}
+          gap={{ xs: 1, sm: 2, md: 2 }}
+          justifyContent={{ sm: 'space-between', xs: 'center' }}
+        >
+          {courses &&
+            courses.length > 0 &&
+            courses.map((course) => (
+              <VideoCard
+                key={course.id}
+                course={course}
+                sx={{
+                  width: { xs: '70%', sm: '48%', lg: '249px' },
+                }}
+              />
+            ))}
+        </Stack>
+        {totalPages > 1 && (
+          <Box display="flex" justifyContent="center" mt={3}>
+            <Pagination count={totalPages} page={page} onChange={handlePageChange} color="primary" shape="rounded" />
+          </Box>
         )}
-      </Stack>
-      {totalPages > 1 && (
-        <Box display="flex" justifyContent="center" mt={3}>
-          <Pagination count={totalPages} page={page} onChange={handlePageChange} color="primary" shape="rounded" />
-        </Box>
-      )}
+      </LoadingStateComponent>
     </Box>
   )
 }

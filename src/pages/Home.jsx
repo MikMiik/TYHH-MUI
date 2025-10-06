@@ -1,7 +1,9 @@
 import { Box, Container, Link, Stack, Typography } from '@mui/material'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
+import { lazy, Suspense } from 'react'
 
-import HeroCarousel from '../components/HeroCarousel'
+// Lazy load HeroCarousel
+const HeroCarousel = lazy(() => import('../components/HeroCarousel'))
 import fbIcon from '@/assets/images/fbIcon.png'
 import youtubeIcon from '@/assets/images/youtubeIcon.png'
 import tiktokIcon from '@/assets/images/tiktokIcon.png'
@@ -14,13 +16,17 @@ import ImageLazy from '@/components/ImageLazy'
 import VideoComp from '@/components/VideoComp'
 import { useGetSocialsQuery } from '@/features/api/siteInfoApi'
 import { useGetAllTopicsQuery } from '@/features/api/topicApi'
+import { useLoadingState } from '@/components/withLoadingState'
 
 function Home() {
   const { data: socials, isSuccess: socialsLoaded } = useGetSocialsQuery()
-  const { data: topics = [], isLoading: topicsLoading, isSuccess: topicsLoaded } = useGetAllTopicsQuery()
-  if (topicsLoading) {
-    return <div>Loading topics...</div>
-  }
+  const topicsQueryResult = useGetAllTopicsQuery()
+  const { data: topics = [], LoadingStateComponent: TopicsLoadingState } = useLoadingState(topicsQueryResult, {
+    variant: 'inline',
+    loadingText: 'Đang tải chủ đề...',
+    emptyText: 'Chưa có chủ đề nào',
+    hasDataCheck: (topics) => topics && topics.length > 0,
+  })
   return (
     <Box>
       {/* Head Banner */}
@@ -34,7 +40,24 @@ function Home() {
             'linear-gradient(90deg, hsla(0, 0%, 100%, .2) 1.3px, transparent 0), linear-gradient(180deg, hsla(0, 0%, 100%, .2) 1.3px, transparent 0)',
         }}
       >
-        <HeroCarousel py={4} mx="auto" />
+        <Suspense
+          fallback={
+            <Box
+              sx={{
+                height: 400,
+                bgcolor: 'grey.100',
+                borderRadius: 2,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography color="text.secondary">Đang tải banner...</Typography>
+            </Box>
+          }
+        >
+          <HeroCarousel py={4} mx="auto" />
+        </Suspense>
       </Box>
 
       {/* Main Content */}
@@ -68,33 +91,34 @@ function Home() {
         </Box>
 
         {/* Video Carousels by Topic */}
-        {topicsLoaded &&
-          Array.isArray(topics) &&
-          topics.map((topic) => (
-            <Box key={topic.id} mb={4}>
-              <Stack direction="row" justifyContent="space-between" my={1}>
-                <Stack direction="column">
-                  <Typography sx={{ '& span': { fontSize: '1.25rem' } }} fontWeight={700}>
-                    <Typography component="span" color="primary" fontWeight="bold">
-                      {topic.title}
+        <TopicsLoadingState>
+          {Array.isArray(topics) &&
+            topics.map((topic) => (
+              <Box key={topic.id} mb={4}>
+                <Stack direction="row" justifyContent="space-between" my={1}>
+                  <Stack direction="column">
+                    <Typography sx={{ '& span': { fontSize: '1.25rem' } }} fontWeight={700}>
+                      <Typography component="span" color="primary" fontWeight="bold">
+                        {topic.title}
+                      </Typography>
                     </Typography>
-                  </Typography>
-                  <Typography variant="subtitle2">Bứt phá điểm số cùng TYHH</Typography>
+                    <Typography variant="subtitle2">Bứt phá điểm số cùng TYHH</Typography>
+                  </Stack>
+                  <MuiLink
+                    to={`/courses?topic=${topic.slug}`}
+                    color="tertiary.light"
+                    display="inline-flex"
+                    alignItems="center"
+                    mt="auto"
+                  >
+                    Xem tất cả khóa học
+                    <KeyboardArrowRightIcon fontSize="small" />
+                  </MuiLink>
                 </Stack>
-                <MuiLink
-                  to={`/courses?topic=${topic.slug}`}
-                  color="tertiary.light"
-                  display="inline-flex"
-                  alignItems="center"
-                  mt="auto"
-                >
-                  Xem tất cả khóa học
-                  <KeyboardArrowRightIcon fontSize="small" />
-                </MuiLink>
-              </Stack>
-              <VideoCarousel videoList={topic.courses || []} />
-            </Box>
-          ))}
+                <VideoCarousel videoList={topic.courses || []} />
+              </Box>
+            ))}
+        </TopicsLoadingState>
 
         {/* Free Video */}
         <Typography variant="h6" fontWeight={600} color="primary.main">

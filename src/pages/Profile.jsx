@@ -16,6 +16,7 @@ import TextInput from '../components/TextInput'
 import AutocompleteField from '../components/AutocompleteField'
 import ImageKitUploader from '../components/ImagekitAuth'
 import BreadCrumbsPath from '@/components/BreadCrumbsPath'
+import LoadingState from '@/components/LoadingState'
 import { useGetAllCitiesQuery } from '../features/api/cityApi'
 
 import { useState } from 'react'
@@ -46,7 +47,7 @@ const Profile = () => {
   }
 
   if (profileLoading) {
-    return
+    return <LoadingState isLoading={true} variant="page" loadingText="Đang tải thông tin hồ sơ..." />
   }
 
   const handleSubmit = async (data) => {

@@ -1,6 +1,6 @@
 import { Box, IconButton, useMediaQuery } from '@mui/material'
 import VideoCard from './VideoCard'
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 import theme from '@/theme/theme'
 import useEmblaCarousel from 'embla-carousel-react'
@@ -8,43 +8,27 @@ import AutoPlay from 'embla-carousel-autoplay'
 import './VideoCarousel.css'
 
 function VideoCarousel({ videoList = [] }) {
-  // Sử dụng useMediaQuery trực tiếp để responsive chính xác hơn
+  // Sử dụng useMediaQuery để responsive chính xác hơn
   const isMobile = useMediaQuery(theme.breakpoints.down('sm')) // < 768px
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg')) // 768px - 1139px
-
-  const [viewportWidth, setViewportWidth] = useState(() => {
-    return typeof window !== 'undefined' ? window.innerWidth : 1200
-  })
-
-  useEffect(() => {
-    const handleResize = () => {
-      setViewportWidth(window.innerWidth)
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md')) // 768px - 991px
+  const isLaptop = useMediaQuery(theme.breakpoints.between('md', 'lg')) // 992px - 1139px
 
   // Tính số slides hiển thị dựa trên responsive breakpoints
-  // Mobile (< 768px): 1 slide, Tablet (768px-1139px): 2-3 slides, Desktop (>=1140px): 4 slides
-  let slidesToShow = 4 // default for desktop
+  let slidesToShow = 4 // default for large desktop
   if (isMobile) {
     slidesToShow = 1
   } else if (isTablet) {
-    // Tính toán động dựa trên viewport width để responsive tốt hơn
-    if (viewportWidth < 900) {
-      slidesToShow = 2
-    } else {
-      slidesToShow = 3
-    }
+    slidesToShow = 2
+  } else if (isLaptop) {
+    slidesToShow = 3
   }
 
-  // AutoPlay plugin - đơn giản hóa cấu hình
+  // AutoPlay plugin - chỉ khi có đủ slides
   const plugins = []
   if (videoList.length > slidesToShow) {
     plugins.push(
       AutoPlay({
-        delay: 3000,
+        delay: 4000,
         stopOnMouseEnter: true,
         stopOnInteraction: false,
       })
@@ -82,25 +66,40 @@ function VideoCarousel({ videoList = [] }) {
   const showControls = videoList.length > slidesToShow
 
   return (
-    <Box position="relative" width="100%">
+    <Box
+      sx={{
+        position: 'relative',
+        width: '100%',
+        maxWidth: '100%', // Đảm bảo không vượt quá container cha
+        mx: 'auto',
+      }}
+    >
       {/* Nút back */}
       <IconButton
         onClick={scrollPrev}
         sx={{
           position: 'absolute',
-          left: -10,
+          left: { xs: -8, sm: -12, md: -16 }, // Responsive positioning
           top: '50%',
           transform: 'translateY(-50%)',
-          bgcolor: 'white',
+          bgcolor: 'rgba(255, 255, 255, 0.95)',
           border: '2px solid',
           borderColor: 'secondary.light',
-          zIndex: 1,
+          boxShadow: 2,
+          zIndex: 2,
+          width: { xs: 36, sm: 40, md: 44 }, // Responsive size
+          height: { xs: 36, sm: 40, md: 44 },
           opacity: showControls ? 1 : 0.3,
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            bgcolor: 'secondary.main',
+            '& svg': { color: 'white' },
+            transform: 'translateY(-50%) scale(1.05)',
+          },
         }}
-        size="small"
         disabled={!showControls}
       >
-        <LuChevronLeft color={theme.palette.secondary.light} size={26} />
+        <LuChevronLeft color={theme.palette.secondary.light} size={isMobile ? 20 : 24} />
       </IconButton>
 
       {/* Embla Carousel container */}
@@ -110,14 +109,17 @@ function VideoCarousel({ videoList = [] }) {
         sx={{
           overflow: 'hidden',
           position: 'relative',
-          px: { xs: 1, sm: 1.5 }, // Padding để tạo space
+          borderRadius: 2,
+          width: '100%',
+          px: { xs: 1, sm: 1.5, md: 2 }, // Responsive padding
         }}
       >
         <Box
           className="embla__container"
           sx={{
             display: 'flex',
-            mx: { xs: -1, sm: -1.5 }, // Negative margin để bù padding
+            gap: { xs: 1, sm: 1.5, md: 2 }, // Responsive gap
+            mx: { xs: -1, sm: -1.5, md: -2 }, // Negative margin để bù padding
           }}
         >
           {videoList.map((item) => (
@@ -125,12 +127,24 @@ function VideoCarousel({ videoList = [] }) {
               key={item.id}
               className="embla__slide"
               sx={{
-                flex: `0 0 ${100 / slidesToShow}%`, // Simple percentage
+                flex: `0 0 calc(${100 / slidesToShow}% - ${
+                  slidesToShow > 1 ? (isMobile ? '4px' : isTablet ? '6px' : '8px') : '0px'
+                })`, // Tính toán width chính xác với gap
                 minWidth: 0,
-                px: { xs: 1, sm: 1.5 }, // Padding tạo gap
+                maxWidth: `${100 / slidesToShow}%`,
+                px: { xs: 1, sm: 1.5, md: 2 }, // Padding tạo gap
               }}
             >
-              <VideoCard course={item} sx={{ width: '100%' }} />
+              <VideoCard
+                course={item}
+                sx={{
+                  width: '100%',
+                  height: 'auto',
+                  '& .MuiCard-root': {
+                    height: '100%',
+                  },
+                }}
+              />
             </Box>
           ))}
         </Box>
@@ -141,18 +155,27 @@ function VideoCarousel({ videoList = [] }) {
         onClick={scrollNext}
         sx={{
           position: 'absolute',
-          right: -10,
+          right: { xs: -8, sm: -12, md: -16 }, // Responsive positioning
           top: '50%',
           transform: 'translateY(-50%)',
-          bgcolor: 'white',
+          bgcolor: 'rgba(255, 255, 255, 0.95)',
           border: '2px solid',
           borderColor: 'secondary.light',
+          boxShadow: 2,
+          zIndex: 2,
+          width: { xs: 36, sm: 40, md: 44 }, // Responsive size
+          height: { xs: 36, sm: 40, md: 44 },
           opacity: showControls ? 1 : 0.3,
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            bgcolor: 'secondary.main',
+            '& svg': { color: 'white' },
+            transform: 'translateY(-50%) scale(1.05)',
+          },
         }}
-        size="small"
         disabled={!showControls}
       >
-        <LuChevronRight color={theme.palette.secondary.light} size={26} />
+        <LuChevronRight color={theme.palette.secondary.light} size={isMobile ? 20 : 24} />
       </IconButton>
     </Box>
   )

@@ -5,7 +5,10 @@ import React, { useState } from 'react'
 import HeaderMenu from './HeaderMenu'
 import useResponsive from '@/hooks/useResponsive'
 import theme from '@/theme/theme'
-import PaymentModal from './PaymentModal'
+import { lazy, Suspense } from 'react'
+
+// Lazy load PaymentModal since it's only used when needed
+const PaymentModal = lazy(() => import('./PaymentModal'))
 
 function HeaderNavigation() {
   const { isLaptop, isDesktop } = useResponsive()
@@ -41,7 +44,13 @@ function HeaderNavigation() {
           <NavLink onClick={() => setOpenModal(true)}>Thanh toán</NavLink>
         </>
       ) : null}
-      <PaymentModal open={openModal} onClose={() => setOpenModal(false)} />
+
+      {/* Only render PaymentModal when needed */}
+      {openModal && (
+        <Suspense fallback={null}>
+          <PaymentModal open={openModal} onClose={() => setOpenModal(false)} />
+        </Suspense>
+      )}
     </Box>
   )
 }
