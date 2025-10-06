@@ -9,7 +9,7 @@ function DocumentListItem({ doc }) {
     <ListItem alignItems="flex-start" sx={{ borderBottom: '1px solid #eee', px: 0 }}>
       <ListItemAvatar>
         <Box width={80} height={80} borderRadius={1} overflow="hidden" boxShadow={1}>
-          <ImageLazy src={doc.thumbnail} w="100%" h="100%" />
+          <ImageLazy placeholder="/document-placeholder.svg" src={doc.thumbnail} w="100%" h="100%" />
         </Box>
       </ListItemAvatar>
       <ListItemText

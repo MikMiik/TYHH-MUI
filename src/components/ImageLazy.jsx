@@ -1,9 +1,14 @@
-import { Image, buildSrc } from '@imagekit/react'
+import { Image } from '@imagekit/react'
 import { useState, useCallback } from 'react'
-export default function ImageLazy({ src, alt, w, h }) {
+export default function ImageLazy({ src, alt, w, h, placeholder }) {
   const [showPlaceholder, setShowPlaceholder] = useState(true)
+  const [hasError, setHasError] = useState(false)
 
   const hidePlaceholder = () => setShowPlaceholder(false)
+  const handleError = () => {
+    setHasError(true)
+    setShowPlaceholder(false)
+  }
 
   const imgRef = useCallback((img) => {
     if (!img) return // unmount
@@ -13,6 +18,21 @@ export default function ImageLazy({ src, alt, w, h }) {
       return
     }
   }, [])
+
+  // If image has error, show placeholder from public folder
+  if (hasError) {
+    return (
+      <img
+        src={placeholder || '/document-placeholder.svg'}
+        alt={alt}
+        style={{
+          width: w,
+          height: h,
+          objectFit: 'cover',
+        }}
+      />
+    )
+  }
 
   return (
     <Image
@@ -29,20 +49,11 @@ export default function ImageLazy({ src, alt, w, h }) {
       urlEndpoint={import.meta.env.VITE_IK_URL_ENDPOINT}
       loading="lazy"
       ref={imgRef}
+      onError={handleError}
       style={
         showPlaceholder
           ? {
-              backgroundImage: `url(${buildSrc({
-                urlEndpoint: import.meta.env.VITE_IK_URL_ENDPOINT,
-                src: '/placeholder.svg',
-                transformation: [
-                  // {}, // Any other transformation you want to apply to the placeholder image
-                  {
-                    quality: 10,
-                    blur: 50,
-                  },
-                ],
-              })})`,
+              backgroundImage: `url(${placeholder || '/placeholder-document.svg'})`,
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
               objectFit: 'cover',

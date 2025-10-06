@@ -51,7 +51,7 @@ function Courses() {
           flexWrap="wrap"
           ml={{ xs: 0, sm: 2, md: 3 }}
           gap={{ xs: 1, sm: 2, md: 2 }}
-          justifyContent={{ sm: 'space-between', xs: 'center' }}
+          justifyContent={{ sm: 'flex-end', xs: 'center' }}
         >
           {courses &&
             courses.length > 0 &&
