@@ -60,8 +60,10 @@ const ImageKitUploader = ({ children, onUploadSuccess, onUploadError }) => {
       setIsUploading(false)
       // Nếu có userId và muốn cập nhật DB, gọi API ở đây
       if (uploadResponse?.url) {
+        console.log(uploadResponse)
+
         try {
-          await httpRequest.post(`/users/${currentUser.id}/upload-avatar`, { avatar: uploadResponse.url })
+          await httpRequest.post(`/users/${currentUser.id}/upload-avatar`, { avatar: uploadResponse.filePath })
         } catch (err) {
           // Không chặn UI, chỉ log lỗi nếu update DB thất bại
           console.error('Update avatar in DB failed:', err)

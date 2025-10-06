@@ -36,7 +36,10 @@ const DropAvatar = ({ bgcolor, width, height }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Avatar src={currentUser.avatar} sx={{ bgcolor, width, height }}></Avatar>
+      <Avatar
+        src={`${import.meta.env.VITE_IK_URL_ENDPOINT}${currentUser.avatar}`}
+        sx={{ bgcolor, width, height }}
+      ></Avatar>
 
       <Popper
         component={motion.div}

@@ -16,9 +16,6 @@ function VipDocuments() {
 
   const handlePageChange = (_, value) => {
     setSearchParams({ page: value.toString(), sort })
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, 0)
   }
   if (isLoading) return <Box ml={4}>Đang tải tài liệu...</Box>
 

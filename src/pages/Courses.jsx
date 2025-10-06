@@ -30,9 +30,6 @@ function Courses() {
       page: value.toString(),
     }
     setSearchParams(newParams)
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, 0)
   }
 
   return (

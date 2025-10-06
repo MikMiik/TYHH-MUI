@@ -79,7 +79,7 @@ const Profile = () => {
               <Stack flexDirection="column" alignItems="center" mb={6}>
                 <Box position="relative" display="inline-block">
                   <Avatar
-                    src={profile.avatar}
+                    src={`${import.meta.env.VITE_IK_URL_ENDPOINT}${profile.avatar}`}
                     sx={{ width: 120, height: 120, bgcolor: 'tertiary.main', fontSize: 40, fontWeight: 600 }}
                   ></Avatar>
                   <IconButton

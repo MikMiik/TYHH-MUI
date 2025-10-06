@@ -1,6 +1,6 @@
 import { Image, buildSrc } from '@imagekit/react'
 import { useState, useCallback } from 'react'
-export default function ImageLazy({ src, className, alt, w, h }) {
+export default function ImageLazy({ src, alt, w, h }) {
   const [showPlaceholder, setShowPlaceholder] = useState(true)
 
   const hidePlaceholder = () => setShowPlaceholder(false)
@@ -26,7 +26,6 @@ export default function ImageLazy({ src, className, alt, w, h }) {
           height: h,
         },
       ]}
-      className={className}
       urlEndpoint={import.meta.env.VITE_IK_URL_ENDPOINT}
       loading="lazy"
       ref={imgRef}
@@ -46,8 +45,9 @@ export default function ImageLazy({ src, className, alt, w, h }) {
               })})`,
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
+              objectFit: 'cover',
             }
-          : {}
+          : { objectFit: 'cover' }
       }
     />
   )
