@@ -111,7 +111,7 @@ function VideoCarousel({ videoList = [] }) {
           position: 'relative',
           borderRadius: 2,
           width: '100%',
-          px: { xs: 1, sm: 1.5, md: 2 }, // Responsive padding
+          p: { xs: 1, sm: 1.5, md: 2 }, // Responsive padding
         }}
       >
         <Box

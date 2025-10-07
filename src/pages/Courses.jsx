@@ -10,6 +10,7 @@ function Courses() {
   const topic = searchParams.get('topic') || ''
   const page = parseInt(searchParams.get('page')) || 1
   const sort = searchParams.get('sort') || 'newest'
+  const search = searchParams.get('search') || ''
   const pageSize = 6
 
   const queryResult = useGetAllCoursesQuery(
@@ -18,6 +19,7 @@ function Courses() {
       page,
       limit: pageSize,
       sort,
+      search,
     },
     {
       refetchOnMountOrArgChange: true,

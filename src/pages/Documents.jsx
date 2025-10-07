@@ -9,9 +9,10 @@ function Documents() {
   const page = parseInt(searchParams.get('page')) || 1
   const sort = searchParams.get('sort') || 'newest'
   const topic = searchParams.get('topic') || ''
+  const search = searchParams.get('search') || ''
   const pageSize = 6
   const queryResult = useGetAllDocumentsQuery(
-    { page, limit: pageSize, sort, topic },
+    { page, limit: pageSize, sort, topic, search },
     { refetchOnMountOrArgChange: true }
   )
 
