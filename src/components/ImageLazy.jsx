@@ -23,7 +23,7 @@ export default function ImageLazy({ src, alt, w, h, placeholder }) {
   if (hasError) {
     return (
       <img
-        src={placeholder || '/document-placeholder.svg'}
+        src={placeholder || '/placeholder-image.svg'}
         alt={alt}
         style={{
           width: w,

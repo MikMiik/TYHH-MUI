@@ -3,6 +3,7 @@ const config = {
     home: '/',
     courses: '/courses',
     myCourses: '/my-courses',
+    createdCourses: '/created-courses',
     vipDocuments: '/vipdocuments',
     documents: '/document',
     documentDetail: '/documents/:slug',

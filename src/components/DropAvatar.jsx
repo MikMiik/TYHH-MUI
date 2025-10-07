@@ -2,6 +2,7 @@ import { Avatar, ListItemIcon } from '@mui/material'
 import { List, ListItem, ListItemButton, ListItemText, Box, Paper, Popper } from '@mui/material'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined'
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -103,6 +104,19 @@ const DropAvatar = ({ bgcolor, width, height }) => {
                       <VideocamOutlinedIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary={'Khóa học của tôi'} />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem
+                  component={Link}
+                  to="/created-courses"
+                  sx={{ whiteSpace: 'nowrap', width: 'auto', color: 'inherit' }}
+                  disablePadding
+                >
+                  <ListItemButton>
+                    <ListItemIcon sx={{ mr: 1, minWidth: 'auto' }}>
+                      <CreateOutlinedIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary={'Khóa học đã tạo'} />
                   </ListItemButton>
                 </ListItem>
               </List>
