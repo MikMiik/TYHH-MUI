@@ -1,22 +1,85 @@
-import { Box, Container, Typography, Stack, Chip, Divider, Alert, CircularProgress } from '@mui/material'
+import {
+  Box,
+  Container,
+  Typography,
+  Stack,
+  Chip,
+  Divider,
+  Alert,
+  CircularProgress,
+  Button,
+  IconButton,
+  Tooltip,
+} from '@mui/material'
+import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { useGetCreatedCoursesQuery } from '@/features/api/courseApi'
+import { useGetCreatedCoursesQuery, useDeleteCourseMutation } from '@/features/api/courseApi'
 import ImageLazy from '@/components/ImageLazy'
+import CreateCourseModal from '@/components/CreateCourseModal'
+import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 function CreatedCourses() {
   const [page] = useState(1)
   const [search] = useState('')
+  const [openCreateModal, setOpenCreateModal] = useState(false)
+  const [deleteModal, setDeleteModal] = useState({
+    open: false,
+    courseId: null,
+    courseName: '',
+  })
 
   const {
     data: createdCoursesData,
     isLoading,
     isError,
     error,
+    refetch,
   } = useGetCreatedCoursesQuery({
     page,
     limit: 10,
     search,
   })
+
+  const [deleteCourse, { isLoading: isDeleting }] = useDeleteCourseMutation()
+
+  const handleCreateCourse = () => {
+    setOpenCreateModal(true)
+  }
+
+  const handleDeleteCourse = (courseId, courseTitle) => {
+    setDeleteModal({
+      open: true,
+      courseId,
+      courseName: courseTitle,
+    })
+  }
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteCourse(deleteModal.courseId).unwrap()
+      setDeleteModal({ open: false, courseId: null, courseName: '' })
+      // refetch sẽ được tự động gọi do invalidatesTags
+    } catch (error) {
+      alert('Có lỗi xảy ra khi xóa khóa học: ' + (error.data?.message || error.message))
+    }
+  }
+
+  const handleCloseDeleteModal = () => {
+    if (!isDeleting) {
+      setDeleteModal({ open: false, courseId: null, courseName: '' })
+    }
+  }
+
+  const handleCloseCreateModal = () => {
+    setOpenCreateModal(false)
+  }
+
+  const handleCourseCreated = () => {
+    setOpenCreateModal(false)
+    refetch() // Refresh the course list
+  }
 
   // Group courses by topics
   const groupCoursesByTopics = (courses) => {
@@ -86,12 +149,28 @@ function CreatedCourses() {
     <Container sx={{ my: 3 }}>
       {/* Header */}
       <Box mb={4}>
-        <Typography variant="h4" fontWeight={700} color="primary.main" gutterBottom>
-          Khóa học đã tạo
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Quản lý và theo dõi các khóa học bạn đã tạo
-        </Typography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
+          <Box>
+            <Typography variant="h4" fontWeight={700} color="primary.main" gutterBottom>
+              Khóa học đã tạo
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Quản lý và theo dõi các khóa học bạn đã tạo
+            </Typography>
+          </Box>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={handleCreateCourse}
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              py: 1.5,
+            }}
+          >
+            Tạo khóa học mới
+          </Button>
+        </Stack>
       </Box>
 
       {/* Stats Overview */}
@@ -179,84 +258,122 @@ function CreatedCourses() {
                 <Box
                   key={course.id}
                   sx={{
-                    p: 3,
-                    border: '1px solid',
-                    borderColor: 'grey.300',
-                    borderRadius: 2,
-                    bgcolor: 'background.paper',
-                    '&:hover': {
-                      boxShadow: 2,
-                      borderColor: 'primary.main',
-                    },
+                    position: 'relative',
                   }}
                 >
-                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
-                    {/* Course Image */}
+                  <Link to={`/courses/${course.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <Box
                       sx={{
-                        width: { xs: '100%', md: 200 },
+                        p: 3,
+                        border: '1px solid',
+                        borderColor: 'grey.300',
+                        borderRadius: 2,
+                        bgcolor: 'background.paper',
+                        cursor: 'pointer',
+                        transition: 'box-shadow 0.2s, border-color 0.2s',
+                        '&:hover': {
+                          boxShadow: 2,
+                          borderColor: 'primary.main',
+                        },
                       }}
                     >
-                      <ImageLazy w="100%" src={course.thumbnail} alt={course.title} />
-                    </Box>
+                      <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
+                        {/* Course Image */}
+                        <Box
+                          sx={{
+                            width: { xs: '100%', md: 200 },
+                          }}
+                        >
+                          <ImageLazy w="100%" src={course.thumbnail} alt={course.title} />
+                        </Box>
 
-                    {/* Course Info */}
-                    <Box flex={1}>
-                      <Stack direction="row" alignItems="center" spacing={1} mb={1}>
-                        <Typography variant="h6" fontWeight={600}>
-                          {course.title}
-                        </Typography>
-                        <Chip
-                          label={course.isDraft ? 'Bản nháp' : 'Đã xuất bản'}
-                          color={course.isDraft ? 'warning' : 'success'}
-                          size="small"
-                        />
+                        {/* Course Info */}
+                        <Box flex={1}>
+                          <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+                            <Typography variant="h6" fontWeight={600}>
+                              {course.title}
+                            </Typography>
+                            <Chip
+                              label={course.isDraft ? 'Bản nháp' : 'Đã xuất bản'}
+                              color={course.isDraft ? 'warning' : 'success'}
+                              size="small"
+                            />
+                          </Stack>
+
+                          <Typography variant="body2" color="text.secondary" mb={2}>
+                            {course.description}
+                          </Typography>
+
+                          <Stack direction="row" spacing={3} mb={2}>
+                            <Box>
+                              <Typography variant="body2" color="text.secondary">
+                                Bài giảng
+                              </Typography>
+                              <Typography variant="subtitle2" fontWeight={600}>
+                                {course.totalOutlines || 0} bài
+                              </Typography>
+                            </Box>
+                            <Box>
+                              <Typography variant="body2" color="text.secondary">
+                                Livestream
+                              </Typography>
+                              <Typography variant="subtitle2" fontWeight={600}>
+                                {course.totalLivestreams || 0} buổi
+                              </Typography>
+                            </Box>
+                            <Box>
+                              <Typography variant="body2" color="text.secondary">
+                                Học viên
+                              </Typography>
+                              <Typography variant="subtitle2" fontWeight={600}>
+                                {course.studentCount || 0} người
+                              </Typography>
+                            </Box>
+                            <Box>
+                              <Typography variant="body2" color="text.secondary">
+                                Giá
+                              </Typography>
+                              <Typography variant="subtitle2" fontWeight={600} color="primary.main">
+                                {course.isFree ? 'Miễn phí' : `${(Number(course.price) || 0).toLocaleString('vi-VN')}đ`}
+                              </Typography>
+                            </Box>
+                          </Stack>
+
+                          <Typography variant="caption" color="text.secondary">
+                            Tạo ngày: {new Date(course.createdAt).toLocaleDateString('vi-VN')}
+                          </Typography>
+                        </Box>
                       </Stack>
-
-                      <Typography variant="body2" color="text.secondary" mb={2}>
-                        {course.description}
-                      </Typography>
-
-                      <Stack direction="row" spacing={3} mb={2}>
-                        <Box>
-                          <Typography variant="body2" color="text.secondary">
-                            Bài giảng
-                          </Typography>
-                          <Typography variant="subtitle2" fontWeight={600}>
-                            {course.totalOutlines || 0} bài
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <Typography variant="body2" color="text.secondary">
-                            Livestream
-                          </Typography>
-                          <Typography variant="subtitle2" fontWeight={600}>
-                            {course.totalLivestreams || 0} buổi
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <Typography variant="body2" color="text.secondary">
-                            Học viên
-                          </Typography>
-                          <Typography variant="subtitle2" fontWeight={600}>
-                            {course.studentCount || 0} người
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <Typography variant="body2" color="text.secondary">
-                            Giá
-                          </Typography>
-                          <Typography variant="subtitle2" fontWeight={600} color="primary.main">
-                            {course.isFree ? 'Miễn phí' : `${(course.price || 0).toLocaleString('vi-VN')}đ`}
-                          </Typography>
-                        </Box>
-                      </Stack>
-
-                      <Typography variant="caption" color="text.secondary">
-                        Tạo ngày: {new Date(course.createdAt).toLocaleDateString('vi-VN')}
-                      </Typography>
                     </Box>
-                  </Stack>
+                  </Link>
+
+                  {/* Delete Icon */}
+                  <Tooltip title="Xóa khóa học">
+                    <IconButton
+                      size="small"
+                      sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        bgcolor: 'background.paper',
+                        boxShadow: 1,
+                        zIndex: 2,
+                        '&:hover': {
+                          bgcolor: 'error.main',
+                          color: 'white',
+                        },
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        // Blur the button to remove focus before opening modal
+                        e.currentTarget.blur()
+                        handleDeleteCourse(course.id, course.title)
+                      }}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               ))}
             </Stack>
@@ -275,6 +392,24 @@ function CreatedCourses() {
           </Typography>
         </Box>
       )}
+
+      {/* Create Course Modal */}
+      <CreateCourseModal
+        open={openCreateModal}
+        onClose={handleCloseCreateModal}
+        onCourseCreated={handleCourseCreated}
+      />
+
+      {/* Confirm Delete Modal */}
+      <ConfirmDeleteModal
+        open={deleteModal.open}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
+        title="Xóa khóa học"
+        message="Bạn có chắc chắn muốn xóa khóa học này? Tất cả dữ liệu liên quan sẽ bị xóa vĩnh viễn."
+        itemName={deleteModal.courseName}
+        loading={isDeleting}
+      />
     </Container>
   )
 }

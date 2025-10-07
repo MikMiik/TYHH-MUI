@@ -21,7 +21,30 @@ export const courseApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
       providesTags: ['CreatedCourses'],
     }),
+    createCourse: builder.mutation({
+      query: (courseData) => ({
+        url: '/courses/teacher/create',
+        method: 'POST',
+        body: courseData,
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ['CreatedCourses'],
+    }),
+    deleteCourse: builder.mutation({
+      query: (id) => ({
+        url: `/courses/teacher/${id}`,
+        method: 'DELETE',
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ['CreatedCourses'],
+    }),
   }),
 })
 
-export const { useGetCourseQuery, useGetAllCoursesQuery, useGetCreatedCoursesQuery } = courseApi
+export const {
+  useGetCourseQuery,
+  useGetAllCoursesQuery,
+  useGetCreatedCoursesQuery,
+  useCreateCourseMutation,
+  useDeleteCourseMutation,
+} = courseApi

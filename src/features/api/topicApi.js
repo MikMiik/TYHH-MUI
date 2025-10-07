@@ -6,7 +6,14 @@ export const topicApi = baseApi.injectEndpoints({
       query: () => 'topics',
       transformResponse: (response) => response.data,
     }),
+    getTopics: builder.query({
+      query: (params) => ({
+        url: 'topics',
+        params,
+      }),
+      transformResponse: (response) => response.data,
+    }),
   }),
 })
 
-export const { useGetAllTopicsQuery } = topicApi
+export const { useGetAllTopicsQuery, useGetTopicsQuery } = topicApi

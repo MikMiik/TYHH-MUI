@@ -19,6 +19,21 @@ export default function ImageLazy({ src, alt, w, h, placeholder }) {
     }
   }, [])
 
+  // If no src or empty string, show placeholder
+  if (!src || src.trim() === '') {
+    return (
+      <img
+        src={placeholder || '/placeholder-image.svg'}
+        alt={alt}
+        style={{
+          width: w,
+          height: h,
+          objectFit: 'cover',
+        }}
+      />
+    )
+  }
+
   // If image has error, show placeholder from public folder
   if (hasError) {
     return (
