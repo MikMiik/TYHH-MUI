@@ -21,7 +21,7 @@ import { useGetAllCitiesQuery } from '../features/api/cityApi'
 
 import { useState } from 'react'
 import { useCurrentUser } from '@/utils/useCurrentUser'
-import { useGetOneProfileQuery, useUpdateProfileMutation } from '@/features/api/profileApi'
+import { useGetOneProfileQuery, useUpdateProfileMutation, useUploadAvatarMutation } from '@/features/api/profileApi'
 import profileSchema from '@/schemas/profileSchema'
 import { toast } from 'react-toastify'
 
@@ -37,6 +37,7 @@ const Profile = () => {
   } = useGetAllCitiesQuery({ refetchOnMountOrArgChange: true })
   const { data: profile, error: profileError, isLoading: profileLoading } = useGetOneProfileQuery(currentUser.id)
   const [updateProfile] = useUpdateProfileMutation()
+  const [uploadAvatar] = useUploadAvatarMutation()
 
   if (citiesError) {
     console.error('Lỗi khi tải danh sách tỉnh thành:', citiesError)
@@ -60,6 +61,23 @@ const Profile = () => {
     }
   }
 
+  const handleAvatarUpload = async (uploadResponse) => {
+    if (uploadResponse?.url && currentUser?.id) {
+      try {
+        await uploadAvatar({
+          userId: currentUser.id,
+          avatar: uploadResponse.filePath,
+        }).unwrap()
+        toast.success('Avatar đã được cập nhật thành công!')
+      } catch (err) {
+        console.error('Update avatar in DB failed:', err)
+        toast.error('Có lỗi xảy ra khi cập nhật avatar trong database')
+      }
+    } else {
+      toast.success('Upload thành công!')
+    }
+  }
+
   return (
     <Container>
       <Box my={2}>
@@ -69,9 +87,7 @@ const Profile = () => {
         </Typography>
         <Box maxWidth={800} mx="auto">
           <ImageKitUploader
-            onUploadSuccess={() => {
-              toast.success('Avatar đã được cập nhật thành công!')
-            }}
+            onUploadSuccess={handleAvatarUpload}
             onUploadError={() => {
               toast.error('Có lỗi xảy ra khi tải lên avatar')
             }}

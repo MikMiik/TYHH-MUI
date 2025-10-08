@@ -13,7 +13,15 @@ export const profileApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    uploadAvatar: builder.mutation({
+      query: ({ userId, avatar }) => ({
+        url: `users/${userId}/upload-avatar`,
+        method: 'POST',
+        body: { avatar },
+      }),
+      transformResponse: (response) => response.data,
+    }),
   }),
 })
 
-export const { useGetOneProfileQuery, useUpdateProfileMutation } = profileApi
+export const { useGetOneProfileQuery, useUpdateProfileMutation, useUploadAvatarMutation } = profileApi

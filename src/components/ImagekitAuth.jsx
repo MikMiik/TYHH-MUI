@@ -1,15 +1,23 @@
 import { upload } from '@imagekit/react'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import httpRequest from '@/utils/httpRequest'
-import { useCurrentUser } from '@/utils/useCurrentUser'
 
 /**
- * ImageKitUploader - Context/wrapper component for ImageKit file uploads
+ * ImageKitUploader - Generic wrapper component for ImageKit file uploads
  * Provides upload functionality to children components via render prop pattern
  *
+ * Props:
+ * - children: Function that receives upload utilities { uploadFile, isUploading, progress, error, resetError }
+ * - onUploadSuccess: Callback when upload succeeds, receives uploadResponse
+ * - onUploadError: Callback when upload fails, receives error
+ *
  * Usage:
- * <ImageKitUploader>
- *   {({ uploadFile, isUploading, progress, error }) => (
+ * <ImageKitUploader
+ *   onUploadSuccess={(response) => console.log('Success:', response)}
+ *   onUploadError={(error) => console.log('Error:', error)}
+ * >
+ *   {({ uploadFile, isUploading, progress, error, resetError }) => (
  *     <YourUploadUI onUpload={uploadFile} loading={isUploading} />
  *   )}
  * </ImageKitUploader>
@@ -18,7 +26,6 @@ const ImageKitUploader = ({ children, onUploadSuccess, onUploadError }) => {
   const [isUploading, setIsUploading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState(null)
-  const currentUser = useCurrentUser()
   const authenticator = async () => {
     try {
       // Call your backend authentication endpoint using axios
@@ -37,6 +44,15 @@ const ImageKitUploader = ({ children, onUploadSuccess, onUploadError }) => {
       return null
     }
 
+    // Validate file size (default 10MB, can be overridden in options)
+    const maxSize = options.maxSize || 10 * 1024 * 1024 // 10MB default
+    if (file.size > maxSize) {
+      const errorMsg = `File size must be less than ${Math.round(maxSize / 1024 / 1024)}MB`
+      setError(errorMsg)
+      onUploadError?.(new Error(errorMsg))
+      return null
+    }
+
     setIsUploading(true)
     setProgress(0)
     setError(null)
@@ -49,8 +65,8 @@ const ImageKitUploader = ({ children, onUploadSuccess, onUploadError }) => {
         ...authParams,
         file,
         fileName: options.fileName || file.name,
-        folder: options.folder || '/avatars', // Default folder for avatars
-        tags: options.tags || ['avatar'],
+        folder: options.folder || '/uploads', // Generic default folder
+        tags: options.tags || ['upload'], // Generic default tags
         onProgress: (event) => {
           const progressValue = (event.loaded / event.total) * 100
           setProgress(progressValue)
@@ -58,17 +74,6 @@ const ImageKitUploader = ({ children, onUploadSuccess, onUploadError }) => {
       })
 
       setIsUploading(false)
-      // Nếu có userId và muốn cập nhật DB, gọi API ở đây
-      if (uploadResponse?.url) {
-        console.log(uploadResponse)
-
-        try {
-          await httpRequest.post(`/users/${currentUser.id}/upload-avatar`, { avatar: uploadResponse.filePath })
-        } catch (err) {
-          // Không chặn UI, chỉ log lỗi nếu update DB thất bại
-          console.error('Update avatar in DB failed:', err)
-        }
-      }
       onUploadSuccess?.(uploadResponse)
       return uploadResponse
     } catch (uploadError) {
@@ -91,3 +96,10 @@ const ImageKitUploader = ({ children, onUploadSuccess, onUploadError }) => {
 }
 
 export default ImageKitUploader
+
+// PropTypes for better development experience
+ImageKitUploader.propTypes = {
+  children: PropTypes.func.isRequired,
+  onUploadSuccess: PropTypes.func,
+  onUploadError: PropTypes.func,
+}

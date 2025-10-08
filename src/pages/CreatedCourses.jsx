@@ -19,11 +19,16 @@ import CreateCourseModal from '@/components/CreateCourseModal'
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 
 function CreatedCourses() {
   const [page] = useState(1)
   const [search] = useState('')
   const [openCreateModal, setOpenCreateModal] = useState(false)
+  const [editModal, setEditModal] = useState({
+    open: false,
+    courseData: null,
+  })
   const [deleteModal, setDeleteModal] = useState({
     open: false,
     courseId: null,
@@ -46,6 +51,13 @@ function CreatedCourses() {
 
   const handleCreateCourse = () => {
     setOpenCreateModal(true)
+  }
+
+  const handleEditCourse = (course) => {
+    setEditModal({
+      open: true,
+      courseData: course,
+    })
   }
 
   const handleDeleteCourse = (courseId, courseTitle) => {
@@ -76,8 +88,17 @@ function CreatedCourses() {
     setOpenCreateModal(false)
   }
 
+  const handleCloseEditModal = () => {
+    setEditModal({ open: false, courseData: null })
+  }
+
   const handleCourseCreated = () => {
     setOpenCreateModal(false)
+    refetch() // Refresh the course list
+  }
+
+  const handleCourseEdited = () => {
+    setEditModal({ open: false, courseData: null })
     refetch() // Refresh the course list
   }
 
@@ -347,33 +368,64 @@ function CreatedCourses() {
                     </Box>
                   </Link>
 
-                  {/* Delete Icon */}
-                  <Tooltip title="Xóa khóa học">
-                    <IconButton
-                      size="small"
-                      sx={{
-                        position: 'absolute',
-                        top: 8,
-                        right: 8,
-                        bgcolor: 'background.paper',
-                        boxShadow: 1,
-                        zIndex: 2,
-                        '&:hover': {
-                          bgcolor: 'error.main',
-                          color: 'white',
-                        },
-                      }}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        // Blur the button to remove focus before opening modal
-                        e.currentTarget.blur()
-                        handleDeleteCourse(course.id, course.title)
-                      }}
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                  {/* Action Icons */}
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      zIndex: 2,
+                    }}
+                  >
+                    {/* Edit Icon */}
+                    <Tooltip title="Chỉnh sửa khóa học">
+                      <IconButton
+                        size="small"
+                        sx={{
+                          bgcolor: 'background.paper',
+                          boxShadow: 1,
+                          '&:hover': {
+                            bgcolor: 'primary.main',
+                            color: 'white',
+                          },
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          e.currentTarget.blur()
+                          handleEditCourse(course)
+                        }}
+                      >
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+
+                    {/* Delete Icon */}
+                    <Tooltip title="Xóa khóa học">
+                      <IconButton
+                        size="small"
+                        sx={{
+                          bgcolor: 'background.paper',
+                          boxShadow: 1,
+                          '&:hover': {
+                            bgcolor: 'error.main',
+                            color: 'white',
+                          },
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          // Blur the button to remove focus before opening modal
+                          e.currentTarget.blur()
+                          handleDeleteCourse(course.id, course.title)
+                        }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Stack>
                 </Box>
               ))}
             </Stack>
@@ -398,6 +450,15 @@ function CreatedCourses() {
         open={openCreateModal}
         onClose={handleCloseCreateModal}
         onCourseCreated={handleCourseCreated}
+      />
+
+      {/* Edit Course Modal */}
+      <CreateCourseModal
+        open={editModal.open}
+        onClose={handleCloseEditModal}
+        onCourseCreated={handleCourseEdited}
+        editMode={true}
+        initialData={editModal.courseData}
       />
 
       {/* Confirm Delete Modal */}

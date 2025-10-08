@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Dialog,
   DialogTitle,
@@ -20,10 +20,11 @@ import {
   Stack,
   Autocomplete,
 } from '@mui/material'
-import { useCreateCourseMutation } from '@/features/api/courseApi'
+import { useCreateCourseMutation, useEditCourseMutation } from '@/features/api/courseApi'
 import { useGetTopicsQuery } from '@/features/api/topicApi'
+import ImageUploader from './ImageUploader'
 
-const CreateCourseModal = ({ open, onClose, onCourseCreated }) => {
+const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, initialData = null }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -35,10 +36,52 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated }) => {
     content: '',
     group: '',
     topicIds: [],
+    selectedTopics: [],
+    thumbnail: '',
   })
 
-  const [createCourse, { isLoading, error }] = useCreateCourseMutation()
+  const [createCourse, { isLoading: isCreating, error: createError }] = useCreateCourseMutation()
+  const [editCourse, { isLoading: isEditing, error: editError }] = useEditCourseMutation()
   const { data: topics, isLoading: topicsLoading } = useGetTopicsQuery()
+
+  const isLoading = isCreating || isEditing
+  const error = createError || editError
+
+  // Initialize form data when in edit mode or when modal opens
+  useEffect(() => {
+    if (editMode && initialData) {
+      setFormData({
+        title: initialData.title || '',
+        description: initialData.description || '',
+        price: initialData.price?.toString() || '',
+        discount: initialData.discount?.toString() || '',
+        isFree: initialData.isFree || false,
+        status: initialData.status || 'draft',
+        purpose: initialData.purpose || '',
+        content: initialData.content || '',
+        group: initialData.group || '',
+        topicIds: initialData.topics?.map((topic) => topic.id) || [],
+        selectedTopics: initialData.topics || [], // Add this to hold actual topic objects
+        thumbnail: initialData.thumbnail || '',
+      })
+    } else if (!editMode) {
+      // Reset form when not in edit mode
+      setFormData({
+        title: '',
+        description: '',
+        price: '',
+        discount: '',
+        isFree: false,
+        status: 'draft',
+        purpose: '',
+        content: '',
+        group: '',
+        topicIds: [],
+        selectedTopics: [], // Add this for autocomplete
+        thumbnail: '',
+      })
+    }
+  }, [editMode, initialData, open])
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -52,6 +95,7 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated }) => {
     setFormData((prev) => ({
       ...prev,
       topicIds,
+      selectedTopics: newValue, // Store selected topic objects
     }))
   }
 
@@ -66,7 +110,13 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated }) => {
         discount: formData.discount ? parseFloat(formData.discount) : 0,
       }
 
-      await createCourse(courseData).unwrap()
+      if (editMode && initialData) {
+        // Edit existing course
+        await editCourse({ id: initialData.id, courseData }).unwrap()
+      } else {
+        // Create new course
+        await createCourse(courseData).unwrap()
+      }
 
       // Reset form
       setFormData({
@@ -80,11 +130,13 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated }) => {
         content: '',
         group: '',
         topicIds: [],
+        selectedTopics: [],
+        thumbnail: '',
       })
 
       onCourseCreated()
     } catch (err) {
-      console.error('Error creating course:', err)
+      console.error('Error saving course:', err)
     }
   }
 
@@ -101,10 +153,11 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated }) => {
       content: '',
       group: '',
       topicIds: [],
+      selectedTopics: [],
+      thumbnail: '',
     })
     onClose()
   }
-
   return (
     <Dialog
       open={open}
@@ -116,18 +169,23 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated }) => {
       }}
     >
       <DialogTitle>
-        <Typography variant="h5" fontWeight={700} color="primary.main">
-          Tạo khóa học mới
+        <Typography variant="h5" component="span" fontWeight={700} color="primary.main">
+          {editMode ? 'Chỉnh sửa khóa học' : 'Tạo khóa học mới'}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Điền thông tin cơ bản để tạo khóa học của bạn
+        <Typography variant="body2" color="text.secondary" component="div">
+          {editMode ? 'Cập nhật thông tin khóa học của bạn' : 'Điền thông tin cơ bản để tạo khóa học của bạn'}
         </Typography>
       </DialogTitle>
 
       <form onSubmit={handleSubmit}>
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            {error && <Alert severity="error">{error?.data?.message || 'Có lỗi xảy ra khi tạo khóa học'}</Alert>}
+            {error && (
+              <Alert severity="error">
+                {error?.data?.message ||
+                  (editMode ? 'Có lỗi xảy ra khi cập nhật khóa học' : 'Có lỗi xảy ra khi tạo khóa học')}
+              </Alert>
+            )}
 
             {/* Title */}
             <TextField
@@ -165,9 +223,10 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated }) => {
             {/* Topics */}
             <Autocomplete
               multiple
-              options={topics}
+              options={topics || []}
               getOptionLabel={(option) => option.title}
               loading={topicsLoading}
+              value={formData.selectedTopics || []}
               onChange={handleTopicsChange}
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
@@ -260,6 +319,23 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated }) => {
               onChange={(e) => handleInputChange('content', e.target.value)}
               placeholder="Nội dung chi tiết về khóa học..."
             />
+
+            {/* Thumbnail Upload */}
+            <ImageUploader
+              currentImage={formData.thumbnail ? `${import.meta.env.VITE_IK_URL_ENDPOINT}/${formData.thumbnail}` : null}
+              onUploadSuccess={(url) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  thumbnail: url,
+                }))
+              }}
+              onUploadError={(error) => {
+                console.error('Thumbnail upload error:', error)
+              }}
+              uploadFolder="course-thumbnails"
+              title="Ảnh thumbnail khóa học"
+              fileName="course_thumbnail"
+            />
           </Box>
         </DialogContent>
 
@@ -273,7 +349,13 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated }) => {
             disabled={isLoading || !formData.title.trim()}
             startIcon={isLoading && <CircularProgress size={20} />}
           >
-            {isLoading ? 'Đang tạo...' : 'Tạo khóa học'}
+            {isLoading
+              ? editMode
+                ? 'Đang cập nhật...'
+                : 'Đang tạo...'
+              : editMode
+              ? 'Cập nhật khóa học'
+              : 'Tạo khóa học'}
           </Button>
         </DialogActions>
       </form>

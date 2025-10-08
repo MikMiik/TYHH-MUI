@@ -38,6 +38,15 @@ export const courseApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
       invalidatesTags: ['CreatedCourses'],
     }),
+    editCourse: builder.mutation({
+      query: ({ id, courseData }) => ({
+        url: `/courses/teacher/${id}`,
+        method: 'PUT',
+        body: courseData,
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ['CreatedCourses'],
+    }),
   }),
 })
 
@@ -47,4 +56,5 @@ export const {
   useGetCreatedCoursesQuery,
   useCreateCourseMutation,
   useDeleteCourseMutation,
+  useEditCourseMutation,
 } = courseApi
