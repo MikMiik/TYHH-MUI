@@ -62,11 +62,16 @@ const Profile = () => {
   }
 
   const handleAvatarUpload = async (uploadResponse) => {
-    if (uploadResponse?.url && currentUser?.id) {
+    if (uploadResponse && currentUser?.id) {
       try {
+        // Loại bỏ dấu / ở đầu filePath để có đường dẫn tương đối
+        const relativePath = uploadResponse.filePath?.startsWith('/')
+          ? uploadResponse.filePath.substring(1)
+          : uploadResponse.filePath
+
         await uploadAvatar({
           userId: currentUser.id,
-          avatar: uploadResponse.filePath,
+          avatar: relativePath,
         }).unwrap()
         toast.success('Avatar đã được cập nhật thành công!')
       } catch (err) {

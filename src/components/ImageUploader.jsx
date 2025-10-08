@@ -22,21 +22,16 @@ const ImageUploader = ({
       return
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      onUploadError?.('Kích thước ảnh phải nhỏ hơn 5MB')
-      return
-    }
-
     // Create preview URL
     const preview = URL.createObjectURL(file)
     setPreviewUrl(preview)
 
-    // Upload file
+    // Upload file - file size validation will be handled by ImagekitAuth
     uploadFile(file, {
       fileName: `${fileName}_${Date.now()}.${file.name.split('.').pop()}`,
       folder: `/${uploadFolder}`,
       tags: [fileName, uploadFolder],
+      maxSize: 5 * 1024 * 1024, // 5MB limit for images
     })
   }
 
@@ -53,7 +48,13 @@ const ImageUploader = ({
         onUploadSuccess={(response) => {
           clearPreview()
           if (response.url) {
-            onUploadSuccess?.(response.url)
+            // Loại bỏ dấu / ở đầu filePath để có đường dẫn tương đối
+            const relativePath = response.filePath?.startsWith('/') ? response.filePath.substring(1) : response.filePath
+
+            onUploadSuccess?.({
+              ...response,
+              filePath: relativePath,
+            })
           }
         }}
         onUploadError={(error) => {

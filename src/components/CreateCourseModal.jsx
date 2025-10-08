@@ -23,6 +23,7 @@ import {
 import { useCreateCourseMutation, useEditCourseMutation } from '@/features/api/courseApi'
 import { useGetTopicsQuery } from '@/features/api/topicApi'
 import ImageUploader from './ImageUploader'
+import courseSchema from '@/schemas/courseSchema'
 
 const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, initialData = null }) => {
   const [formData, setFormData] = useState({
@@ -43,6 +44,9 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
   const [createCourse, { isLoading: isCreating, error: createError }] = useCreateCourseMutation()
   const [editCourse, { isLoading: isEditing, error: editError }] = useEditCourseMutation()
   const { data: topics, isLoading: topicsLoading } = useGetTopicsQuery()
+
+  // Validation state
+  const [validationErrors, setValidationErrors] = useState({})
 
   const isLoading = isCreating || isEditing
   const error = createError || editError
@@ -88,6 +92,14 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
       ...prev,
       [field]: value,
     }))
+
+    // Clear validation error for this field when user starts typing
+    if (validationErrors[field]) {
+      setValidationErrors((prev) => ({
+        ...prev,
+        [field]: null,
+      }))
+    }
   }
 
   const handleTopicsChange = (event, newValue) => {
@@ -97,6 +109,30 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
       topicIds,
       selectedTopics: newValue, // Store selected topic objects
     }))
+
+    // Clear validation error for topicIds
+    if (validationErrors.topicIds) {
+      setValidationErrors((prev) => ({
+        ...prev,
+        topicIds: null,
+      }))
+    }
+  }
+
+  // Validate form data
+  const validateForm = async (data) => {
+    try {
+      await courseSchema.validate(data, { abortEarly: false })
+      setValidationErrors({})
+      return true
+    } catch (err) {
+      const errors = {}
+      err.inner.forEach((error) => {
+        errors[error.path] = error.message
+      })
+      setValidationErrors(errors)
+      return false
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -108,6 +144,12 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
         ...formData,
         price: formData.price ? parseFloat(formData.price) : 0,
         discount: formData.discount ? parseFloat(formData.discount) : 0,
+      }
+
+      // Validate form data
+      const isValid = await validateForm(courseData)
+      if (!isValid) {
+        return // Stop if validation fails
       }
 
       if (editMode && initialData) {
@@ -196,6 +238,8 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
               value={formData.title}
               onChange={(e) => handleInputChange('title', e.target.value)}
               placeholder="Nhập tên khóa học..."
+              error={!!validationErrors.title}
+              helperText={validationErrors.title}
             />
 
             {/* Description */}
@@ -208,6 +252,8 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
               value={formData.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
               placeholder="Mô tả chi tiết về khóa học..."
+              error={!!validationErrors.description}
+              helperText={validationErrors.description}
             />
 
             {/* Purpose */}
@@ -218,6 +264,8 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
               value={formData.purpose}
               onChange={(e) => handleInputChange('purpose', e.target.value)}
               placeholder="Mục đích và mục tiêu của khóa học..."
+              error={!!validationErrors.purpose}
+              helperText={validationErrors.purpose}
             />
 
             {/* Topics */}
@@ -238,6 +286,8 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                   {...params}
                   label="Chọn chủ đề"
                   placeholder="Tìm và chọn chủ đề..."
+                  error={!!validationErrors.topicIds}
+                  helperText={validationErrors.topicIds}
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (
@@ -259,6 +309,8 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
               value={formData.group}
               onChange={(e) => handleInputChange('group', e.target.value)}
               placeholder="Nhóm hoặc danh mục..."
+              error={!!validationErrors.group}
+              helperText={validationErrors.group}
             />
 
             {/* Free Switch */}
@@ -281,6 +333,8 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                   onChange={(e) => handleInputChange('price', e.target.value)}
                   placeholder="0"
                   inputProps={{ min: 0 }}
+                  error={!!validationErrors.price}
+                  helperText={validationErrors.price}
                 />
                 <TextField
                   label="Giảm giá (VNĐ)"
@@ -291,12 +345,14 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                   onChange={(e) => handleInputChange('discount', e.target.value)}
                   placeholder="0"
                   inputProps={{ min: 0 }}
+                  error={!!validationErrors.discount}
+                  helperText={validationErrors.discount}
                 />
               </Stack>
             )}
 
             {/* Status */}
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!validationErrors.status}>
               <InputLabel>Trạng thái</InputLabel>
               <Select
                 value={formData.status}
@@ -306,6 +362,11 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                 <MenuItem value="draft">Bản nháp</MenuItem>
                 <MenuItem value="published">Xuất bản</MenuItem>
               </Select>
+              {validationErrors.status && (
+                <Box sx={{ mt: 0.5, ml: 1.75, fontSize: '0.75rem', color: 'error.main' }}>
+                  {validationErrors.status}
+                </Box>
+              )}
             </FormControl>
 
             {/* Content */}
@@ -318,24 +379,40 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
               value={formData.content}
               onChange={(e) => handleInputChange('content', e.target.value)}
               placeholder="Nội dung chi tiết về khóa học..."
+              error={!!validationErrors.content}
+              helperText={validationErrors.content}
             />
 
             {/* Thumbnail Upload */}
-            <ImageUploader
-              currentImage={formData.thumbnail ? `${import.meta.env.VITE_IK_URL_ENDPOINT}/${formData.thumbnail}` : null}
-              onUploadSuccess={(url) => {
-                setFormData((prev) => ({
-                  ...prev,
-                  thumbnail: url,
-                }))
-              }}
-              onUploadError={(error) => {
-                console.error('Thumbnail upload error:', error)
-              }}
-              uploadFolder="course-thumbnails"
-              title="Ảnh thumbnail khóa học"
-              fileName="course_thumbnail"
-            />
+            <Box>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                Ảnh thumbnail khóa học
+              </Typography>
+              <ImageUploader
+                currentImage={
+                  formData.thumbnail ? `${import.meta.env.VITE_IK_URL_ENDPOINT}/${formData.thumbnail}` : null
+                }
+                onUploadSuccess={(response) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    thumbnail: response.filePath,
+                  }))
+                  // Clear thumbnail error if upload succeeds
+                  if (validationErrors.thumbnail) {
+                    setValidationErrors((prev) => ({ ...prev, thumbnail: null }))
+                  }
+                }}
+                onUploadError={(error) => {
+                  console.error('Thumbnail upload error:', error)
+                }}
+                uploadFolder="course-thumbnails"
+                title="Ảnh thumbnail khóa học"
+                fileName="course_thumbnail"
+              />
+              {validationErrors.thumbnail && (
+                <Box sx={{ mt: 0.5, fontSize: '0.75rem', color: 'error.main' }}>{validationErrors.thumbnail}</Box>
+              )}
+            </Box>
           </Box>
         </DialogContent>
 
