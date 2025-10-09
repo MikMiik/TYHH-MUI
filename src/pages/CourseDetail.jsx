@@ -296,6 +296,7 @@ const CourseDetail = () => {
                         onDeleteOutline={handleDeleteOutline}
                         onEditOutline={handleEditOutline}
                         onCreateLivestream={handleCreateLivestream}
+                        defaultExpanded
                       />
                     ))
                   ) : (

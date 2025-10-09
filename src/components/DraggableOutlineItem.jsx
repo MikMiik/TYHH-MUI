@@ -5,26 +5,25 @@ import {
   Typography,
   Stack,
   Stepper,
-  Step,
-  StepLabel,
-  StepContent,
   IconButton,
   Tooltip,
   Box,
   Chip,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import AddIcon from '@mui/icons-material/Add'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import CircularDeterminate from './CircularDeterminate'
-import EditDocumentIcon from '@mui/icons-material/EditDocument'
-import GreenCircleStepIcon from './GreenCircleStepIcon'
-import { Link } from 'react-router-dom'
+import DraggableLivestreamItem from './DraggableLivestreamItem'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { useReorderLivestreamsMutation } from '@/features/api/livestreamApi'
+import { toast } from 'react-toastify'
+import { useState, useEffect } from 'react'
 
 const DraggableOutlineItem = ({
   outline,
@@ -35,10 +34,26 @@ const DraggableOutlineItem = ({
   onCreateLivestream,
   ...accordionProps
 }) => {
-  // Setup sortable functionality
+  const [reorderedLivestreams, setReorderedLivestreams] = useState(outline.livestreams || [])
+  const [reorderLivestreams] = useReorderLivestreamsMutation()
+
+  // Sync with outline changes
+  useEffect(() => {
+    setReorderedLivestreams(outline.livestreams || [])
+  }, [outline.livestreams])
+
+  // Setup sortable functionality for outline
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: outline.id.toString(),
   })
+
+  // Setup sensors for livestream drag & drop
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -47,10 +62,48 @@ const DraggableOutlineItem = ({
   }
 
   // Tính phần trăm hoàn thành dựa trên số livestream đã xem
-  const livestreams = outline.livestreams || []
+  const livestreams = reorderedLivestreams
   const seenCount = livestreams.filter((item) => item.isSeen).length
   const totalCount = livestreams.length
   const completionPercentage = totalCount > 0 ? (seenCount / totalCount) * 100 : 0
+
+  // Handle livestream drag end
+  const handleLivestreamDragEnd = async (event) => {
+    const { active, over } = event
+
+    if (!over || active.id === over.id) {
+      return
+    }
+
+    const oldIndex = reorderedLivestreams.findIndex((item) => item.id === active.id)
+    const newIndex = reorderedLivestreams.findIndex((item) => item.id === over.id)
+
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const newLivestreams = arrayMove(reorderedLivestreams, oldIndex, newIndex)
+      setReorderedLivestreams(newLivestreams)
+
+      // Call API to update order
+      try {
+        const orders = newLivestreams.map((livestream, index) => ({
+          id: livestream.id,
+          order: index + 1,
+        }))
+
+        await reorderLivestreams({
+          courseOutlineId: outline.id,
+          orders,
+        }).unwrap()
+
+        toast.success('Sắp xếp livestream thành công!')
+      } catch (error) {
+        console.error('Error reordering livestreams:', error)
+        // Revert order on error
+        setReorderedLivestreams(outline.livestreams || [])
+        const errorMessage = error?.data?.message || 'Có lỗi xảy ra khi sắp xếp livestream'
+        toast.error(errorMessage)
+      }
+    }
+  }
 
   const handleDeleteClick = (e) => {
     e.stopPropagation() // Prevent accordion from expanding/collapsing
@@ -215,51 +268,28 @@ const DraggableOutlineItem = ({
         </AccordionSummary>
 
         <AccordionDetails sx={{ p: 0 }}>
-          <Stepper
-            orientation="vertical"
-            nonLinear
-            activeStep={-1}
-            sx={{ pl: 2, pr: 0, '& .MuiStepConnector-root, & .MuiStepContent-root': { ml: '10px' } }}
-          >
-            {livestreams.map((item) => (
-              <Step key={item.title} expanded>
-                <StepLabel slots={{ stepIcon: (props) => <GreenCircleStepIcon isSeen={item.isSeen} {...props} /> }}>
-                  <Link to={`/courses/${courseSlug}/${item.slug}`} style={{ textDecoration: 'none' }}>
-                    <Typography
-                      variant="body2"
-                      fontWeight={600}
-                      color="primary.main"
-                      sx={{ cursor: 'pointer', ':hover': { textDecoration: 'underline' } }}
-                    >
-                      {item.title}
-                    </Typography>
-                  </Link>
-                </StepLabel>
-                <StepContent>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    {Array.isArray(item.documents) && item.documents.length > 0 ? (
-                      <Link
-                        to={`/documents/${item.documents[0].slug}`}
-                        style={{ display: 'inline-flex', alignItems: 'center' }}
-                      >
-                        <EditDocumentIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
-                      </Link>
-                    ) : (
-                      <EditDocumentIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
-                    )}
-                    <Typography fontSize={14} color="#888">
-                      {Array.isArray(item.documents) ? item.documents.length : 0}
-                    </Typography>
-
-                    <RemoveRedEyeRoundedIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
-                    <Typography fontSize={14} color="#888">
-                      {item.view || 0}
-                    </Typography>
-                  </Stack>
-                </StepContent>
-              </Step>
-            ))}
-          </Stepper>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleLivestreamDragEnd}>
+            <SortableContext items={livestreams.map((item) => item.id)} strategy={verticalListSortingStrategy}>
+              <Stepper
+                orientation="vertical"
+                nonLinear
+                activeStep={-1}
+                sx={{ pl: 2, pr: 0, '& .MuiStepConnector-root, & .MuiStepContent-root': { ml: '10px' } }}
+              >
+                {livestreams.map((item) => (
+                  <DraggableLivestreamItem
+                    key={item.id}
+                    livestream={item}
+                    courseSlug={courseSlug}
+                    onDeleteLivestream={(deletedId) => {
+                      // Remove from local state
+                      setReorderedLivestreams((prev) => prev.filter((item) => item.id !== deletedId))
+                    }}
+                  />
+                ))}
+              </Stepper>
+            </SortableContext>
+          </DndContext>
         </AccordionDetails>
       </Accordion>
     </Box>

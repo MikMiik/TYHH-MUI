@@ -39,6 +39,7 @@ const CourseOutlineItem = ({ title, livestreams = [], outlineId, onDeleteOutline
       <Accordion
         square
         disableGutters
+        defaultExpanded
         sx={{
           boxShadow: 'none',
           borderRadius: 2,

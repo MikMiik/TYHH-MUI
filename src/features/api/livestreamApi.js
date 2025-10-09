@@ -43,6 +43,25 @@ export const livestreamApi = baseApi.injectEndpoints({
         { type: 'CourseOutline', id: result?.courseOutlineId },
       ],
     }),
+    deleteLivestream: builder.mutation({
+      query: (id) => ({
+        url: `/livestreams/teacher/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, id) => [{ type: 'Livestream', id }, 'Course', 'CourseOutline'],
+    }),
+    reorderLivestreams: builder.mutation({
+      query: ({ courseOutlineId, orders }) => ({
+        url: '/livestreams/teacher/reorder',
+        method: 'POST',
+        body: { courseOutlineId, orders },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'CourseOutline', id: arg.courseOutlineId },
+        'Course',
+        'Livestream',
+      ],
+    }),
   }),
 })
 
@@ -51,4 +70,6 @@ export const {
   useGetAllLivestreamsQuery,
   useCreateLivestreamMutation,
   useUpdateLivestreamMutation,
+  useDeleteLivestreamMutation,
+  useReorderLivestreamsMutation,
 } = livestreamApi
