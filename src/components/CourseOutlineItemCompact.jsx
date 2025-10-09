@@ -18,8 +18,7 @@ import CircularDeterminate from './CircularDeterminate'
 import EditDocumentIcon from '@mui/icons-material/EditDocument'
 import { Link } from 'react-router-dom'
 
-const CourseOutlineItemCompact = ({ title, livestreams = [] }) => {
-  // Tính phần trăm hoàn thành dựa trên số livestream đã xem
+const CourseOutlineItemCompact = ({ title, livestreams = [], courseSlug }) => {
   const seenCount = livestreams.filter((item) => item.isSeen).length
   const totalCount = livestreams.length
   const completionPercentage = totalCount > 0 ? (seenCount / totalCount) * 100 : 0
@@ -75,7 +74,7 @@ const CourseOutlineItemCompact = ({ title, livestreams = [] }) => {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  <Link to={`/livestreams/${item.slug}`} style={{ textDecoration: 'none' }}>
+                  <Link to={`/courses/${courseSlug}/${item.slug}`} style={{ textDecoration: 'none' }}>
                     <Typography
                       variant="caption"
                       fontWeight={600}

@@ -15,7 +15,7 @@ const config = {
     ranking: '/ranking',
     profile: '/profile',
     courseDetail: '/courses/:slug',
-    livestream: '/livestreams/:slug',
+    livestream: '/courses/:courseSlug/:slug',
     notFound: '*',
   },
 }

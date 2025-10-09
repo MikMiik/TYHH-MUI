@@ -290,6 +290,7 @@ const CourseDetail = () => {
                     course.outlines.map((outline, index) => (
                       <DraggableOutlineItem
                         key={outline.id}
+                        courseSlug={course?.slug}
                         outline={outline}
                         index={index}
                         onDeleteOutline={handleDeleteOutline}

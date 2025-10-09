@@ -28,6 +28,7 @@ import { CSS } from '@dnd-kit/utilities'
 
 const DraggableOutlineItem = ({
   outline,
+  courseSlug,
   index,
   onDeleteOutline,
   onEditOutline,
@@ -223,7 +224,7 @@ const DraggableOutlineItem = ({
             {livestreams.map((item) => (
               <Step key={item.title} expanded>
                 <StepLabel slots={{ stepIcon: (props) => <GreenCircleStepIcon isSeen={item.isSeen} {...props} /> }}>
-                  <Link to={`/livestreams/${item.slug}`} style={{ textDecoration: 'none' }}>
+                  <Link to={`/courses/${courseSlug}/${item.slug}`} style={{ textDecoration: 'none' }}>
                     <Typography
                       variant="body2"
                       fontWeight={600}

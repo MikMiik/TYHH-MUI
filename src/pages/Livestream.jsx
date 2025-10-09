@@ -2,19 +2,57 @@ import BreadCrumbsPath from '@/components/BreadCrumbsPath'
 import { Box, Button, Container, Stack, Typography } from '@mui/material'
 import VideoComp from '@/components/VideoComp'
 import DownloadIcon from '@mui/icons-material/Download'
+import UploadIcon from '@mui/icons-material/Upload'
+import VideoUploadModal from '@/components/VideoUploadModal'
 import { useParams } from 'react-router-dom'
-import { useGetLivestreamQuery } from '@/features/api/livestreamApi'
+import { useGetLivestreamQuery, useUpdateLivestreamMutation } from '@/features/api/livestreamApi'
 import CourseOutlineItemCompact from '@/components/CourseOutlineItemCompact'
 import { useLoadingState } from '@/components/withLoadingState'
+import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 const Livestream = () => {
-  const { slug } = useParams()
+  const { slug, courseSlug } = useParams()
+  const [uploadModalOpen, setUploadModalOpen] = useState(false)
+
   const queryResult = useGetLivestreamQuery(slug)
   const { data: livestream, LoadingStateComponent } = useLoadingState(queryResult, {
     variant: 'page',
     loadingText: 'Đang tải livestream...',
     emptyText: 'Không tìm thấy livestream này',
   })
+
+  const [updateLivestream] = useUpdateLivestreamMutation()
+
+  const handleUploadVideo = () => {
+    setUploadModalOpen(true)
+  }
+
+  const extractRelativePath = (response) => {
+    // Use filePath directly as it's already relative from VideoUploadModal
+    return response.filePath || response.url?.replace(/^.*\//, '') || ''
+  }
+
+  const handleUploadSuccess = async (response) => {
+    console.log('Video uploaded successfully:', response)
+
+    try {
+      // Extract relative path from response
+      const relativePath = extractRelativePath(response)
+
+      // Update livestream with relative path
+      await updateLivestream({
+        id: livestream.id,
+        url: relativePath,
+      }).unwrap()
+
+      toast.success('Cập nhật video thành công!')
+    } catch (error) {
+      console.error('Error updating livestream:', error)
+      const errorMessage = error?.data?.message || 'Có lỗi xảy ra khi cập nhật video'
+      toast.error(errorMessage)
+    }
+  }
 
   return (
     <LoadingStateComponent>
@@ -27,7 +65,7 @@ const Livestream = () => {
           <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" gap={1} my={1}>
             {/* Left */}
             <Box width={{ md: '66.7%', xs: '100%' }}>
-              <VideoComp livestreamSlug={livestream?.slug} />
+              <VideoComp src={livestream?.url} livestreamSlug={livestream?.slug} />
             </Box>
 
             {/* Right */}
@@ -76,6 +114,7 @@ const Livestream = () => {
                   {livestream?.course?.outlines?.map((outline) => (
                     <CourseOutlineItemCompact
                       key={outline.id}
+                      courseSlug={courseSlug}
                       title={outline.title}
                       livestreams={outline.livestreams}
                     />
@@ -92,8 +131,26 @@ const Livestream = () => {
             <Button variant="contained" color="tertiary" disableElevation size="large" startIcon={<DownloadIcon />}>
               Tải Slidenote
             </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              disableElevation
+              size="large"
+              startIcon={<UploadIcon />}
+              onClick={handleUploadVideo}
+            >
+              Upload Video
+            </Button>
           </Stack>
         </Box>
+
+        {/* Video Upload Modal */}
+        <VideoUploadModal
+          open={uploadModalOpen}
+          onClose={() => setUploadModalOpen(false)}
+          onUploadSuccess={handleUploadSuccess}
+          livestream={livestream}
+        />
       </Container>
     </LoadingStateComponent>
   )

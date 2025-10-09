@@ -12,6 +12,10 @@ export const livestreamApi = baseApi.injectEndpoints({
     getLivestream: builder.query({
       query: (slug) => `/livestreams/${slug}`,
       transformResponse: (response) => response.data,
+      providesTags: (result, error, slug) => [
+        { type: 'Livestream', id: slug },
+        { type: 'Livestream', id: result?.id },
+      ],
     }),
     createLivestream: builder.mutation({
       query: (livestreamData) => ({
@@ -25,7 +29,26 @@ export const livestreamApi = baseApi.injectEndpoints({
         { type: 'CourseOutline', id: arg.courseOutlineId },
       ],
     }),
+    updateLivestream: builder.mutation({
+      query: ({ id, ...livestreamData }) => ({
+        url: `/livestreams/teacher/${id}`,
+        method: 'PUT',
+        body: livestreamData,
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Livestream', id: arg.id },
+        { type: 'Livestream', id: result?.slug },
+        { type: 'Course', id: result?.courseId },
+        { type: 'CourseOutline', id: result?.courseOutlineId },
+      ],
+    }),
   }),
 })
 
-export const { useGetLivestreamQuery, useGetAllLivestreamsQuery, useCreateLivestreamMutation } = livestreamApi
+export const {
+  useGetLivestreamQuery,
+  useGetAllLivestreamsQuery,
+  useCreateLivestreamMutation,
+  useUpdateLivestreamMutation,
+} = livestreamApi
