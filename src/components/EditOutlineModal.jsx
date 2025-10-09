@@ -11,12 +11,12 @@ import {
   IconButton,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { useCreateCourseOutlineMutation } from '@/features/api/courseApi'
+import { useUpdateCourseOutlineMutation } from '@/features/api/courseApi'
 import { toast } from 'react-toastify'
 
-const CreateOutlineModal = ({ open, onClose, onOutlineCreated, courseId }) => {
+const EditOutlineModal = ({ open, onClose, onOutlineUpdated, outline }) => {
   const [outlineTitle, setOutlineTitle] = useState('')
-  const [createCourseOutline, { isLoading: isCreating }] = useCreateCourseOutlineMutation()
+  const [updateCourseOutline, { isLoading: isUpdating }] = useUpdateCourseOutlineMutation()
 
   // Preserve scroll position
   const [scrollPosition, setScrollPosition] = useState(0)
@@ -27,28 +27,39 @@ const CreateOutlineModal = ({ open, onClose, onOutlineCreated, courseId }) => {
     }
   }, [open])
 
+  // Populate form when outline changes
+  useEffect(() => {
+    if (outline) {
+      setOutlineTitle(outline.title || '')
+    }
+  }, [outline])
+
   const handleSubmit = async () => {
     if (!outlineTitle.trim()) {
       toast.error('Vui lòng nhập tiêu đề outline')
       return
     }
 
+    if (!outline?.id) {
+      toast.error('Không tìm thấy outline để cập nhật')
+      return
+    }
+
     try {
-      await createCourseOutline({
+      await updateCourseOutline({
+        id: outline.id,
         title: outlineTitle.trim(),
-        courseId: courseId,
       }).unwrap()
 
-      toast.success('Tạo outline thành công!')
-      setOutlineTitle('')
-      onOutlineCreated()
+      toast.success('Cập nhật outline thành công!')
+      onOutlineUpdated()
     } catch (error) {
-      toast.error(error?.data?.message || 'Có lỗi xảy ra khi tạo outline')
+      toast.error(error?.data?.message || 'Có lỗi xảy ra khi cập nhật outline')
     }
   }
 
   const handleClose = () => {
-    if (!isCreating) {
+    if (!isUpdating) {
       setOutlineTitle('')
       // Restore scroll position after modal closes
       setTimeout(() => {
@@ -82,12 +93,12 @@ const CreateOutlineModal = ({ open, onClose, onOutlineCreated, courseId }) => {
       <DialogTitle sx={{ m: 0, p: 3, pb: 1 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h6" fontWeight={600} color="primary.main">
-            Tạo Outline Mới
+            Chỉnh Sửa Outline
           </Typography>
           <IconButton
             aria-label="close"
             onClick={handleClose}
-            disabled={isCreating}
+            disabled={isUpdating}
             sx={{
               color: (theme) => theme.palette.grey[500],
             }}
@@ -100,7 +111,7 @@ const CreateOutlineModal = ({ open, onClose, onOutlineCreated, courseId }) => {
       <DialogContent sx={{ px: 3, pb: 2 }}>
         <Box sx={{ mt: 2 }}>
           <Typography variant="body2" color="text.secondary" mb={2}>
-            Nhập tiêu đề cho outline mới của khóa học này.
+            Cập nhật tiêu đề cho outline này.
           </Typography>
 
           <TextField
@@ -111,7 +122,7 @@ const CreateOutlineModal = ({ open, onClose, onOutlineCreated, courseId }) => {
             value={outlineTitle}
             onChange={(e) => setOutlineTitle(e.target.value)}
             onKeyPress={handleKeyPress}
-            disabled={isCreating}
+            disabled={isUpdating}
             placeholder="Ví dụ: Giới thiệu cơ bản"
             sx={{
               '& .MuiOutlinedInput-root': {
@@ -124,23 +135,23 @@ const CreateOutlineModal = ({ open, onClose, onOutlineCreated, courseId }) => {
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 3, pt: 1 }}>
-        <Button onClick={handleClose} disabled={isCreating} color="inherit" sx={{ borderRadius: 2 }}>
+        <Button onClick={handleClose} disabled={isUpdating} color="inherit" sx={{ borderRadius: 2 }}>
           Hủy
         </Button>
         <Button
           onClick={handleSubmit}
           variant="contained"
-          disabled={isCreating || !outlineTitle.trim() || outlineTitle.trim().length < 3}
+          disabled={isUpdating || !outlineTitle.trim() || outlineTitle.trim().length < 3}
           sx={{
             borderRadius: 2,
             minWidth: 100,
           }}
         >
-          {isCreating ? 'Đang tạo...' : 'Tạo Outline'}
+          {isUpdating ? 'Đang cập nhật...' : 'Cập Nhật'}
         </Button>
       </DialogActions>
     </Dialog>
   )
 }
 
-export default CreateOutlineModal
+export default EditOutlineModal

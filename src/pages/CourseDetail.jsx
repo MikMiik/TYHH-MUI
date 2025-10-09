@@ -6,14 +6,22 @@ import AddIcon from '@mui/icons-material/Add'
 import VideoComp from '@/components/VideoComp'
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined'
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration'
-import CourseOutlineItem from '@/components/CourseOutlineItem'
+import DraggableOutlineItem from '@/components/DraggableOutlineItem'
 import CreateOutlineModal from '@/components/CreateOutlineModal'
+import CreateLivestreamModal from '@/components/CreateLivestreamModal'
+import EditOutlineModal from '@/components/EditOutlineModal'
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
-import { useGetCourseQuery, useDeleteCourseOutlineMutation } from '@/features/api/courseApi'
+import {
+  useGetCourseQuery,
+  useDeleteCourseOutlineMutation,
+  useReorderCourseOutlinesMutation,
+} from '@/features/api/courseApi'
 import { useParams } from 'react-router-dom'
 import { useLoadingState } from '@/components/withLoadingState'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
 const CourseDetail = () => {
   const { slug } = useParams()
@@ -25,13 +33,30 @@ const CourseDetail = () => {
   })
 
   const [openOutlineModal, setOpenOutlineModal] = useState(false)
+  const [editModal, setEditModal] = useState({
+    open: false,
+    outline: null,
+  })
   const [deleteModal, setDeleteModal] = useState({
     open: false,
     outlineId: null,
     outlineName: '',
   })
+  const [livestreamModal, setLivestreamModal] = useState({
+    open: false,
+    outline: null,
+  })
 
   const [deleteOutline, { isLoading: isDeleting }] = useDeleteCourseOutlineMutation()
+  const [reorderOutlines] = useReorderCourseOutlinesMutation()
+
+  // Setup sensors for dnd-kit
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
 
   const handleCreateOutline = () => {
     setOpenOutlineModal(true)
@@ -46,12 +71,59 @@ const CourseDetail = () => {
     // RTK Query sẽ tự động refetch thông qua invalidatesTags, không cần gọi refetch() thủ công
   }
 
+  const handleEditOutline = (outline) => {
+    setEditModal({
+      open: true,
+      outline,
+    })
+  }
+
+  const handleCloseEditModal = () => {
+    setEditModal({
+      open: false,
+      outline: null,
+    })
+  }
+
+  const handleOutlineUpdated = () => {
+    setEditModal({
+      open: false,
+      outline: null,
+    })
+    // RTK Query sẽ tự động refetch thông qua invalidatesTags
+  }
+
   const handleDeleteOutline = (outlineId, outlineName) => {
     setDeleteModal({
       open: true,
       outlineId,
       outlineName,
     })
+  }
+
+  const handleCreateLivestream = (outline) => {
+    setLivestreamModal({
+      open: true,
+      outline: {
+        ...outline,
+        courseId: course?.id, // Ensure courseId is passed
+      },
+    })
+  }
+
+  const handleCloseLivestreamModal = () => {
+    setLivestreamModal({
+      open: false,
+      outline: null,
+    })
+  }
+
+  const handleLivestreamCreated = () => {
+    setLivestreamModal({
+      open: false,
+      outline: null,
+    })
+    // RTK Query sẽ tự động refetch thông qua invalidatesTags
   }
 
   const handleConfirmDelete = async () => {
@@ -68,6 +140,44 @@ const CourseDetail = () => {
   const handleCloseDeleteModal = () => {
     if (!isDeleting) {
       setDeleteModal({ open: false, outlineId: null, outlineName: '' })
+    }
+  }
+
+  // Handle drag and drop reorder with dnd-kit
+  const handleDragEnd = async (event) => {
+    const { active, over } = event
+
+    // No destination or no movement
+    if (!over || active.id === over.id) {
+      return
+    }
+
+    if (!course?.outlines) {
+      return
+    }
+
+    try {
+      // Find current positions
+      const oldIndex = course.outlines.findIndex((outline) => outline.id.toString() === active.id)
+      const newIndex = course.outlines.findIndex((outline) => outline.id.toString() === over.id)
+
+      // Create reordered array
+      const reorderedOutlines = arrayMove(course.outlines, oldIndex, newIndex)
+
+      // Create orders payload for API
+      const orders = reorderedOutlines.map((outline, index) => ({
+        id: outline.id,
+        order: index + 1,
+      }))
+
+      await reorderOutlines({
+        courseId: course.id,
+        orders,
+      }).unwrap()
+
+      toast.success('Đã sắp xếp lại thứ tự outline!')
+    } catch (error) {
+      toast.error(error?.data?.message || 'Có lỗi xảy ra khi sắp xếp lại outline')
     }
   }
 
@@ -168,26 +278,52 @@ const CourseDetail = () => {
             <Divider sx={{ my: 4 }}>
               <Chip label="Đề cương khóa học" size="medium" color="secondary" sx={{ fontSize: '1rem', p: 2 }} />
             </Divider>
-            <Stack spacing={2}>
-              {course?.outlines?.map((outline) => (
-                <CourseOutlineItem
-                  key={outline.id}
-                  title={outline.title}
-                  livestreams={outline.livestreams}
-                  outlineId={outline.id}
-                  onDeleteOutline={handleDeleteOutline}
-                />
-              ))}
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={handleCreateOutline}
-                sx={{ alignSelf: 'flex-start', mt: 2 }}
+
+            {/* Drag and Drop Context for Outlines with dnd-kit */}
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+              <SortableContext
+                items={course?.outlines?.map((outline) => outline.id.toString()) || []}
+                strategy={verticalListSortingStrategy}
               >
-                Tạo Outline Mới
-              </Button>
-            </Stack>
+                <Stack spacing={2} sx={{ minHeight: course?.outlines?.length ? 'auto' : 100 }}>
+                  {course?.outlines?.length > 0 ? (
+                    course.outlines.map((outline, index) => (
+                      <DraggableOutlineItem
+                        key={outline.id}
+                        outline={outline}
+                        index={index}
+                        onDeleteOutline={handleDeleteOutline}
+                        onEditOutline={handleEditOutline}
+                        onCreateLivestream={handleCreateLivestream}
+                      />
+                    ))
+                  ) : (
+                    <Box
+                      sx={{
+                        textAlign: 'center',
+                        py: 4,
+                        color: 'text.secondary',
+                        border: '2px dashed',
+                        borderColor: 'divider',
+                        borderRadius: 2,
+                      }}
+                    >
+                      <Typography variant="body2">Chưa có outline nào. Hãy tạo outline đầu tiên!</Typography>
+                    </Box>
+                  )}
+
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                    onClick={handleCreateOutline}
+                    sx={{ alignSelf: 'flex-start', mt: 2 }}
+                  >
+                    Tạo Outline Mới
+                  </Button>
+                </Stack>
+              </SortableContext>
+            </DndContext>
 
             {/* Create Outline Modal */}
             <CreateOutlineModal
@@ -195,6 +331,22 @@ const CourseDetail = () => {
               onClose={handleCloseOutlineModal}
               onOutlineCreated={handleOutlineCreated}
               courseId={course?.id}
+            />
+
+            {/* Create Livestream Modal */}
+            <CreateLivestreamModal
+              open={livestreamModal.open}
+              onClose={handleCloseLivestreamModal}
+              onLivestreamCreated={handleLivestreamCreated}
+              outline={livestreamModal.outline}
+            />
+
+            {/* Edit Outline Modal */}
+            <EditOutlineModal
+              open={editModal.open}
+              onClose={handleCloseEditModal}
+              onOutlineUpdated={handleOutlineUpdated}
+              outline={editModal.outline}
             />
 
             {/* Confirm Delete Modal */}

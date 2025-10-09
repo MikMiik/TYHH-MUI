@@ -75,6 +75,30 @@ export const courseApi = baseApi.injectEndpoints({
         'Course', // Invalidate all Course cache to ensure fresh data
       ],
     }),
+    updateCourseOutline: builder.mutation({
+      query: ({ id, ...outlineData }) => ({
+        url: `/course-outlines/${id}`,
+        method: 'PUT',
+        body: outlineData,
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: () => [
+        'CreatedCourses',
+        'Course', // Invalidate all Course cache to ensure fresh data
+      ],
+    }),
+    reorderCourseOutlines: builder.mutation({
+      query: ({ courseId, orders }) => ({
+        url: `/course-outlines/course/${courseId}/reorder`,
+        method: 'PATCH',
+        body: { orders },
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: () => [
+        'CreatedCourses',
+        'Course', // Invalidate all Course cache to ensure fresh data
+      ],
+    }),
   }),
 })
 
@@ -87,4 +111,6 @@ export const {
   useEditCourseMutation,
   useCreateCourseOutlineMutation,
   useDeleteCourseOutlineMutation,
+  useUpdateCourseOutlineMutation,
+  useReorderCourseOutlinesMutation,
 } = courseApi
