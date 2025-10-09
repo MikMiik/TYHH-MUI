@@ -10,18 +10,29 @@ import {
   Step,
   StepLabel,
   StepContent,
+  IconButton,
+  Tooltip,
+  Box,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded'
+import DeleteIcon from '@mui/icons-material/Delete'
 import CircularDeterminate from './CircularDeterminate'
 import EditDocumentIcon from '@mui/icons-material/EditDocument'
 import { Link } from 'react-router-dom'
 
-const CourseOutlineItem = ({ title, livestreams = [] }) => {
+const CourseOutlineItem = ({ title, livestreams = [], outlineId, onDeleteOutline }) => {
   // Tính phần trăm hoàn thành dựa trên số livestream đã xem
   const seenCount = livestreams.filter((item) => item.isSeen).length
   const totalCount = livestreams.length
   const completionPercentage = totalCount > 0 ? (seenCount / totalCount) * 100 : 0
+
+  const handleDeleteClick = (e) => {
+    e.stopPropagation() // Prevent accordion from expanding/collapsing
+    if (onDeleteOutline) {
+      onDeleteOutline(outlineId, title)
+    }
+  }
 
   return (
     <>
@@ -40,14 +51,37 @@ const CourseOutlineItem = ({ title, livestreams = [] }) => {
             minHeight: 48,
             bgcolor: '#e0e0e0',
             borderRadius: 2,
+            position: 'relative',
           }}
         >
-          <Stack direction="row" alignItems="center" spacing={1}>
+          <Stack direction="row" alignItems="center" spacing={1} sx={{ flex: 1 }}>
             <CircularDeterminate size={20} thickness={5} color="primary" progress={completionPercentage} />
             <Typography variant="subtitle2" fontWeight={600}>
               {title}
             </Typography>
           </Stack>
+
+          {/* Delete Icon */}
+          {onDeleteOutline && (
+            <Box sx={{ position: 'absolute', right: 48, top: '50%', transform: 'translateY(-50%)' }}>
+              <Tooltip title="Xóa outline">
+                <IconButton
+                  size="small"
+                  onClick={handleDeleteClick}
+                  sx={{
+                    bgcolor: 'background.paper',
+                    boxShadow: 1,
+                    '&:hover': {
+                      bgcolor: 'error.main',
+                      color: 'white',
+                    },
+                  }}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
         </AccordionSummary>
         <AccordionDetails sx={{ p: 0 }}>
           <Stepper

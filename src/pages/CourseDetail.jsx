@@ -2,13 +2,18 @@ import BreadCrumbsPath from '@/components/BreadCrumbsPath'
 import { Box, Button, Chip, Container, Divider, Stack, Typography } from '@mui/material'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
+import AddIcon from '@mui/icons-material/Add'
 import VideoComp from '@/components/VideoComp'
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined'
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration'
 import CourseOutlineItem from '@/components/CourseOutlineItem'
-import { useGetCourseQuery } from '@/features/api/courseApi'
+import CreateOutlineModal from '@/components/CreateOutlineModal'
+import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
+import { useGetCourseQuery, useDeleteCourseOutlineMutation } from '@/features/api/courseApi'
 import { useParams } from 'react-router-dom'
 import { useLoadingState } from '@/components/withLoadingState'
+import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 const CourseDetail = () => {
   const { slug } = useParams()
@@ -18,6 +23,53 @@ const CourseDetail = () => {
     loadingText: 'Đang tải thông tin khóa học...',
     emptyText: 'Không tìm thấy khóa học này',
   })
+
+  const [openOutlineModal, setOpenOutlineModal] = useState(false)
+  const [deleteModal, setDeleteModal] = useState({
+    open: false,
+    outlineId: null,
+    outlineName: '',
+  })
+
+  const [deleteOutline, { isLoading: isDeleting }] = useDeleteCourseOutlineMutation()
+
+  const handleCreateOutline = () => {
+    setOpenOutlineModal(true)
+  }
+
+  const handleCloseOutlineModal = () => {
+    setOpenOutlineModal(false)
+  }
+
+  const handleOutlineCreated = () => {
+    setOpenOutlineModal(false)
+    // RTK Query sẽ tự động refetch thông qua invalidatesTags, không cần gọi refetch() thủ công
+  }
+
+  const handleDeleteOutline = (outlineId, outlineName) => {
+    setDeleteModal({
+      open: true,
+      outlineId,
+      outlineName,
+    })
+  }
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteOutline(deleteModal.outlineId).unwrap()
+      toast.success('Xóa outline thành công!')
+      setDeleteModal({ open: false, outlineId: null, outlineName: '' })
+      // RTK Query sẽ tự động refetch thông qua invalidatesTags, không cần gọi refetch() thủ công
+    } catch (error) {
+      toast.error(error?.data?.message || 'Có lỗi xảy ra khi xóa outline')
+    }
+  }
+
+  const handleCloseDeleteModal = () => {
+    if (!isDeleting) {
+      setDeleteModal({ open: false, outlineId: null, outlineName: '' })
+    }
+  }
 
   return (
     <LoadingStateComponent>
@@ -118,9 +170,43 @@ const CourseDetail = () => {
             </Divider>
             <Stack spacing={2}>
               {course?.outlines?.map((outline) => (
-                <CourseOutlineItem key={outline.id} title={outline.title} livestreams={outline.livestreams} />
+                <CourseOutlineItem
+                  key={outline.id}
+                  title={outline.title}
+                  livestreams={outline.livestreams}
+                  outlineId={outline.id}
+                  onDeleteOutline={handleDeleteOutline}
+                />
               ))}
+              <Button
+                variant="outlined"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={handleCreateOutline}
+                sx={{ alignSelf: 'flex-start', mt: 2 }}
+              >
+                Tạo Outline Mới
+              </Button>
             </Stack>
+
+            {/* Create Outline Modal */}
+            <CreateOutlineModal
+              open={openOutlineModal}
+              onClose={handleCloseOutlineModal}
+              onOutlineCreated={handleOutlineCreated}
+              courseId={course?.id}
+            />
+
+            {/* Confirm Delete Modal */}
+            <ConfirmDeleteModal
+              open={deleteModal.open}
+              onClose={handleCloseDeleteModal}
+              onConfirm={handleConfirmDelete}
+              title="Xóa outline"
+              message="Bạn có chắc chắn muốn xóa outline này? Tất cả livestream liên quan sẽ bị xóa vĩnh viễn."
+              itemName={deleteModal.outlineName}
+              loading={isDeleting}
+            />
           </Box>
         </Box>
       </Container>

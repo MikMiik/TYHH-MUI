@@ -12,6 +12,10 @@ export const courseApi = baseApi.injectEndpoints({
     getCourse: builder.query({
       query: (slug) => `/courses/${slug}`,
       transformResponse: (response) => response.data,
+      providesTags: (result, error, slug) => [
+        { type: 'Course', id: slug },
+        { type: 'Course', id: result?.id },
+      ],
     }),
     getCreatedCourses: builder.query({
       query: (params) => ({
@@ -47,6 +51,30 @@ export const courseApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
       invalidatesTags: ['CreatedCourses'],
     }),
+    createCourseOutline: builder.mutation({
+      query: (outlineData) => ({
+        url: '/course-outlines',
+        method: 'POST',
+        body: outlineData,
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Course', id: arg.courseId },
+        'CreatedCourses',
+        'Course', // Invalidate all Course cache to ensure fresh data
+      ],
+    }),
+    deleteCourseOutline: builder.mutation({
+      query: (outlineId) => ({
+        url: `/course-outlines/${outlineId}`,
+        method: 'DELETE',
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: () => [
+        'CreatedCourses',
+        'Course', // Invalidate all Course cache to ensure fresh data
+      ],
+    }),
   }),
 })
 
@@ -57,4 +85,6 @@ export const {
   useCreateCourseMutation,
   useDeleteCourseMutation,
   useEditCourseMutation,
+  useCreateCourseOutlineMutation,
+  useDeleteCourseOutlineMutation,
 } = courseApi
