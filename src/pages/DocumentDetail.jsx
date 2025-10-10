@@ -24,6 +24,7 @@ const DocumentDetail = () => {
       day: 'numeric',
     })
   }
+  console.log(document)
 
   return (
     <LoadingStateComponent>
@@ -37,9 +38,9 @@ const DocumentDetail = () => {
               <Box>
                 <Stack direction="row" alignItems="center" spacing={2} mb={2}>
                   <Typography variant="h4" fontWeight={700} color="primary.main">
-                    {document.title}
+                    {document?.title || 'Loading...'}
                   </Typography>
-                  {document.vip && <Chip label="VIP" color="warning" variant="filled" sx={{ fontWeight: 600 }} />}
+                  {document?.vip && <Chip label="VIP" color="warning" variant="filled" sx={{ fontWeight: 600 }} />}
                 </Stack>
               </Box>
 
@@ -62,7 +63,7 @@ const DocumentDetail = () => {
                             Ngày tạo:
                           </Typography>
                           <Typography variant="body2" fontWeight={500}>
-                            {formatDate(document.createdAt)}
+                            {document?.createdAt ? formatDate(document.createdAt) : 'N/A'}
                           </Typography>
                         </Stack>
 
@@ -72,7 +73,7 @@ const DocumentDetail = () => {
                             Lượt tải:
                           </Typography>
                           <Typography variant="body2" fontWeight={500}>
-                            {document.downloadCount || 0}
+                            {document?.downloadCount || 0}
                           </Typography>
                         </Stack>
 
@@ -82,9 +83,9 @@ const DocumentDetail = () => {
                             Trạng thái:
                           </Typography>
                           <Chip
-                            label={document.vip ? 'VIP' : 'Miễn phí'}
+                            label={document?.vip ? 'VIP' : 'Miễn phí'}
                             size="small"
-                            color={document.vip ? 'warning' : 'success'}
+                            color={document?.vip ? 'warning' : 'success'}
                             variant="outlined"
                           />
                         </Stack>
@@ -94,7 +95,7 @@ const DocumentDetail = () => {
                 </Box>
 
                 {/* Right Column - Related Livestream & Documents */}
-                {document.livestream && (
+                {document?.livestream && (
                   <Box flex={1}>
                     <Card variant="outlined">
                       <CardContent>
@@ -105,9 +106,9 @@ const DocumentDetail = () => {
                         <Stack spacing={2}>
                           <Box>
                             <Typography variant="subtitle1" fontWeight={600}>
-                              {document.livestream.title}
+                              {document?.livestream?.title || 'N/A'}
                             </Typography>
-                            {document.livestream.course && (
+                            {document?.livestream?.course && (
                               <Typography variant="body2" color="text.secondary" mt={0.5}>
                                 Khóa học: {document.livestream.course.title}
                               </Typography>
@@ -116,12 +117,16 @@ const DocumentDetail = () => {
 
                           <Stack direction="row" alignItems="center" spacing={1}>
                             <VisibilityIcon fontSize="small" color="action" />
-                            <Typography variant="body2">{document.livestream.view || 0} lượt xem</Typography>
+                            <Typography variant="body2">{document?.livestream?.view || 0} lượt xem</Typography>
                           </Stack>
 
                           <Button
                             component={Link}
-                            to={`/livestreams/${document.livestream.slug}`}
+                            to={
+                              document?.livestream?.course?.slug && document?.livestream?.slug
+                                ? `/courses/${document.livestream.course.slug}/${document.livestream.slug}`
+                                : '#'
+                            }
                             variant="outlined"
                             startIcon={<PlayCircleOutlineIcon />}
                             fullWidth
@@ -130,27 +135,28 @@ const DocumentDetail = () => {
                           </Button>
 
                           {/* Documents liên quan */}
-                          {Array.isArray(document.livestream.documents) && document.livestream.documents.length > 0 && (
-                            <Box mt={2}>
-                              <Typography variant="subtitle2" fontWeight={600} mb={1}>
-                                Tài liệu khác trong Livestream này:
-                              </Typography>
-                              <Stack spacing={1}>
-                                {document.livestream.documents.map((doc) => (
-                                  <Button
-                                    key={doc.id}
-                                    component={Link}
-                                    to={`/documents/${doc.slug}`}
-                                    variant="text"
-                                    color="primary"
-                                    sx={{ justifyContent: 'flex-start', textAlign: 'left' }}
-                                  >
-                                    {doc.title || doc.slug}
-                                  </Button>
-                                ))}
-                              </Stack>
-                            </Box>
-                          )}
+                          {Array.isArray(document?.livestream?.documents) &&
+                            document.livestream.documents.length > 0 && (
+                              <Box mt={2}>
+                                <Typography variant="subtitle2" fontWeight={600} mb={1}>
+                                  Tài liệu khác trong Livestream này:
+                                </Typography>
+                                <Stack spacing={1}>
+                                  {document.livestream.documents.map((doc) => (
+                                    <Button
+                                      key={doc.id}
+                                      component={Link}
+                                      to={`/documents/${doc.slug}`}
+                                      variant="text"
+                                      color="primary"
+                                      sx={{ justifyContent: 'flex-start', textAlign: 'left' }}
+                                    >
+                                      {doc.title || doc.slug}
+                                    </Button>
+                                  ))}
+                                </Stack>
+                              </Box>
+                            )}
                         </Stack>
                       </CardContent>
                     </Card>
@@ -167,22 +173,22 @@ const DocumentDetail = () => {
                     size="large"
                     startIcon={<DownloadIcon />}
                     component="a"
-                    href={document.url ? `${import.meta.env.VITE_SERVER_URL}${document.url}` : undefined}
+                    href={document?.url ? `${import.meta.env.VITE_SERVER_URL}${document.url}` : undefined}
                     target="_blank"
                     rel="noopener noreferrer"
-                    disabled={!document.url}
+                    disabled={!document?.url}
                   >
                     Tải PDF
                   </Button>
 
-                  {document.slidenote && (
+                  {document?.slidenote && (
                     <Button
                       variant="contained"
                       color="primary"
                       size="large"
                       startIcon={<DownloadIcon />}
                       component="a"
-                      href={`${import.meta.env.VITE_SERVER_URL}${document.slidenote}`}
+                      href={`${import.meta.env.VITE_SERVER_URL}${document?.slidenote}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -193,7 +199,7 @@ const DocumentDetail = () => {
               </Box>
 
               {/* Topics Section */}
-              {document.livestream?.course?.topics && document.livestream.course.topics.length > 0 && (
+              {document?.livestream?.course?.topics && document.livestream.course.topics.length > 0 && (
                 <>
                   <Divider />
                   <Box>
@@ -201,9 +207,9 @@ const DocumentDetail = () => {
                       Chủ đề liên quan
                     </Typography>
                     <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                      {document.livestream.course.topics.map((topic) => (
+                      {document?.livestream?.course?.topics?.map((topic) => (
                         <Chip key={topic.id} label={topic.title} variant="outlined" color="primary" size="small" />
-                      ))}
+                      )) || []}
                     </Stack>
                   </Box>
                 </>

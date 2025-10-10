@@ -25,16 +25,22 @@ export const useBreadcrumb = (customData = {}) => {
         let label = segment
 
         // Use custom data if available
-        if (currentPath.includes('/courses/') && customData.courseTitle) {
+        if (currentPath.includes('/courses/') && index === 1 && customData.courseTitle) {
+          // First parameter after /courses/ is courseSlug
           label = customData.courseTitle
+        } else if (currentPath.includes('/courses/') && index === 2 && customData.livestreamTitle) {
+          // Second parameter after /courses/ is livestream slug
+          label = customData.livestreamTitle
         } else if (currentPath.includes('/documents/') && customData.documentTitle) {
           label = customData.documentTitle
         } else if (currentPath.includes('/livestreams/') && customData.livestreamTitle) {
           label = customData.livestreamTitle
         } else {
           // Fallback to generic labels
-          if (currentPath.includes('/courses/')) {
+          if (currentPath.includes('/courses/') && index === 1) {
             label = `Khóa học: ${segment}`
+          } else if (currentPath.includes('/courses/') && index === 2) {
+            label = `Livestream: ${segment}`
           } else if (currentPath.includes('/documents/')) {
             label = `Tài liệu: ${segment}`
           } else if (currentPath.includes('/livestreams/')) {

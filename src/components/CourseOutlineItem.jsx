@@ -21,7 +21,7 @@ import CircularDeterminate from './CircularDeterminate'
 import EditDocumentIcon from '@mui/icons-material/EditDocument'
 import { Link } from 'react-router-dom'
 
-const CourseOutlineItem = ({ title, livestreams = [], outlineId, onDeleteOutline }) => {
+const CourseOutlineItem = ({ title, livestreams = [], outlineId, onDeleteOutline, courseSlug }) => {
   // Tính phần trăm hoàn thành dựa trên số livestream đã xem
   const seenCount = livestreams.filter((item) => item.isSeen).length
   const totalCount = livestreams.length
@@ -94,7 +94,10 @@ const CourseOutlineItem = ({ title, livestreams = [], outlineId, onDeleteOutline
             {livestreams.map((item) => (
               <Step key={item.title} expanded>
                 <StepLabel slots={{ stepIcon: (props) => <GreenCircleStepIcon isSeen={item.isSeen} {...props} /> }}>
-                  <Link to={`/livestreams/${item.slug}`} style={{ textDecoration: 'none' }}>
+                  <Link
+                    to={courseSlug ? `/courses/${courseSlug}/${item.slug}` : `/livestreams/${item.slug}`}
+                    style={{ textDecoration: 'none' }}
+                  >
                     <Typography
                       variant="body2"
                       fontWeight={600}

@@ -58,7 +58,12 @@ const Livestream = () => {
     <LoadingStateComponent>
       <Container>
         <Box width="100%" my={2}>
-          <BreadCrumbsPath />
+          <BreadCrumbsPath
+            customData={{
+              courseTitle: livestream?.course?.title,
+              livestreamTitle: livestream?.title,
+            }}
+          />
           <Typography my={2} variant="h6" fontWeight={600}>
             {livestream?.title || 'No title available'}
           </Typography>
