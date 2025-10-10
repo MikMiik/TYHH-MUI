@@ -12,6 +12,7 @@ const ImageUploader = ({
   uploadFolder = 'course-thumbnails',
   title = 'Thumbnail',
   fileName = 'thumbnails',
+  height = 200,
 }) => {
   const [previewUrl, setPreviewUrl] = useState(null)
 
@@ -102,7 +103,7 @@ const ImageUploader = ({
                     <Box
                       sx={{
                         width: '100%',
-                        height: 200,
+                        height: height,
                         bgcolor: 'grey.100',
                         borderRadius: 1,
                         border: '1px solid',
@@ -135,7 +136,7 @@ const ImageUploader = ({
                       alt="Preview"
                       sx={{
                         width: '100%',
-                        height: 200,
+                        height: height,
                         objectFit: 'cover',
                         borderRadius: 1,
                         border: '1px solid',
@@ -167,7 +168,7 @@ const ImageUploader = ({
                       alt="Current thumbnail"
                       sx={{
                         width: '100%',
-                        height: 200,
+                        height: height,
                         objectFit: 'cover',
                         borderRadius: 1,
                         border: '1px solid',
@@ -195,7 +196,7 @@ const ImageUploader = ({
                   <Box
                     sx={{
                       width: '100%',
-                      height: 200,
+                      height: height,
                       bgcolor: 'grey.100',
                       borderRadius: 1,
                       border: '2px dashed',

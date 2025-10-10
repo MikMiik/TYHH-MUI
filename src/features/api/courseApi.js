@@ -49,7 +49,12 @@ export const courseApi = baseApi.injectEndpoints({
         body: courseData,
       }),
       transformResponse: (response) => response.data,
-      invalidatesTags: ['CreatedCourses'],
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Course', id: arg.id },
+        { type: 'Course', id: result?.slug },
+        'CreatedCourses',
+        'Course', // Invalidate all Course cache to ensure fresh data
+      ],
     }),
     createCourseOutline: builder.mutation({
       query: (outlineData) => ({

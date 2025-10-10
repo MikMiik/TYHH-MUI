@@ -136,6 +136,7 @@ function VideoCarousel({ videoList = [] }) {
               }}
             >
               <VideoCard
+                src={`${import.meta.env.VITE_IK_URL_ENDPOINT}${item.thumbnail}`}
                 course={item}
                 sx={{
                   width: '100%',

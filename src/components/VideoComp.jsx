@@ -17,9 +17,10 @@ const VideoComp = ({ src, poster, options, livestreamSlug }) => {
     sources: [
       {
         src: src
-          ? `${import.meta.env.VITE_IK_URL_ENDPOINT}${src}/ik-master.m3u8?tr=sr-240_360_480_720_1080`
-          : 'https://ik.imagekit.io/mikmik/video-test.mp4/ik-master.m3u8?tr=sr-240_360_480_720_1080',
-        type: 'application/x-mpegURL',
+          ? `${import.meta.env.VITE_IK_URL_ENDPOINT}${src}?tr=sr-240_360_480_720_1080`
+          : 'https://ik.imagekit.io/mikmik/video-test.mp4',
+        // /ik-master.m3u8?tr=sr-240_360_480_720_1080
+        type: 'video/mp4',
       },
     ],
     poster: poster || 'https://ik.imagekit.io/mikmik/poster-bg-livestreams.jpg?tr=w-1480,h-832',

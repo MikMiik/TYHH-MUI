@@ -3,6 +3,7 @@ import { Box, Button, Chip, Container, Divider, Stack, Typography } from '@mui/m
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import AddIcon from '@mui/icons-material/Add'
+import EditIcon from '@mui/icons-material/Edit'
 import VideoComp from '@/components/VideoComp'
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined'
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration'
@@ -10,13 +11,14 @@ import DraggableOutlineItem from '@/components/DraggableOutlineItem'
 import CreateOutlineModal from '@/components/CreateOutlineModal'
 import CreateLivestreamModal from '@/components/CreateLivestreamModal'
 import EditOutlineModal from '@/components/EditOutlineModal'
+import CreateCourseModal from '@/components/CreateCourseModal'
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
 import {
   useGetCourseQuery,
   useDeleteCourseOutlineMutation,
   useReorderCourseOutlinesMutation,
 } from '@/features/api/courseApi'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useLoadingState } from '@/components/withLoadingState'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
@@ -25,6 +27,7 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 
 const CourseDetail = () => {
   const { slug } = useParams()
+  const navigate = useNavigate()
   const queryResult = useGetCourseQuery(slug)
   const { data: course, LoadingStateComponent } = useLoadingState(queryResult, {
     variant: 'page',
@@ -46,6 +49,7 @@ const CourseDetail = () => {
     open: false,
     outline: null,
   })
+  const [editCourseModal, setEditCourseModal] = useState(false)
 
   const [deleteOutline, { isLoading: isDeleting }] = useDeleteCourseOutlineMutation()
   const [reorderOutlines] = useReorderCourseOutlinesMutation()
@@ -143,6 +147,18 @@ const CourseDetail = () => {
     }
   }
 
+  const handleCourseUpdated = (updatedCourse) => {
+    setEditCourseModal(false)
+
+    // Nếu slug thay đổi, redirect đến URL mới
+    if (updatedCourse?.slug && updatedCourse.slug !== slug) {
+      navigate(`/courses/${updatedCourse.slug}`, { replace: true })
+      toast.success('Đã cập nhật khóa học thành công!')
+    } else {
+      toast.success('Đã cập nhật khóa học thành công!')
+    }
+  }
+
   // Handle drag and drop reorder with dnd-kit
   const handleDragEnd = async (event) => {
     const { active, over } = event
@@ -199,10 +215,20 @@ const CourseDetail = () => {
               {course?.teacher?.name?.toUpperCase() || 'Unknown Teacher'}
             </Typography>
           </Stack>
+
+          <Button
+            variant="outlined"
+            color="secondary"
+            startIcon={<EditIcon />}
+            onClick={() => setEditCourseModal(true)}
+            sx={{ alignSelf: 'flex-start', mt: 2 }}
+          >
+            Chỉnh sửa khóa học
+          </Button>
           <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" gap={1} my={1}>
             {/* Left */}
             <Box width={{ md: '66.7%', xs: '100%' }}>
-              <VideoComp />
+              <VideoComp src={course?.introVideo} />
             </Box>
 
             {/* Right */}
@@ -349,6 +375,15 @@ const CourseDetail = () => {
               onClose={handleCloseEditModal}
               onOutlineUpdated={handleOutlineUpdated}
               outline={editModal.outline}
+            />
+
+            {/* Edit Course Modal */}
+            <CreateCourseModal
+              open={editCourseModal}
+              onClose={() => setEditCourseModal(false)}
+              onCourseCreated={handleCourseUpdated}
+              editMode={true}
+              initialData={course}
             />
 
             {/* Confirm Delete Modal */}
