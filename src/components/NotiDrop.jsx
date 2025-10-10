@@ -4,20 +4,30 @@ import Popover from '@mui/material/Popover'
 import MuiBox from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
-import { Stack, List, ListItem, ListItemText, Badge, Divider, Avatar, Chip } from '@mui/material'
-import { useGetAllNotificationsQuery } from '@/features/api/notificationApi'
+import { Stack, List, ListItem, ListItemText, Badge, Divider, Avatar, Button } from '@mui/material'
+import {
+  useGetAllNotificationsQuery,
+  useMarkNotificationAsReadMutation,
+  useMarkAllNotificationsAsReadMutation,
+} from '@/features/api/notificationApi'
 import { useLoadingState } from './withLoadingState'
+import { Link } from 'react-router-dom'
 
 const NotiDrop = () => {
   const [anchorEl, setAnchorEl] = useState(null)
   const iconRef = useRef(null)
 
-  const queryResult = useGetAllNotificationsQuery()
-  const { data: notifications, LoadingStateComponent } = useLoadingState(queryResult, {
+  const queryResult = useGetAllNotificationsQuery({ page: 1, limit: 5 })
+  const { data: { notifications } = {}, LoadingStateComponent } = useLoadingState(queryResult, {
     variant: 'inline',
     loadingText: 'Đang tải thông báo...',
     emptyText: 'Chưa có thông báo nào',
+    dataKey: 'notifications',
+    hasDataCheck: (notifications) => notifications && notifications.length > 0,
   })
+
+  const [markAsRead] = useMarkNotificationAsReadMutation()
+  const [markAllAsRead] = useMarkAllNotificationsAsReadMutation()
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -27,8 +37,26 @@ const NotiDrop = () => {
     setAnchorEl(null)
   }
 
+  const handleNotificationClick = async (notification) => {
+    if (!notification.isRead) {
+      try {
+        await markAsRead(notification.id).unwrap()
+      } catch (error) {
+        console.error('Error marking notification as read:', error)
+      }
+    }
+  }
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await markAllAsRead().unwrap()
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error)
+    }
+  }
+
   const open = Boolean(anchorEl)
-  const unreadCount = notifications?.length || 0
+  const unreadCount = notifications?.filter((notification) => !notification.isRead).length || 0
 
   const formatTimeAgo = (dateString) => {
     try {
@@ -78,9 +106,27 @@ const NotiDrop = () => {
         }}
       >
         <MuiBox sx={{ px: 2, py: 1.5, borderBottom: '1px solid #eee', bgcolor: 'grey.50' }}>
-          <Typography variant="subtitle1" fontWeight={600}>
-            Thông báo ({notifications?.length || 0})
-          </Typography>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="subtitle1" fontWeight={600}>
+              Thông báo ({unreadCount > 0 ? `${unreadCount} chưa đọc` : 'đã đọc hết'})
+            </Typography>
+            {unreadCount > 0 && (
+              <Button
+                size="small"
+                variant="text"
+                onClick={handleMarkAllAsRead}
+                sx={{
+                  textTransform: 'none',
+                  fontSize: '0.75rem',
+                  color: 'primary.main',
+                  minWidth: 'auto',
+                  p: 0.5,
+                }}
+              >
+                Đọc hết
+              </Button>
+            )}
+          </Stack>
         </MuiBox>
 
         <LoadingStateComponent>
@@ -90,11 +136,14 @@ const NotiDrop = () => {
                 <div key={notification.id}>
                   <ListItem
                     alignItems="flex-start"
+                    onClick={() => handleNotificationClick(notification)}
                     sx={{
                       px: 2,
                       py: 1.5,
                       '&:hover': { bgcolor: 'grey.50' },
                       cursor: 'pointer',
+                      bgcolor: !notification.isRead ? '#8bc58dff' : 'transparent',
+                      transition: 'background-color 0.3s',
                     }}
                   >
                     <Avatar
@@ -118,6 +167,11 @@ const NotiDrop = () => {
                             <Typography variant="caption" color="text.secondary">
                               {formatTimeAgo(notification.createdAt)}
                             </Typography>
+                            {!notification.isRead && (
+                              <Typography variant="caption" color="primary" fontWeight="bold">
+                                • Mới
+                              </Typography>
+                            )}
                           </Stack>
                           <Typography variant="subtitle2" fontWeight={500} sx={{ mb: 0.5 }}>
                             {notification.title}
@@ -157,6 +211,25 @@ const NotiDrop = () => {
             </Stack>
           )}
         </LoadingStateComponent>
+
+        {/* Footer với link "Xem tất cả" */}
+        <MuiBox sx={{ px: 2, py: 1.5, borderTop: '1px solid #eee', bgcolor: 'grey.50' }}>
+          <Button
+            component={Link}
+            to="/notifications"
+            variant="text"
+            fullWidth
+            size="small"
+            onClick={handleClose}
+            sx={{
+              textTransform: 'none',
+              fontWeight: 500,
+              color: 'primary.main',
+            }}
+          >
+            Xem tất cả thông báo
+          </Button>
+        </MuiBox>
       </Popover>
     </>
   )

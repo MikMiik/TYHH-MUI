@@ -3,14 +3,20 @@ import { baseApi } from './baseApi'
 export const notificationApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllNotifications: builder.query({
-      query: () => '/notifications',
+      query: ({ page = 1, limit = 10, search = '' } = {}) => ({
+        url: '/notifications',
+        params: { page, limit, search },
+      }),
       transformResponse: (response) => response.data,
       providesTags: ['Notification'],
     }),
     getNotificationsByTeacher: builder.query({
-      query: (teacherId) => `/notifications/teacher/${teacherId}`,
+      query: ({ teacherId, page = 1, limit = 10, search = '' }) => ({
+        url: `/notifications/teacher/${teacherId}`,
+        params: { page, limit, search },
+      }),
       transformResponse: (response) => response.data,
-      providesTags: (result, error, teacherId) => [
+      providesTags: (result, error, { teacherId }) => [
         { type: 'Notification', id: 'TEACHER' },
         { type: 'Notification', id: teacherId },
       ],
@@ -32,6 +38,22 @@ export const notificationApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
       invalidatesTags: ['Notification'],
     }),
+    markNotificationAsRead: builder.mutation({
+      query: (id) => ({
+        url: `/notifications/${id}/mark-read`,
+        method: 'POST',
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ['Notification'],
+    }),
+    markAllNotificationsAsRead: builder.mutation({
+      query: () => ({
+        url: '/notifications/mark-all-read',
+        method: 'POST',
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ['Notification'],
+    }),
   }),
 })
 
@@ -40,4 +62,6 @@ export const {
   useGetNotificationsByTeacherQuery,
   useCreateNotificationMutation,
   useDeleteNotificationMutation,
+  useMarkNotificationAsReadMutation,
+  useMarkAllNotificationsAsReadMutation,
 } = notificationApi

@@ -15,6 +15,7 @@ import {
   Livestream,
   MyCourses,
   CreatedCourses,
+  Notifications,
   NotFound,
 } from '@/pages'
 import MenuLayout from '@/Layouts/MenuLayout.jsx/MenuLayout'
@@ -82,6 +83,10 @@ const routes = [
   {
     path: config.routes.createdCourses,
     component: CreatedCourses,
+  },
+  {
+    path: config.routes.notifications,
+    component: Notifications,
   },
   {
     path: config.routes.notFound,
