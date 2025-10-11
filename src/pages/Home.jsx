@@ -15,6 +15,7 @@ import LocalImageLazy from '@/components/LocalImageLazy'
 import VideoComp from '@/components/VideoComp'
 import { useGetSocialsQuery } from '@/features/api/siteInfoApi'
 import { useGetAllTopicsQuery } from '@/features/api/topicApi'
+import { useGetAllCoursesQuery } from '@/features/api/courseApi'
 import { useLoadingState } from '@/components/withLoadingState'
 
 function Home() {
@@ -26,6 +27,23 @@ function Home() {
     emptyText: 'Chưa có chủ đề nào',
     hasDataCheck: (topics) => topics && topics.length > 0,
   })
+
+  // Lấy courses miễn phí để hiển thị trong phần "Free Video"
+  const freeCoursesQueryResult = useGetAllCoursesQuery({
+    isFree: true,
+    limit: 5,
+    sort: 'newest',
+  })
+  const { data: { courses: freeCourses = [] } = {}, LoadingStateComponent: FreeCoursesLoadingState } = useLoadingState(
+    freeCoursesQueryResult,
+    {
+      variant: 'inline',
+      loadingText: 'Đang tải khóa học miễn phí...',
+      emptyText: 'Chưa có khóa học miễn phí nào',
+      dataKey: 'courses',
+      hasDataCheck: (courses) => courses && courses.length > 0,
+    }
+  )
 
   const onSplineLoad = (spline) => {
     // Điều chỉnh camera để căn giữa scene
@@ -40,6 +58,8 @@ function Home() {
     // Tự động fit scene vào viewport và căn giữa
     spline.setZoom(0.8)
   }
+  console.log(freeCourses)
+
   return (
     <Box>
       {/* Head Banner */}
@@ -223,39 +243,52 @@ function Home() {
         <Typography variant="h6" fontWeight={600} color="primary.main">
           Video Miễn Phí
         </Typography>
-        <Stack direction="row">
-          {/* Left Section: 2/3 width */}
-          <Box width="66.7%">
-            <VideoComp />
-          </Box>
-          {/* Right Section: 1/3 width */}
-          <Stack direction="column" bgcolor="#60a1d5" width="33.3%">
-            <Stack
-              p={1}
-              direction="row"
-              alignItems="center"
-              sx={{
-                ':hover': {
-                  bgcolor: '#49708d',
-                },
-              }}
-            >
-              <LocalImageLazy src="mini-live.png" alt="mini-live" w={200} />
-              <Box ml={1} maxWidth="calc(100% - 108px)">
-                <Typography noWrap variant="subtitle2" color="#fff" fontWeight={600}>
-                  LIVE 8: KIỂM TRA CHẤT LƯỢNG CHƯƠNG I - NGÀY 7 - KIỂM TRA CHẤT LƯỢNG CHƯƠNG I
-                </Typography>
-                <Typography noWrap variant="subtitle2" color="#fff" fontWeight={600}>
-                  Khoá học <MuiLink color="#66ec83">2K8 - HÓA HỌC 10 (SGK MỚI)</MuiLink>
-                </Typography>
+        <FreeCoursesLoadingState>
+          {freeCourses.length > 0 && (
+            <Stack direction="row">
+              {/* Left Section: 2/3 width */}
+              <Box width="66.7%">
+                <VideoComp src={freeCourses[0]?.introVideo} />
               </Box>
+              {/* Right Section: 1/3 width */}
+              <Stack direction="column" bgcolor="#60a1d5" width="33.3%">
+                {freeCourses.slice(0, 4).map((course) => (
+                  <Stack
+                    key={course.id}
+                    p={1}
+                    direction="row"
+                    alignItems="center"
+                    component={MuiLink}
+                    to={`/courses/${course.slug}`}
+                    sx={{
+                      textDecoration: 'none',
+                      ':hover': {
+                        bgcolor: '#49708d',
+                      },
+                    }}
+                  >
+                    <LocalImageLazy src={course.thumbnail || ''} alt={course.title} w={80} h={50} />
+                    <Box ml={1} maxWidth="calc(100% - 108px)">
+                      <Typography noWrap variant="subtitle2" color="#fff" fontWeight={600}>
+                        {course.title}
+                      </Typography>
+                      <Typography noWrap variant="subtitle2" color="#fff" fontWeight={600}>
+                        Giáo viên:{' '}
+                        <Typography component="span" color="#66ec83">
+                          {course.teacher?.name || 'TYHH'}
+                        </Typography>
+                      </Typography>
+                    </Box>
+                  </Stack>
+                ))}
+              </Stack>
             </Stack>
-          </Stack>
-        </Stack>
+          )}
+        </FreeCoursesLoadingState>
 
         {/* Bottom Banner */}
         <Box position="relative" my={2}>
-          <Link
+          <Box
             sx={{
               ':before': {
                 height: '100%',
@@ -273,10 +306,9 @@ function Home() {
                 zIndex: 1,
               },
             }}
-            href={config.routes.home}
           >
             <img src="banner.png" alt="banner" style={{ width: '100%' }} />
-          </Link>
+          </Box>
         </Box>
       </Container>
     </Box>

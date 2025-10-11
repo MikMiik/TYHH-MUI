@@ -273,6 +273,18 @@ const CourseDetail = () => {
                 >
                   Facebook giáo viên
                 </Button>
+
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<FacebookOutlinedIcon />}
+                  component="a"
+                  href={course?.group || 'https://www.facebook.com/'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Group Facebook
+                </Button>
               </Stack>
             </Stack>
           </Stack>
