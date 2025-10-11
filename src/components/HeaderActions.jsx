@@ -268,7 +268,7 @@ function HeaderActions() {
             {currentUser ? (
               <Stack direction="row" spacing={1} alignItems="center">
                 <DropAvatar bgcolor="tertiary.main" width={32} height={32} />
-                <NotificationsOutlinedIcon fontSize="medium" />
+                <NotiDrop />
                 <IconButton
                   onClick={handleLogout}
                   component={Link}

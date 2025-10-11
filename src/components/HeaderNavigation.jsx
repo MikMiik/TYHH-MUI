@@ -6,6 +6,7 @@ import HeaderMenu from './HeaderMenu'
 import useResponsive from '@/hooks/useResponsive'
 import theme from '@/theme/theme'
 import { lazy, Suspense } from 'react'
+import NotiDrop from './NotiDrop'
 
 // Lazy load PaymentModal since it's only used when needed
 const PaymentModal = lazy(() => import('./PaymentModal'))
@@ -33,6 +34,7 @@ function HeaderNavigation() {
         },
       }}
     >
+      <NotiDrop />
       <HeaderMenu />
       {isLaptop || isDesktop ? (
         <>

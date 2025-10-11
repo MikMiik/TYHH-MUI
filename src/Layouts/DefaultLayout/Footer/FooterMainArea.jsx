@@ -53,7 +53,7 @@ function FooterMainArea() {
           </ListItem>
         </ListItemStack>
 
-        <Stack sx={{ flex: 1 }}>
+        {/* <Stack sx={{ flex: 1 }}>
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
             THÔNG TIN
           </Typography>
@@ -88,7 +88,7 @@ function FooterMainArea() {
               <Typography>Cộng Tác Viên</Typography>
             </ListItem>
           </ListItemStack>
-        </Stack>
+        </Stack> */}
       </Stack>
     </>
   )

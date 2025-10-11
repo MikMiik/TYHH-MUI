@@ -129,26 +129,14 @@ function Home() {
                     boxShadow: '0 8px 32px rgba(3, 76, 49, 0.15)',
                     border: '1px solid',
                     borderColor: 'primary.light',
-                    bgcolor: '#1a1a1a',
+                    bgcolor: '#2a2a2a',
                     position: 'relative',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <Spline
-                    scene="https://prod.spline.design/Dr3KVR2NzyYMhFQ1/scene.splinecode"
-                    onLoad={onSplineLoad}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
-                      display: 'block',
-                      margin: 'auto',
-                      objectFit: 'contain',
-                      objectPosition: 'center center',
-                    }}
-                  />
+                  <Spline scene="https://prod.spline.design/nArfjhfvkTR3joXc/scene.splinecode" onLoad={onSplineLoad} />
                 </Box>
               </Suspense>
             </Box>
