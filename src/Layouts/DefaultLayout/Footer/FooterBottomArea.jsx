@@ -3,18 +3,11 @@ import fbIcon from '@/assets/images/fbIcon.png'
 import youtubeIcon from '@/assets/images/youtubeIcon.png'
 import tiktokIcon from '@/assets/images/tiktokIcon.png'
 
-import { Box, Button, Stack, Typography, Link } from '@mui/material'
-import Form from '@/components/Form'
-import TextInput from '@/components/TextInput'
+import { Box, Stack, Typography, Link } from '@mui/material'
+import { useGetSocialsQuery } from '@/features/api/siteInfoApi'
 
 function FooterBottomArea() {
-  const onSubmit = async (data) => {
-    try {
-      console.log('send', data)
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  const { data: socials, isSuccess: socialsLoaded } = useGetSocialsQuery()
   return (
     <Stack
       direction={{
@@ -32,55 +25,26 @@ function FooterBottomArea() {
         lg: '1140px',
       }}
     >
-      <Box>
-        <Form
-          defaultValues={{
-            email: '',
-          }}
-          onSubmit={onSubmit}
-        >
-          <Typography sx={{ mb: 0.4 }}>ĐĂNG KÍ NHẬN BẢN TIN</Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <TextInput
-              sx={{
-                flex: 1,
-                '& .MuiInputBase-input  ': {
-                  border: 'none',
-                  color: 'white',
-                  fontSize: 14,
-                  height: '35px',
-                  minWidth: '230px',
-                  outline: 'none',
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  padding: '2px 10px',
-                  '::placeholder  ': {
-                    opacity: 1,
-                  },
-                },
-                '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                  border: 'none',
-                  outline: 'none',
-                },
-              }}
-              name="email"
-              placeholder="Nhập địa chỉ email của bạn"
-              fullWidth
-              size="small"
-            ></TextInput>
-            <Button
-              sx={{
-                ml: 1.4,
-                height: '38px',
-                p: 1,
-                bgcolor: 'secondary.main',
-                borderRadius: 0,
-                color: 'white',
-              }}
-            >
-              Gửi
-            </Button>
-          </Box>
-        </Form>
+      <Box
+        sx={{
+          minWidth: 260,
+          maxWidth: 340,
+          bgcolor: 'rgba(255,255,255,0.08)',
+          borderRadius: 2,
+          p: 2.5,
+          boxShadow: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          mb: { xs: 2, md: 0 },
+        }}
+      >
+        <Typography variant="body1" fontStyle="italic" color="white" mb={1.5} lineHeight={1.7}>
+          "Hóa học là chiếc chìa khóa mở ra cánh cửa của sự sống." 🧪
+        </Typography>
+        <Typography variant="caption" color="grey.300" fontWeight={600} textAlign="right" width="100%">
+          – Marie Curie –
+        </Typography>
       </Box>
 
       <Stack direction="column" justifyContent="center" alignItems="center">
@@ -90,16 +54,27 @@ function FooterBottomArea() {
         </Link>
       </Stack>
 
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-        <Link href="https://www.facebook.com/hoctothoahoc" target="_blank">
-          <LogoIcon color="white" size={30} src={fbIcon} />
-        </Link>
-        <Link href="https://www.youtube.com/channel/UCAddta3aiDh6u9B4xCh3w7g" target="_blank">
-          <LogoIcon color="white" size={30} src={youtubeIcon} />
-        </Link>
-        <Link href="https://www.tiktok.com/discover/t%C3%B4i-y%C3%AAu-h%C3%B3a-h%E1%BB%8Dc" target="_blank">
-          <LogoIcon color="white" size={32} src={tiktokIcon} />
-        </Link>
+      {/* Socials */}
+      <Stack direction="row" spacing={3} my={2} alignItems="center" justifyContent="center">
+        {socialsLoaded &&
+          socials.map((social) => (
+            <Link key={social.id} href={social.url} target="_blank">
+              <Stack direction="row" alignItems="center" spacing={1} key={social.id}>
+                {(() => {
+                  switch (social.platform) {
+                    case 'facebook':
+                      return <LogoIcon color="white" size={30} src={fbIcon} />
+                    case 'youtube':
+                      return <LogoIcon color="white" size={30} src={youtubeIcon} />
+                    case 'tiktok':
+                      return <LogoIcon color="white" size={30} src={tiktokIcon} />
+                    default:
+                      return null
+                  }
+                })()}
+              </Stack>
+            </Link>
+          ))}
       </Stack>
     </Stack>
   )

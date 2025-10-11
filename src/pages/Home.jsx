@@ -1,9 +1,8 @@
 import { Box, Container, Link, Stack, Typography } from '@mui/material'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
+import Spline from '@splinetool/react-spline'
 
-// Lazy load HeroCarousel
-const HeroCarousel = lazy(() => import('../components/HeroCarousel'))
 import fbIcon from '@/assets/images/fbIcon.png'
 import youtubeIcon from '@/assets/images/youtubeIcon.png'
 import tiktokIcon from '@/assets/images/tiktokIcon.png'
@@ -27,37 +26,149 @@ function Home() {
     emptyText: 'Chưa có chủ đề nào',
     hasDataCheck: (topics) => topics && topics.length > 0,
   })
+
+  const onSplineLoad = (spline) => {
+    // Điều chỉnh camera để căn giữa scene
+    const camera = spline.findObjectByName('Camera')
+    if (camera) {
+      // Reset camera position để căn giữa hoàn toàn
+      camera.position.set(0, 0, 8)
+      camera.lookAt(0, 0, 0)
+      camera.rotation.set(0, 0, 0)
+    }
+
+    // Tự động fit scene vào viewport và căn giữa
+    spline.setZoom(0.8)
+  }
   return (
     <Box>
       {/* Head Banner */}
       <Box
         sx={{
           width: '100%',
-          minHeight: '500px',
-          background: '#e1d4b4',
-          backgroundSize: '40px 40px',
-          backgroundImage:
-            'linear-gradient(90deg, hsla(0, 0%, 100%, .2) 1.3px, transparent 0), linear-gradient(180deg, hsla(0, 0%, 100%, .2) 1.3px, transparent 0)',
+          minHeight: '700px',
+          background: 'linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 50%, #e1f0e1 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          py: 8,
         }}
       >
-        <Suspense
-          fallback={
+        <Container maxWidth="lg">
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+            }}
+          >
+            {/* Title Section */}
+            <Box sx={{ mb: 3 }}>
+              <Typography
+                variant="h2"
+                sx={{
+                  fontWeight: 'bold',
+                  color: 'primary.main',
+                  mb: 1,
+                  fontSize: { xs: '2rem', md: '2.5rem' },
+                }}
+              >
+                🧪 TÔI YÊU HÓA HỌC 🧪
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: 'primary.dark',
+                  opacity: 0.8,
+                  fontSize: { xs: '1rem', md: '1.125rem' },
+                }}
+              >
+                Khám phá thế giới hóa học qua những bài học sinh động
+              </Typography>
+            </Box>
+
+            {/* Spline Container */}
             <Box
               sx={{
-                height: 400,
-                bgcolor: 'grey.100',
-                borderRadius: 2,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                width: '100%',
+                mb: 3,
               }}
             >
-              <Typography color="text.secondary">Đang tải banner...</Typography>
+              <Suspense
+                fallback={
+                  <Box
+                    sx={{
+                      width: { xs: '350px', sm: '600px', md: '800px' },
+                      height: { xs: '280px', sm: '450px', md: '600px' },
+                      bgcolor: 'rgba(3, 76, 49, 0.05)',
+                      border: '2px dashed',
+                      borderColor: 'primary.light',
+                      borderRadius: 3,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Typography color="primary.main" variant="h6">
+                      Đang tải mô hình 3D...
+                    </Typography>
+                  </Box>
+                }
+              >
+                <Box
+                  sx={{
+                    width: { xs: '350px', sm: '600px', md: '800px' },
+                    height: { xs: '280px', sm: '450px', md: '600px' },
+                    borderRadius: 3,
+                    overflow: 'hidden',
+                    boxShadow: '0 8px 32px rgba(3, 76, 49, 0.15)',
+                    border: '1px solid',
+                    borderColor: 'primary.light',
+                    bgcolor: '#1a1a1a',
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Spline
+                    scene="https://prod.spline.design/Dr3KVR2NzyYMhFQ1/scene.splinecode"
+                    onLoad={onSplineLoad}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
+                      display: 'block',
+                      margin: 'auto',
+                      objectFit: 'contain',
+                      objectPosition: 'center center',
+                    }}
+                  />
+                </Box>
+              </Suspense>
             </Box>
-          }
-        >
-          <HeroCarousel py={4} mx="auto" />
-        </Suspense>
+
+            {/* Description Section */}
+            <Box sx={{ mt: 0, maxWidth: 600 }}>
+              <Typography
+                variant="body1"
+                sx={{
+                  color: 'text.secondary',
+                  lineHeight: 1.7,
+                  fontSize: { xs: '0.9rem', md: '1rem' },
+                }}
+              >
+                Tham gia cùng chúng tôi trong hành trình khám phá những bí ẩn của hóa học. Từ những phản ứng đơn giản
+                đến các công thức phức tạp, chúng ta sẽ cùng nhau chinh phục môn học tuyệt vời này!
+              </Typography>
+            </Box>
+          </Box>
+        </Container>
       </Box>
 
       {/* Main Content */}
