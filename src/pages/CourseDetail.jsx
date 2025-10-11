@@ -24,6 +24,7 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { useUserRole } from '@/hooks/useUserRole'
 
 const CourseDetail = () => {
   const { slug } = useParams()
@@ -53,6 +54,9 @@ const CourseDetail = () => {
 
   const [deleteOutline, { isLoading: isDeleting }] = useDeleteCourseOutlineMutation()
   const [reorderOutlines] = useReorderCourseOutlinesMutation()
+
+  const userRole = useUserRole()
+  const isTeacher = userRole?.includes('teacher')
 
   // Setup sensors for dnd-kit
   const sensors = useSensors(
@@ -161,6 +165,11 @@ const CourseDetail = () => {
 
   // Handle drag and drop reorder with dnd-kit
   const handleDragEnd = async (event) => {
+    // Disable drag if user is not a teacher
+    if (!isTeacher) {
+      return
+    }
+
     const { active, over } = event
 
     // No destination or no movement
@@ -216,15 +225,17 @@ const CourseDetail = () => {
             </Typography>
           </Stack>
 
-          <Button
-            variant="outlined"
-            color="secondary"
-            startIcon={<EditIcon />}
-            onClick={() => setEditCourseModal(true)}
-            sx={{ alignSelf: 'flex-start', mt: 2 }}
-          >
-            Chỉnh sửa khóa học
-          </Button>
+          {isTeacher && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              startIcon={<EditIcon />}
+              onClick={() => setEditCourseModal(true)}
+              sx={{ alignSelf: 'flex-start', mt: 2 }}
+            >
+              Chỉnh sửa khóa học
+            </Button>
+          )}
           <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" gap={1} my={1}>
             {/* Left */}
             <Box width={{ md: '66.7%', xs: '100%' }}>
@@ -315,6 +326,8 @@ const CourseDetail = () => {
                         onDeleteOutline={handleDeleteOutline}
                         onEditOutline={handleEditOutline}
                         onCreateLivestream={handleCreateLivestream}
+                        isDragDisabled={!isTeacher}
+                        activeAction={isTeacher}
                         defaultExpanded
                       />
                     ))
@@ -332,16 +345,17 @@ const CourseDetail = () => {
                       <Typography variant="body2">Chưa có outline nào. Hãy tạo outline đầu tiên!</Typography>
                     </Box>
                   )}
-
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<AddIcon />}
-                    onClick={handleCreateOutline}
-                    sx={{ alignSelf: 'flex-start', mt: 2 }}
-                  >
-                    Tạo Outline Mới
-                  </Button>
+                  {isTeacher && (
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      startIcon={<AddIcon />}
+                      onClick={handleCreateOutline}
+                      sx={{ alignSelf: 'flex-start', mt: 2 }}
+                    >
+                      Tạo Outline Mới
+                    </Button>
+                  )}
                 </Stack>
               </SortableContext>
             </DndContext>

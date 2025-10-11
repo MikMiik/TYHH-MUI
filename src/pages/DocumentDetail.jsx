@@ -26,6 +26,7 @@ import { useGetDocumentBySlugQuery, useDeleteDocumentMutation } from '@/features
 import { useLoadingState } from '@/components/withLoadingState'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
+import { useUserRole } from '@/hooks/useUserRole'
 
 const DocumentDetail = () => {
   const { slug } = useParams()
@@ -40,6 +41,8 @@ const DocumentDetail = () => {
   })
 
   const [deleteDocument, { isLoading: isDeleting }] = useDeleteDocumentMutation()
+  const userRole = useUserRole()
+  const isTeacher = userRole?.includes('teacher')
 
   const handleDeleteClick = () => {
     setDeleteDialogOpen(true)
@@ -88,18 +91,20 @@ const DocumentDetail = () => {
                   {document?.vip && <Chip label="VIP" color="warning" variant="filled" sx={{ fontWeight: 600 }} />}
 
                   {/* Delete Button */}
-                  <IconButton
-                    color="error"
-                    onClick={handleDeleteClick}
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: 'error.light',
-                        color: 'white',
-                      },
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
+                  {isTeacher && (
+                    <IconButton
+                      color="error"
+                      onClick={handleDeleteClick}
+                      sx={{
+                        '&:hover': {
+                          backgroundColor: 'error.light',
+                          color: 'white',
+                        },
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  )}
                 </Stack>
               </Box>
 

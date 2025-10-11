@@ -32,6 +32,8 @@ const DraggableOutlineItem = ({
   onDeleteOutline,
   onEditOutline,
   onCreateLivestream,
+  isDragDisabled = false,
+  activeAction = false,
   ...accordionProps
 }) => {
   const [reorderedLivestreams, setReorderedLivestreams] = useState(outline.livestreams || [])
@@ -45,6 +47,7 @@ const DraggableOutlineItem = ({
   // Setup sortable functionality for outline
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: outline.id.toString(),
+    disabled: isDragDisabled,
   })
 
   // Setup sensors for livestream drag & drop
@@ -69,6 +72,11 @@ const DraggableOutlineItem = ({
 
   // Handle livestream drag end
   const handleLivestreamDragEnd = async (event) => {
+    // Disable drag if drag is disabled
+    if (isDragDisabled) {
+      return
+    }
+
     const { active, over } = event
 
     if (!over || active.id === over.id) {
@@ -144,72 +152,74 @@ const DraggableOutlineItem = ({
       }}
     >
       {/* Action Icons - Create Livestream, Edit and Delete */}
-      <Box sx={{ position: 'absolute', right: 8, top: 8, zIndex: 10, pointerEvents: 'auto' }}>
-        <Stack direction="row" spacing={1}>
-          {/* Create Livestream Icon */}
-          {onCreateLivestream && (
-            <Tooltip title="Tạo livestream mới">
-              <IconButton
-                size="small"
-                onClick={handleCreateLivestreamClick}
-                sx={{
-                  bgcolor: 'background.paper',
-                  boxShadow: 1,
-                  pointerEvents: 'auto',
-                  '&:hover': {
-                    bgcolor: 'success.main',
-                    color: 'white',
-                  },
-                }}
-              >
-                <AddIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
+      {activeAction && (
+        <Box sx={{ position: 'absolute', right: 8, top: 8, zIndex: 10, pointerEvents: 'auto' }}>
+          <Stack direction="row" spacing={1}>
+            {/* Create Livestream Icon */}
+            {onCreateLivestream && (
+              <Tooltip title="Tạo livestream mới">
+                <IconButton
+                  size="small"
+                  onClick={handleCreateLivestreamClick}
+                  sx={{
+                    bgcolor: 'background.paper',
+                    boxShadow: 1,
+                    pointerEvents: 'auto',
+                    '&:hover': {
+                      bgcolor: 'success.main',
+                      color: 'white',
+                    },
+                  }}
+                >
+                  <AddIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
 
-          {/* Edit Icon */}
-          {onEditOutline && (
-            <Tooltip title="Chỉnh sửa outline">
-              <IconButton
-                size="small"
-                onClick={handleEditClick}
-                sx={{
-                  bgcolor: 'background.paper',
-                  boxShadow: 1,
-                  pointerEvents: 'auto',
-                  '&:hover': {
-                    bgcolor: 'primary.main',
-                    color: 'white',
-                  },
-                }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
+            {/* Edit Icon */}
+            {onEditOutline && (
+              <Tooltip title="Chỉnh sửa outline">
+                <IconButton
+                  size="small"
+                  onClick={handleEditClick}
+                  sx={{
+                    bgcolor: 'background.paper',
+                    boxShadow: 1,
+                    pointerEvents: 'auto',
+                    '&:hover': {
+                      bgcolor: 'primary.main',
+                      color: 'white',
+                    },
+                  }}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
 
-          {/* Delete Icon */}
-          {onDeleteOutline && (
-            <Tooltip title="Xóa outline">
-              <IconButton
-                size="small"
-                onClick={handleDeleteClick}
-                sx={{
-                  bgcolor: 'background.paper',
-                  boxShadow: 1,
-                  pointerEvents: 'auto',
-                  '&:hover': {
-                    bgcolor: 'error.main',
-                    color: 'white',
-                  },
-                }}
-              >
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-        </Stack>
-      </Box>
+            {/* Delete Icon */}
+            {onDeleteOutline && (
+              <Tooltip title="Xóa outline">
+                <IconButton
+                  size="small"
+                  onClick={handleDeleteClick}
+                  sx={{
+                    bgcolor: 'background.paper',
+                    boxShadow: 1,
+                    pointerEvents: 'auto',
+                    '&:hover': {
+                      bgcolor: 'error.main',
+                      color: 'white',
+                    },
+                  }}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Stack>
+        </Box>
+      )}
 
       <Accordion square disableGutters {...accordionProps}>
         <AccordionSummary
@@ -225,25 +235,27 @@ const DraggableOutlineItem = ({
           }}
         >
           {/* Drag Handle Icon - Only this part is draggable */}
-          <Box
-            className="drag-handle"
-            sx={{
-              position: 'absolute',
-              left: 8,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              opacity: 0.3,
-              transition: 'opacity 0.2s ease',
-              cursor: isDragging ? 'grabbing' : 'grab',
-              zIndex: 1,
-            }}
-            {...attributes}
-            {...listeners}
-          >
-            <DragIndicatorIcon fontSize="small" />
-          </Box>
+          {!isDragDisabled && (
+            <Box
+              className="drag-handle"
+              sx={{
+                position: 'absolute',
+                left: 8,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                opacity: 0.3,
+                transition: 'opacity 0.2s ease',
+                cursor: isDragging ? 'grabbing' : 'grab',
+                zIndex: 1,
+              }}
+              {...attributes}
+              {...listeners}
+            >
+              <DragIndicatorIcon fontSize="small" />
+            </Box>
+          )}
 
-          <Stack direction="row" alignItems="center" spacing={1} sx={{ flex: 1, ml: 4 }}>
+          <Stack direction="row" alignItems="center" spacing={1} sx={{ flex: 1, ml: isDragDisabled ? 1 : 4 }}>
             {/* Order Number */}
             <Chip
               label={outline.order || index + 1}
@@ -281,6 +293,7 @@ const DraggableOutlineItem = ({
                     key={item.id}
                     livestream={item}
                     courseSlug={courseSlug}
+                    isDragDisabled={isDragDisabled}
                     onDeleteLivestream={(deletedId) => {
                       // Remove from local state
                       setReorderedLivestreams((prev) => prev.filter((item) => item.id !== deletedId))

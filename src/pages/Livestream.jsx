@@ -11,6 +11,7 @@ import CourseOutlineItemCompact from '@/components/CourseOutlineItemCompact'
 import { useLoadingState } from '@/components/withLoadingState'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
+import { useUserRole } from '@/hooks/useUserRole'
 
 const Livestream = () => {
   const { slug, courseSlug } = useParams()
@@ -25,6 +26,9 @@ const Livestream = () => {
   })
 
   const [updateLivestream] = useUpdateLivestreamMutation()
+
+  const userRole = useUserRole()
+  const isTeacher = userRole?.includes('teacher')
 
   const handleUploadVideo = () => {
     setUploadModalOpen(true)
@@ -160,26 +164,30 @@ const Livestream = () => {
             >
               Xem tài liệu
             </Button>
-            <Button
-              variant="contained"
-              color="tertiary"
-              disableElevation
-              size="large"
-              startIcon={<UploadIcon />}
-              onClick={handleUploadDocument}
-            >
-              Upload tài liệu
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              disableElevation
-              size="large"
-              startIcon={<UploadIcon />}
-              onClick={handleUploadVideo}
-            >
-              Upload Video
-            </Button>
+            {isTeacher && (
+              <>
+                <Button
+                  variant="contained"
+                  color="tertiary"
+                  disableElevation
+                  size="large"
+                  startIcon={<UploadIcon />}
+                  onClick={handleUploadDocument}
+                >
+                  Upload tài liệu
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                  size="large"
+                  startIcon={<UploadIcon />}
+                  onClick={handleUploadVideo}
+                >
+                  Upload Video
+                </Button>
+              </>
+            )}
           </Stack>
         </Box>
 

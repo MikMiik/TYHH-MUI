@@ -8,9 +8,12 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useCurrentUser } from '@/utils/useCurrentUser'
+import { useUserRole } from '@/hooks/useUserRole'
 
 const DropAvatar = ({ bgcolor, width, height }) => {
   const [anchorEl, setAnchorEl] = useState(null)
+  const userRole = useUserRole()
+  const isTeacher = userRole?.includes('teacher')
   const open = Boolean(anchorEl)
   const currentUser = useCurrentUser()
   const handleMouseEnter = (event) => {
@@ -103,19 +106,21 @@ const DropAvatar = ({ bgcolor, width, height }) => {
                     <ListItemText primary={'Khóa học của tôi'} />
                   </ListItemButton>
                 </ListItem>
-                <ListItem
-                  component={Link}
-                  to="/created-courses"
-                  sx={{ whiteSpace: 'nowrap', width: 'auto', color: 'inherit' }}
-                  disablePadding
-                >
-                  <ListItemButton>
-                    <ListItemIcon sx={{ mr: 1, minWidth: 'auto' }}>
-                      <CreateOutlinedIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary={'Khóa học đã tạo'} />
-                  </ListItemButton>
-                </ListItem>
+                {isTeacher && (
+                  <ListItem
+                    component={Link}
+                    to="/created-courses"
+                    sx={{ whiteSpace: 'nowrap', width: 'auto', color: 'inherit' }}
+                    disablePadding
+                  >
+                    <ListItemButton>
+                      <ListItemIcon sx={{ mr: 1, minWidth: 'auto' }}>
+                        <CreateOutlinedIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText primary={'Khóa học đã tạo'} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
               </List>
             </Paper>
           )}

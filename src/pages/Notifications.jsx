@@ -26,6 +26,7 @@ import { useLoadingState } from '@/components/withLoadingState'
 import CreateNotificationModal from '@/components/CreateNotificationModal'
 import BreadCrumbsPath from '@/components/BreadCrumbsPath'
 import useDebounce from '@/hooks/useDebounce'
+import { useUserRole } from '@/hooks/useUserRole'
 
 const Notifications = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -36,6 +37,9 @@ const Notifications = () => {
   const page = parseInt(searchParams.get('page')) || 1
   const search = searchParams.get('search') || ''
   const pageSize = 10
+
+  const userRole = useUserRole()
+  const isTeacher = userRole?.includes('teacher')
 
   // Update URL params when debounced search value changes
   useEffect(() => {
@@ -150,9 +154,11 @@ const Notifications = () => {
                 Đánh dấu đọc hết
               </Button>
             )}
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setCreateModalOpen(true)}>
-              Tạo thông báo
-            </Button>
+            {isTeacher && (
+              <Button variant="contained" startIcon={<AddIcon />} onClick={() => setCreateModalOpen(true)}>
+                Tạo thông báo
+              </Button>
+            )}
           </Stack>
         </Stack>
 

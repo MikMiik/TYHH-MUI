@@ -29,12 +29,15 @@ import EditLivestreamModal from './EditLivestreamModal'
 import { useDeleteLivestreamMutation } from '@/features/api/livestreamApi'
 import { toast } from 'react-toastify'
 
-const DraggableLivestreamItem = ({ livestream, courseSlug, onDeleteLivestream }) => {
+const DraggableLivestreamItem = ({ livestream, courseSlug, onDeleteLivestream, isDragDisabled = false }) => {
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [deleteLivestream, { isLoading: isDeleting }] = useDeleteLivestreamMutation()
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: livestream.id })
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: livestream.id,
+    disabled: isDragDisabled,
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -88,19 +91,21 @@ const DraggableLivestreamItem = ({ livestream, courseSlug, onDeleteLivestream })
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%' }}>
             {/* Drag Handle */}
-            <Box
-              className="drag-handle"
-              sx={{
-                opacity: 0.3,
-                cursor: isDragging ? 'grabbing' : 'grab',
-                transition: 'opacity 0.2s ease',
-                '&:hover': { opacity: 1 },
-              }}
-              {...attributes}
-              {...listeners}
-            >
-              <DragIndicatorIcon fontSize="small" />
-            </Box>
+            {!isDragDisabled && (
+              <Box
+                className="drag-handle"
+                sx={{
+                  opacity: 0.3,
+                  cursor: isDragging ? 'grabbing' : 'grab',
+                  transition: 'opacity 0.2s ease',
+                  '&:hover': { opacity: 1 },
+                }}
+                {...attributes}
+                {...listeners}
+              >
+                <DragIndicatorIcon fontSize="small" />
+              </Box>
+            )}
 
             {/* Livestream Title */}
             <Link to={`/courses/${courseSlug}/${livestream.slug}`} style={{ textDecoration: 'none', flex: 1 }}>

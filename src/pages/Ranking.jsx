@@ -147,7 +147,7 @@ function Ranking() {
                     }}
                   >
                     {student.avatar ? (
-                      <LocalImageLazy src={student.avatar} alt={student.name} />
+                      <LocalImageLazy src={student.avatar} alt={student.name} w="100%" />
                     ) : (
                       student.name?.charAt(0)?.toUpperCase()
                     )}
@@ -220,7 +220,7 @@ function Ranking() {
                   <ListItemAvatar>
                     <Avatar sx={{ width: 50, height: 50 }}>
                       {student.avatar ? (
-                        <LocalImageLazy src={student.avatar} alt={student.name} />
+                        <LocalImageLazy src={student.avatar} alt={student.name} w="100%" />
                       ) : (
                         student.name?.charAt(0)?.toUpperCase()
                       )}

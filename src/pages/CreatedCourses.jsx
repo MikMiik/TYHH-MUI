@@ -11,8 +11,8 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material'
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { useGetCreatedCoursesQuery, useDeleteCourseMutation } from '@/features/api/courseApi'
 import LocalImageLazy from '@/components/LocalImageLazy'
 import CreateCourseModal from '@/components/CreateCourseModal'
@@ -20,8 +20,12 @@ import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
+import { useUserRole } from '@/hooks/useUserRole'
 
 function CreatedCourses() {
+  const userRole = useUserRole()
+  const isTeacher = userRole?.includes('teacher')
+  const navigate = useNavigate()
   const [page] = useState(1)
   const [search] = useState('')
   const [openCreateModal, setOpenCreateModal] = useState(false)
@@ -48,6 +52,12 @@ function CreatedCourses() {
   })
 
   const [deleteCourse, { isLoading: isDeleting }] = useDeleteCourseMutation()
+
+  useEffect(() => {
+    if (!isTeacher) {
+      navigate('/')
+    }
+  }, [isTeacher, navigate])
 
   const handleCreateCourse = () => {
     setOpenCreateModal(true)
