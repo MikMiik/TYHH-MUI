@@ -1,7 +1,7 @@
 import { Avatar, Box, Chip, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from '@mui/material'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import DownloadIcon from '@mui/icons-material/Download'
-import ImageLazy from './ImageLazy'
+import LocalImageLazy from './LocalImageLazy'
 import { Link } from 'react-router-dom'
 
 function DocumentListItem({ doc }) {
@@ -9,7 +9,7 @@ function DocumentListItem({ doc }) {
     <ListItem alignItems="flex-start" sx={{ borderBottom: '1px solid #eee', px: 0 }}>
       <ListItemAvatar>
         <Box width={80} height={80} borderRadius={1} overflow="hidden" boxShadow={1}>
-          <ImageLazy placeholder="/document-placeholder.svg" src={doc.thumbnail} w="100%" h="100%" />
+          <LocalImageLazy placeholder="/document-placeholder.svg" src={doc.thumbnail} w="100%" h="100%" />
         </Box>
       </ListItemAvatar>
       <ListItemText

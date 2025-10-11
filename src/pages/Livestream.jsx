@@ -3,7 +3,7 @@ import { Box, Button, Container, Stack, Typography } from '@mui/material'
 import VideoComp from '@/components/VideoComp'
 import DownloadIcon from '@mui/icons-material/Download'
 import UploadIcon from '@mui/icons-material/Upload'
-import VideoUploadModal from '@/components/VideoUploadModal'
+import LocalVideoUploadModal from '@/components/LocalVideoUploadModal'
 import { useParams } from 'react-router-dom'
 import { useGetLivestreamQuery, useUpdateLivestreamMutation } from '@/features/api/livestreamApi'
 import CourseOutlineItemCompact from '@/components/CourseOutlineItemCompact'
@@ -150,7 +150,7 @@ const Livestream = () => {
         </Box>
 
         {/* Video Upload Modal */}
-        <VideoUploadModal
+        <LocalVideoUploadModal
           open={uploadModalOpen}
           onClose={() => setUploadModalOpen(false)}
           onUploadSuccess={handleUploadSuccess}

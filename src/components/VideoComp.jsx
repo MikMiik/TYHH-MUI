@@ -7,6 +7,19 @@ const VideoJS = lazy(() => import('@/components/VideoJS'))
 const VideoComp = ({ src, poster, options, livestreamSlug }) => {
   const playerRef = useRef(null)
 
+  // Determine video source URL
+  let videoSrc = ''
+  if (src) {
+    if (src.startsWith('http')) {
+      // Already a full URL (for backwards compatibility)
+      videoSrc = src
+    } else {
+      // Local file path, construct full URL
+      const baseURL = import.meta.env.VITE_SERVER_URL
+      videoSrc = baseURL ? `${baseURL}/${src.replace(/^\//, '')}` : `/${src.replace(/^\//, '')}`
+    }
+  }
+
   const videoJsOptions = {
     autoplay: false,
     controls: true,
@@ -16,14 +29,11 @@ const VideoComp = ({ src, poster, options, livestreamSlug }) => {
     inactivityTimeout: 2000,
     sources: [
       {
-        src: src
-          ? `${import.meta.env.VITE_IK_URL_ENDPOINT}${src}?tr=sr-240_360_480_720_1080`
-          : 'https://ik.imagekit.io/mikmik/video-test.mp4',
-        // /ik-master.m3u8?tr=sr-240_360_480_720_1080
+        src: videoSrc,
         type: 'video/mp4',
       },
     ],
-    poster: poster || 'https://ik.imagekit.io/mikmik/poster-bg-livestreams.jpg?tr=w-1480,h-832',
+    poster: poster || '/poster-bg-livestreams.svg',
     ...options, // Spread additional options if provided
   }
 

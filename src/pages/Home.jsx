@@ -11,7 +11,7 @@ import rankingBanner from '@/assets/images/ranking-banner-home.png'
 import config from '@/routes/config'
 import VideoCarousel from '@/components/VideoCarousel'
 import MuiLink from '@/components/MuiLink'
-import ImageLazy from '@/components/ImageLazy'
+import LocalImageLazy from '@/components/LocalImageLazy'
 import VideoComp from '@/components/VideoComp'
 import { useGetSocialsQuery } from '@/features/api/siteInfoApi'
 import { useGetAllTopicsQuery } from '@/features/api/topicApi'
@@ -240,7 +240,7 @@ function Home() {
                 },
               }}
             >
-              <ImageLazy src="mini-live.png" alt="mini-live" w={200} />
+              <LocalImageLazy src="mini-live.png" alt="mini-live" w={200} />
               <Box ml={1} maxWidth="calc(100% - 108px)">
                 <Typography noWrap variant="subtitle2" color="#fff" fontWeight={600}>
                   LIVE 8: KIỂM TRA CHẤT LƯỢNG CHƯƠNG I - NGÀY 7 - KIỂM TRA CHẤT LƯỢNG CHƯƠNG I
@@ -275,7 +275,7 @@ function Home() {
             }}
             href={config.routes.home}
           >
-            <ImageLazy src="banner.png?tr=w-1920,h-700,cm-extract" alt="banner" w="100%" />
+            <img src="banner.png" alt="banner" style={{ width: '100%' }} />
           </Link>
         </Box>
       </Container>

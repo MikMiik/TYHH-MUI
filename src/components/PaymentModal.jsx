@@ -1,6 +1,6 @@
 import { Modal, Box as MuiBox, IconButton, Fade, Backdrop, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import ImageLazy from './ImageLazy'
+import LocalImageLazy from './LocalImageLazy'
 function PaymentModal({ open, onClose }) {
   return (
     <Modal
@@ -37,7 +37,7 @@ function PaymentModal({ open, onClose }) {
             <Typography variant="subtitle1" color="primary" fontWeight={700} mb={1}>
               THÔNG TIN CHUYỂN KHOẢN
             </Typography>
-            <ImageLazy src="transfer-info.jpg" w="100%" />
+            <LocalImageLazy src="uploads/transfer-info.jpg" w="100%" />
           </MuiBox>
         </MuiBox>
       </Fade>

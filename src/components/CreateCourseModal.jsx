@@ -23,7 +23,7 @@ import {
 import VideoCallIcon from '@mui/icons-material/VideoCall'
 import { useCreateCourseMutation, useEditCourseMutation } from '@/features/api/courseApi'
 import { useGetTopicsQuery } from '@/features/api/topicApi'
-import ImageUploader from './ImageUploader'
+import LocalImageUploader from './LocalImageUploader'
 import IntroVideoUploadModal from './IntroVideoUploadModal'
 import courseSchema from '@/schemas/courseSchema'
 import VideoComp from './VideoComp'
@@ -407,10 +407,8 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                   Ảnh thumbnail khóa học
                 </Typography>
-                <ImageUploader
-                  currentImage={
-                    formData.thumbnail ? `${import.meta.env.VITE_IK_URL_ENDPOINT}/${formData.thumbnail}` : null
-                  }
+                <LocalImageUploader
+                  currentImage={formData.thumbnail ? `${import.meta.env.VITE_SERVER_URL}/${formData.thumbnail}` : null}
                   onUploadSuccess={(response) => {
                     setFormData((prev) => ({
                       ...prev,
@@ -424,7 +422,6 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                   onUploadError={(error) => {
                     console.error('Thumbnail upload error:', error)
                   }}
-                  uploadFolder="course-thumbnails"
                   title="Ảnh thumbnail khóa học"
                   fileName="course_thumbnail"
                   height="auto"

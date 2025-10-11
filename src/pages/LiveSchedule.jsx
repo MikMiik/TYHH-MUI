@@ -1,5 +1,5 @@
 import BreadCrumbsPath from '@/components/BreadCrumbsPath'
-import ImageLazy from '@/components/ImageLazy'
+import LocalImageLazy from '@/components/LocalImageLazy'
 import { useGetSchedulesQuery } from '@/features/api/scheduleApi'
 import { Box, Tabs, Tab, Container } from '@mui/material'
 import { useLoadingState } from '@/components/withLoadingState'
@@ -46,7 +46,7 @@ function LiveSchedule() {
           >
             {schedules && schedules.map((t) => <Tab key={t.id} label={t.target} />)}
           </Tabs>
-          {schedules && schedules[tab] && <ImageLazy src={schedules[tab].url} w="100%" />}
+          {schedules && schedules[tab] && <LocalImageLazy src={schedules[tab].url} w="100%" />}
         </Box>
       </Container>
     </LoadingStateComponent>

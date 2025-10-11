@@ -14,7 +14,7 @@ import {
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useGetCreatedCoursesQuery, useDeleteCourseMutation } from '@/features/api/courseApi'
-import ImageLazy from '@/components/ImageLazy'
+import LocalImageLazy from '@/components/LocalImageLazy'
 import CreateCourseModal from '@/components/CreateCourseModal'
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
 import AddIcon from '@mui/icons-material/Add'
@@ -305,7 +305,7 @@ function CreatedCourses() {
                             width: { xs: '100%', md: 200 },
                           }}
                         >
-                          <ImageLazy w="100%" src={course.thumbnail} alt={course.title} />
+                          <LocalImageLazy w="100%" h="120px" src={course.thumbnail} alt={course.title} />
                         </Box>
 
                         {/* Course Info */}

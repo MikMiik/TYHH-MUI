@@ -24,7 +24,6 @@ const DocumentDetail = () => {
       day: 'numeric',
     })
   }
-  console.log(document)
 
   return (
     <LoadingStateComponent>

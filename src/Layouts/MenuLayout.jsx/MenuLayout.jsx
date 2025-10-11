@@ -8,7 +8,6 @@ import TopicList from '@/components/TopicList'
 import { useGetAllTopicsQuery } from '@/features/api/topicApi'
 import useResponsive from '@/hooks/useResponsive'
 import useDebounce from '@/hooks/useDebounce'
-import ImageLazy from '@/components/ImageLazy'
 
 function MenuLayout() {
   const { isMobile } = useResponsive()
@@ -97,7 +96,7 @@ function MenuLayout() {
         <Outlet />
       </Stack>
       <Box mt={4}>
-        <ImageLazy src="banner.png?tr=w-1920,h-700,cm-extract" alt="banner" w="100%" />
+        <img src="banner.png" alt="banner" style={{ width: '100%' }} />
       </Box>
     </Container>
   )

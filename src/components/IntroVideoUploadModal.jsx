@@ -19,7 +19,7 @@ import {
   VideoFile as VideoIcon,
   CheckCircle as CheckIcon,
 } from '@mui/icons-material'
-import ImageKitUploader from './ImagekitAuth'
+import LocalUploader from './LocalUploader'
 import { toast } from 'react-toastify'
 import VideoComp from './VideoComp'
 import { useEditCourseMutation } from '@/features/api/courseApi'
@@ -49,8 +49,6 @@ const IntroVideoUploadModal = ({ open, onClose, onUploadSuccess, course }) => {
     // Upload file
     uploadFile(file, {
       fileName: `${course?.slug || 'course'}-intro-${Date.now()}.mp4`,
-      folder: '/course-intro',
-      tags: ['course-intro', course?.slug || 'unknown'],
       maxSize: maxSize,
     })
   }
@@ -74,24 +72,29 @@ const IntroVideoUploadModal = ({ open, onClose, onUploadSuccess, course }) => {
   const handleUploadSuccess = async (response) => {
     clearPreview()
 
-    if (!response.url || !course?.id) {
-      toast.error('Lỗi: Không thể lưu video vào khóa học')
+    if (!response) {
+      toast.error('Lỗi: Không thể upload video')
       return
     }
 
+    const relativePath = response.filePath
+
     try {
-      // Loại bỏ dấu / ở đầu filePath để có đường dẫn tương đối
-      const relativePath = response.filePath?.startsWith('/') ? response.filePath.substring(1) : response.filePath
+      // Chỉ lưu vào database nếu đang edit course có sẵn
+      if (course?.id) {
+        // Lưu video relative path vào database
+        await editCourse({
+          id: course.id,
+          courseData: {
+            introVideo: relativePath, // Sử dụng relative path, không phải full URL
+          },
+        }).unwrap()
 
-      // Lưu video relative path vào database
-      await editCourse({
-        id: course.id,
-        courseData: {
-          introVideo: relativePath, // Sử dụng relative path, không phải full URL
-        },
-      }).unwrap()
-
-      toast.success('Upload và lưu video giới thiệu thành công!')
+        toast.success('Upload và lưu video giới thiệu thành công!')
+      } else {
+        // Nếu đang tạo course mới, chỉ thông báo upload thành công
+        toast.success('Upload video giới thiệu thành công!')
+      }
 
       onUploadSuccess?.({
         ...response,
@@ -143,7 +146,7 @@ const IntroVideoUploadModal = ({ open, onClose, onUploadSuccess, course }) => {
             Upload video giới thiệu cho khóa học: <strong>{course?.title}</strong>
           </Typography>
 
-          <ImageKitUploader
+          <LocalUploader
             onUploadSuccess={handleUploadSuccess}
             onUploadError={(error) => {
               clearPreview()
@@ -259,7 +262,7 @@ const IntroVideoUploadModal = ({ open, onClose, onUploadSuccess, course }) => {
                 )}
               </Box>
             )}
-          </ImageKitUploader>
+          </LocalUploader>
         </Box>
       </DialogContent>
 

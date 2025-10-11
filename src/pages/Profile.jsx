@@ -14,7 +14,7 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import Form from '../components/Form'
 import TextInput from '../components/TextInput'
 import AutocompleteField from '../components/AutocompleteField'
-import ImageKitUploader from '../components/ImagekitAuth'
+import LocalUploader from '../components/LocalUploader'
 import BreadCrumbsPath from '@/components/BreadCrumbsPath'
 import LoadingState from '@/components/LoadingState'
 import { useGetAllCitiesQuery } from '../features/api/cityApi'
@@ -91,7 +91,7 @@ const Profile = () => {
           Thông tin cá nhân
         </Typography>
         <Box maxWidth={800} mx="auto">
-          <ImageKitUploader
+          <LocalUploader
             onUploadSuccess={handleAvatarUpload}
             onUploadError={() => {
               toast.error('Có lỗi xảy ra khi tải lên avatar')
@@ -101,7 +101,7 @@ const Profile = () => {
               <Stack flexDirection="column" alignItems="center" mb={6}>
                 <Box position="relative" display="inline-block">
                   <Avatar
-                    src={`${import.meta.env.VITE_IK_URL_ENDPOINT}${profile.avatar}`}
+                    src={profile.avatar ? `${import.meta.env.VITE_SERVER_URL}${profile.avatar}` : undefined}
                     sx={{ width: 120, height: 120, bgcolor: 'tertiary.main', fontSize: 40, fontWeight: 600 }}
                   ></Avatar>
                   <IconButton
@@ -124,8 +124,6 @@ const Profile = () => {
                         if (file) {
                           uploadFile(file, {
                             fileName: `avatar_${Date.now()}.${file.name.split('.').pop()}`,
-                            folder: '/avatars',
-                            tags: ['avatar', 'profile'],
                           })
                         }
                       }}
@@ -165,7 +163,7 @@ const Profile = () => {
                 )}
               </Stack>
             )}
-          </ImageKitUploader>
+          </LocalUploader>
           <Form schema={profileSchema(changePassword)} defaultValues={profile} onSubmit={handleSubmit}>
             <Box
               sx={{
