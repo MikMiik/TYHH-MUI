@@ -1,7 +1,7 @@
 import LogoIcon from '@/components/LogoIcon'
 import logoImg from '@/assets/images/mainlogo.png'
 
-import { Box, ListItem, Stack, Typography } from '@mui/material'
+import { ListItem, Stack, Typography } from '@mui/material'
 import HomeFilledIcon from '@mui/icons-material/HomeFilled'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
