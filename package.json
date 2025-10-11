@@ -34,6 +34,7 @@
     "framer-motion": "^12.16.0",
     "normalize-scss": "^8.0.0",
     "normalize.css": "^8.0.1",
+    "pusher-js": "^8.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^6.0.0",

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import Popover from '@mui/material/Popover'
 import MuiBox from '@mui/material/Box'
@@ -12,13 +12,16 @@ import {
 } from '@/features/api/notificationApi'
 import { useLoadingState } from './withLoadingState'
 import { Link } from 'react-router-dom'
+import socketClient from '@/utils/socketClient'
+import { useCurrentUser } from '@/utils/useCurrentUser'
 
 const NotiDrop = () => {
   const [anchorEl, setAnchorEl] = useState(null)
   const iconRef = useRef(null)
+  const currentUser = useCurrentUser()
 
   const queryResult = useGetAllNotificationsQuery({ page: 1, limit: 5 })
-  const { data: { notifications } = {}, LoadingStateComponent } = useLoadingState(queryResult, {
+  const { data: { notifications: apiNotifications } = {}, LoadingStateComponent } = useLoadingState(queryResult, {
     variant: 'inline',
     loadingText: 'Đang tải thông báo...',
     emptyText: 'Chưa có thông báo nào',
@@ -26,8 +29,41 @@ const NotiDrop = () => {
     hasDataCheck: (notifications) => notifications && notifications.length > 0,
   })
 
+  // Local state for notifications with real-time updates
+  const [notifications, setNotifications] = useState(apiNotifications || [])
+
   const [markAsRead] = useMarkNotificationAsReadMutation()
   const [markAllAsRead] = useMarkAllNotificationsAsReadMutation()
+
+  // Sync API notifications with local state
+  useEffect(() => {
+    if (apiNotifications) {
+      setNotifications(apiNotifications)
+    }
+  }, [apiNotifications])
+
+  // Listen for real-time notifications via socket
+  useEffect(() => {
+    if (!currentUser?.id) return
+
+    const channel = socketClient.subscribe(`notifications`)
+    channel.bind('new-notification', (newNotification) => {
+      setNotifications((prevNotifications) => {
+        // Check if notification already exists to avoid duplicates
+        const notificationExists = prevNotifications.some((n) => n.id === newNotification.id)
+        if (notificationExists) {
+          return prevNotifications
+        }
+        // Add new notification to the beginning and keep only latest 5
+        return [newNotification, ...prevNotifications].slice(0, 5)
+      })
+    })
+
+    // Cleanup subscription on unmount
+    return () => {
+      socketClient.unsubscribe(`notifications`)
+    }
+  }, [currentUser?.id]) // Remove notifications from dependency
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -41,6 +77,8 @@ const NotiDrop = () => {
     if (!notification.isRead) {
       try {
         await markAsRead(notification.id).unwrap()
+        // Update local state immediately for better UX
+        setNotifications((prev) => prev.map((n) => (n.id === notification.id ? { ...n, isRead: true } : n)))
       } catch (error) {
         console.error('Error marking notification as read:', error)
       }
@@ -50,6 +88,13 @@ const NotiDrop = () => {
   const handleMarkAllAsRead = async () => {
     try {
       await markAllAsRead().unwrap()
+      // Update local state immediately for better UX
+      setNotifications((prev) =>
+        prev.map((notification) => ({
+          ...notification,
+          isRead: true,
+        }))
+      )
     } catch (error) {
       console.error('Error marking all notifications as read:', error)
     }
