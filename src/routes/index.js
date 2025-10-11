@@ -16,6 +16,7 @@ import {
   MyCourses,
   CreatedCourses,
   Notifications,
+  Ranking,
   NotFound,
 } from '@/pages'
 import MenuLayout from '@/Layouts/MenuLayout.jsx/MenuLayout'
@@ -47,6 +48,10 @@ const routes = [
   {
     path: config.routes.liveSchedule,
     component: LiveSchedule,
+  },
+  {
+    path: config.routes.ranking,
+    component: Ranking,
   },
   {
     path: config.routes.login,
@@ -87,6 +92,10 @@ const routes = [
   {
     path: config.routes.notifications,
     component: Notifications,
+  },
+  {
+    path: config.routes.ranking,
+    component: Ranking,
   },
   {
     path: config.routes.notFound,

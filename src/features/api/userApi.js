@@ -8,7 +8,13 @@ export const userApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response) => response.data,
     }),
+    getAllStudents: builder.query({
+      query: () => ({
+        url: 'users/students',
+      }),
+      transformResponse: (response) => response.data,
+    }),
   }),
 })
 
-export const { useGetMyCoursesQuery } = userApi
+export const { useGetMyCoursesQuery, useGetAllStudentsQuery } = userApi
