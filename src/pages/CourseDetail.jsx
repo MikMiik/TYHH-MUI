@@ -261,36 +261,17 @@ const CourseDetail = () => {
                 <Button startIcon={<AppRegistrationIcon />} variant="contained" color="tertiary">
                   Đăng ký khóa học
                 </Button>
-                <Button
-                  startIcon={<FacebookOutlinedIcon />}
-                  variant="contained"
-                  color="secondary"
-                  rel="noopener noreferrer"
-                >
-                  Tư vấn viên
-                </Button>
 
                 <Button
                   variant="contained"
                   color="secondary"
                   startIcon={<FacebookOutlinedIcon />}
                   component="a"
-                  href="https://www.facebook.com/"
+                  href={course?.teacher?.facebook || 'https://www.facebook.com/'}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   Facebook giáo viên
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  startIcon={<FacebookOutlinedIcon />}
-                  component="a"
-                  href="https://www.facebook.com/groups/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Group học tập
                 </Button>
               </Stack>
             </Stack>

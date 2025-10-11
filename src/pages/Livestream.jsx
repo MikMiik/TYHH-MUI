@@ -3,8 +3,9 @@ import { Box, Button, Container, Stack, Typography } from '@mui/material'
 import VideoComp from '@/components/VideoComp'
 import DownloadIcon from '@mui/icons-material/Download'
 import UploadIcon from '@mui/icons-material/Upload'
+import DocumentUploadModal from '@/components/DocumentUploadModal'
 import LocalVideoUploadModal from '@/components/LocalVideoUploadModal'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useGetLivestreamQuery, useUpdateLivestreamMutation } from '@/features/api/livestreamApi'
 import CourseOutlineItemCompact from '@/components/CourseOutlineItemCompact'
 import { useLoadingState } from '@/components/withLoadingState'
@@ -14,6 +15,7 @@ import { toast } from 'react-toastify'
 const Livestream = () => {
   const { slug, courseSlug } = useParams()
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
+  const [documentUploadOpen, setDocumentUploadOpen] = useState(false)
 
   const queryResult = useGetLivestreamQuery(slug)
   const { data: livestream, LoadingStateComponent } = useLoadingState(queryResult, {
@@ -26,6 +28,10 @@ const Livestream = () => {
 
   const handleUploadVideo = () => {
     setUploadModalOpen(true)
+  }
+
+  const handleUploadDocument = () => {
+    setDocumentUploadOpen(true)
   }
 
   const extractRelativePath = (response) => {
@@ -53,6 +59,18 @@ const Livestream = () => {
       toast.error(errorMessage)
     }
   }
+
+  const handleDocumentUploadSuccess = (response) => {
+    console.log('Document uploaded successfully:', response)
+    toast.success('Upload tài liệu thành công!')
+    setDocumentUploadOpen(false)
+    // TODO: Create document record in database if needed
+  }
+
+  // Lấy document đầu tiên có url/slidenote (nếu có)
+
+  const firstDocument = livestream?.documents?.[0]
+  const documentDetailUrl = firstDocument?.slug ? `/documents/${firstDocument.slug}` : undefined
 
   return (
     <LoadingStateComponent>
@@ -130,11 +148,27 @@ const Livestream = () => {
           </Stack>
 
           <Stack direction="row" alignItems="center" gap={1} my={2}>
-            <Button variant="contained" color="secondary" disableElevation startIcon={<DownloadIcon />} size="large">
-              Tải Tài Liệu
+            <Button
+              variant="contained"
+              color="secondary"
+              disableElevation
+              startIcon={<DownloadIcon />}
+              size="large"
+              component={Link}
+              to={documentDetailUrl || '#'}
+              disabled={!documentDetailUrl}
+            >
+              Xem tài liệu
             </Button>
-            <Button variant="contained" color="tertiary" disableElevation size="large" startIcon={<DownloadIcon />}>
-              Tải Slidenote
+            <Button
+              variant="contained"
+              color="tertiary"
+              disableElevation
+              size="large"
+              startIcon={<UploadIcon />}
+              onClick={handleUploadDocument}
+            >
+              Upload tài liệu
             </Button>
             <Button
               variant="contained"
@@ -155,6 +189,13 @@ const Livestream = () => {
           onClose={() => setUploadModalOpen(false)}
           onUploadSuccess={handleUploadSuccess}
           livestream={livestream}
+        />
+
+        <DocumentUploadModal
+          open={documentUploadOpen}
+          onClose={() => setDocumentUploadOpen(false)}
+          livestream={livestream}
+          onUploadSuccess={handleDocumentUploadSuccess}
         />
       </Container>
     </LoadingStateComponent>

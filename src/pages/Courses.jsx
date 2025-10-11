@@ -59,6 +59,7 @@ function Courses() {
             courses.length > 0 &&
             courses.map((course) => (
               <VideoCard
+                src={course.thumbnail ? `${import.meta.env.VITE_SERVER_URL}${course.thumbnail}` : ''}
                 key={course.id}
                 course={course}
                 sx={{

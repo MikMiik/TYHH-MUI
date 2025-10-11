@@ -1,21 +1,67 @@
 import BreadCrumbsPath from '@/components/BreadCrumbsPath'
-import { Box, Button, Chip, Container, Stack, Typography, Card, CardContent, Divider, Paper } from '@mui/material'
+import {
+  Box,
+  Button,
+  Chip,
+  Container,
+  Stack,
+  Typography,
+  Card,
+  CardContent,
+  Divider,
+  Paper,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material'
 import DownloadIcon from '@mui/icons-material/Download'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
-import { useParams, Link } from 'react-router-dom'
-import { useGetDocumentBySlugQuery } from '@/features/api/documentApi'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useGetDocumentBySlugQuery, useDeleteDocumentMutation } from '@/features/api/documentApi'
 import { useLoadingState } from '@/components/withLoadingState'
+import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 const DocumentDetail = () => {
   const { slug } = useParams()
+  const navigate = useNavigate()
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+
   const queryResult = useGetDocumentBySlugQuery(slug)
   const { data: document, LoadingStateComponent } = useLoadingState(queryResult, {
     variant: 'page',
     loadingText: 'Đang tải tài liệu...',
     emptyText: 'Không tìm thấy tài liệu này',
   })
+
+  const [deleteDocument, { isLoading: isDeleting }] = useDeleteDocumentMutation()
+
+  const handleDeleteClick = () => {
+    setDeleteDialogOpen(true)
+  }
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteDocument(document.id).unwrap()
+      toast.success('Xóa tài liệu thành công!')
+      setDeleteDialogOpen(false)
+
+      // Navigate back to livestream or documents page
+      if (document?.livestream?.course?.slug && document?.livestream?.slug) {
+        navigate(`/courses/${document.livestream.course.slug}/${document.livestream.slug}`)
+      } else {
+        navigate('/documents')
+      }
+    } catch (error) {
+      console.error('Error deleting document:', error)
+      toast.error('Lỗi xóa tài liệu: ' + (error?.data?.message || error.message))
+    }
+  }
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('vi-VN', {
@@ -36,10 +82,24 @@ const DocumentDetail = () => {
               {/* Header Section */}
               <Box>
                 <Stack direction="row" alignItems="center" spacing={2} mb={2}>
-                  <Typography variant="h4" fontWeight={700} color="primary.main">
+                  <Typography variant="h4" fontWeight={700} color="primary.main" sx={{ flex: 1 }}>
                     {document?.title || 'Loading...'}
                   </Typography>
                   {document?.vip && <Chip label="VIP" color="warning" variant="filled" sx={{ fontWeight: 600 }} />}
+
+                  {/* Delete Button */}
+                  <IconButton
+                    color="error"
+                    onClick={handleDeleteClick}
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: 'error.light',
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </Stack>
               </Box>
 
@@ -216,6 +276,23 @@ const DocumentDetail = () => {
             </Stack>
           </Paper>
         </Box>
+
+        {/* Delete Confirmation Dialog */}
+        <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} maxWidth="sm" fullWidth>
+          <DialogTitle>Xác nhận xóa tài liệu</DialogTitle>
+          <DialogContent>
+            <Typography>Bạn có chắc chắn muốn xóa tài liệu "{document?.title}"?</Typography>
+            <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+              Hành động này không thể hoàn tác.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDeleteDialogOpen(false)}>Hủy</Button>
+            <Button onClick={handleDeleteConfirm} color="error" variant="contained" disabled={isDeleting}>
+              {isDeleting ? 'Đang xóa...' : 'Xóa'}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </LoadingStateComponent>
   )

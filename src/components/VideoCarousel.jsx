@@ -136,10 +136,9 @@ function VideoCarousel({ videoList = [] }) {
               }}
             >
               <VideoCard
-                src={`${import.meta.env.VITE_IK_URL_ENDPOINT}${item.thumbnail}`}
+                src={item.thumbnail ? `${import.meta.env.VITE_SERVER_URL}${item.thumbnail}` : ''}
                 course={item}
                 sx={{
-                  width: '100%',
                   height: 'auto',
                   '& .MuiCard-root': {
                     height: '100%',

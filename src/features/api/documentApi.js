@@ -13,7 +13,27 @@ export const documentApi = baseApi.injectEndpoints({
       query: (slug) => `documents/${slug}`,
       transformResponse: (response) => response.data,
     }),
+    createDocument: builder.mutation({
+      query: (documentData) => ({
+        url: '/documents',
+        method: 'POST',
+        body: documentData,
+      }),
+      transformResponse: (response) => response.data,
+    }),
+    deleteDocument: builder.mutation({
+      query: (id) => ({
+        url: `/documents/${id}`,
+        method: 'DELETE',
+      }),
+      transformResponse: (response) => response.data,
+    }),
   }),
 })
 
-export const { useGetAllDocumentsQuery, useGetDocumentBySlugQuery } = documentApi
+export const {
+  useGetAllDocumentsQuery,
+  useGetDocumentBySlugQuery,
+  useCreateDocumentMutation,
+  useDeleteDocumentMutation,
+} = documentApi

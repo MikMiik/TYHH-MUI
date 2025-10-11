@@ -1,4 +1,4 @@
-import videoImg from '@/assets/images/video-img.png'
+import videoImg from '/placeholder-image.svg'
 
 import { Card, CardContent, CardMedia, Typography, Button, Stack } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
@@ -7,7 +7,7 @@ import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalance
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import theme from '@/theme/theme'
 
-function VideoCard({ image, title, course, width, sx }) {
+function VideoCard({ src, title, course, width, sx }) {
   return (
     <Card
       component={RouterLink}
@@ -20,10 +20,18 @@ function VideoCard({ image, title, course, width, sx }) {
         flexDirection: 'column',
         textDecoration: 'none',
         cursor: 'pointer',
+        minWidth: 240,
+        minHeight: 340, // Đảm bảo các card đều nhau
         ...sx,
       }}
     >
-      <CardMedia component="img" height="auto" image={image || videoImg} alt={title} />
+      <CardMedia
+        component="img"
+        height={160}
+        image={src || videoImg}
+        alt={title}
+        sx={{ objectFit: 'cover', width: '100%' }}
+      />
       <CardContent sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Typography noWrap variant="subtitle2" fontWeight={600} sx={{ mb: 2 }}>
           {course.title}
@@ -58,7 +66,6 @@ function VideoCard({ image, title, course, width, sx }) {
             color="secondary"
             fullWidth
             sx={{ borderRadius: 2, textTransform: 'none', fontWeight: 600, mt: 1 }}
-            // Remove onClick, button is now just visual
           >
             Vào học ngay
           </Button>
