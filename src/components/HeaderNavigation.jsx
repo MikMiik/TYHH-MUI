@@ -34,7 +34,8 @@ function HeaderNavigation() {
         },
       }}
     >
-      <NotiDrop />
+      {!isLaptop && !isDesktop ? <NotiDrop /> : null}
+
       <HeaderMenu />
       {isLaptop || isDesktop ? (
         <>
