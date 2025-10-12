@@ -13,7 +13,7 @@ import {
 import { useLoadingState } from './withLoadingState'
 import { Link } from 'react-router-dom'
 import socketClient from '@/utils/socketClient'
-import { useCurrentUser } from '@/utils/useCurrentUser'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 
 const NotiDrop = () => {
   const [anchorEl, setAnchorEl] = useState(null)

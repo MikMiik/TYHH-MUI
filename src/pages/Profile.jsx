@@ -20,7 +20,7 @@ import LoadingState from '@/components/LoadingState'
 import { useGetAllCitiesQuery } from '../features/api/cityApi'
 
 import { useState } from 'react'
-import { useCurrentUser } from '@/utils/useCurrentUser'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { useGetOneProfileQuery, useUpdateProfileMutation, useUploadAvatarMutation } from '@/features/api/profileApi'
 import profileSchema from '@/schemas/profileSchema'
 import { toast } from 'react-toastify'

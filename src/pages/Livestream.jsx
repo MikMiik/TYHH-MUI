@@ -12,6 +12,8 @@ import { useLoadingState } from '@/components/withLoadingState'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useUserRole } from '@/hooks/useUserRole'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
+import CommentSection from '@/components/CommentSection'
 
 const Livestream = () => {
   const { slug, courseSlug } = useParams()
@@ -19,7 +21,7 @@ const Livestream = () => {
   const [documentUploadOpen, setDocumentUploadOpen] = useState(false)
 
   const queryResult = useGetLivestreamQuery(slug)
-  const { data: livestream, LoadingStateComponent } = useLoadingState(queryResult, {
+  const { data: { livestream, comments, commentsCount } = {}, LoadingStateComponent } = useLoadingState(queryResult, {
     variant: 'page',
     loadingText: 'Đang tải livestream...',
     emptyText: 'Không tìm thấy livestream này',
@@ -27,6 +29,7 @@ const Livestream = () => {
 
   const [updateLivestream] = useUpdateLivestreamMutation()
 
+  const isAuthenticated = Boolean(useCurrentUser())
   const userRole = useUserRole()
   const isTeacher = userRole?.includes('teacher')
 
@@ -190,6 +193,14 @@ const Livestream = () => {
             )}
           </Stack>
         </Box>
+        {livestream && (
+          <CommentSection
+            livestreamId={livestream.id}
+            count={commentsCount}
+            commentsData={comments}
+            isAuthenticated={isAuthenticated}
+          />
+        )}
 
         {/* Video Upload Modal */}
         <LocalVideoUploadModal

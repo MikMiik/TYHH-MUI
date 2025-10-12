@@ -11,7 +11,7 @@ import {
   CircularProgress,
 } from '@mui/material'
 import { useCreateNotificationMutation } from '@/features/api/notificationApi'
-import { useCurrentUser } from '@/utils/useCurrentUser'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 import notificationSchema from '@/schemas/notificationSchema'
 
 const CreateNotificationModal = ({ open, onClose, onNotificationCreated }) => {

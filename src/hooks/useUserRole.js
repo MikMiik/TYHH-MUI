@@ -1,4 +1,4 @@
-import { useCurrentUser } from '../utils/useCurrentUser'
+import { useCurrentUser } from './useCurrentUser'
 
 export function useUserRole() {
   const user = useCurrentUser()

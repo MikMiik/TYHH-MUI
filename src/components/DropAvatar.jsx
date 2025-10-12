@@ -7,7 +7,7 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { useCurrentUser } from '@/utils/useCurrentUser'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { useUserRole } from '@/hooks/useUserRole'
 
 const DropAvatar = ({ bgcolor, width, height }) => {
