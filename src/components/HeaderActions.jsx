@@ -11,6 +11,7 @@ import {
   CircularProgress,
   Alert,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import KeyIcon from '@mui/icons-material/Key'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
@@ -22,6 +23,7 @@ import config from '@/routes/config'
 import useResponsive from '@/hooks/useResponsive'
 import DropAvatar from './DropAvatar'
 import NotiDrop from './NotiDrop'
+import ThemeToggle from './ThemeToggle'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import authService from '@/services/authService'
 import { useDispatch } from 'react-redux'
@@ -29,6 +31,7 @@ import { removeCurrentUser } from '@/features/auth/authSlice'
 import { useState } from 'react'
 
 function HeaderActions() {
+  const theme = useTheme()
   const { isDesktop, isLaptop } = useResponsive()
   const [openActivate, setOpenActivate] = useState(false)
   const [keyValue, setKeyValue] = useState('')
@@ -99,10 +102,10 @@ function HeaderActions() {
                   disableElevation
                   startIcon={<KeyIcon />}
                   sx={{
-                    backgroundColor: '#ec971f',
-                    color: '#fff',
+                    backgroundColor: theme.palette.warning.main,
+                    color: theme.palette.common.white,
                     '&:hover': {
-                      backgroundColor: '#e08e0b',
+                      backgroundColor: theme.palette.warning.dark,
                     },
                   }}
                   onClick={() => setOpenActivate(true)}
@@ -150,6 +153,7 @@ function HeaderActions() {
             ) : (
               <Chip label="VIP" color="tertiary" variant="contained" />
             )}
+            <ThemeToggle />
             {currentUser ? (
               <Stack direction="row" spacing={1} alignItems="center">
                 <DropAvatar bgcolor="tertiary.main" width={32} height={32} />
@@ -162,10 +166,10 @@ function HeaderActions() {
                 disableElevation
                 startIcon={<PersonAddAltIcon />}
                 sx={{
-                  backgroundColor: '#1890ff',
-                  color: '#fff',
+                  backgroundColor: theme.palette.secondary.main,
+                  color: theme.palette.common.white,
                   '&:hover': {
-                    backgroundColor: '#40a9ff',
+                    backgroundColor: theme.palette.secondary.light,
                   },
                 }}
               >
@@ -178,10 +182,10 @@ function HeaderActions() {
                 disableElevation
                 startIcon={<ExitToAppIcon />}
                 sx={{
-                  backgroundColor: '#ff4d4f',
-                  color: '#fff',
+                  backgroundColor: theme.palette.error.main,
+                  color: theme.palette.common.white,
                   '&:hover': {
-                    backgroundColor: '#ff7875',
+                    backgroundColor: theme.palette.error.light,
                   },
                 }}
               >
@@ -194,10 +198,10 @@ function HeaderActions() {
                 disableElevation
                 startIcon={<LoginIcon />}
                 sx={{
-                  backgroundColor: '#1890ff',
-                  color: '#fff',
+                  backgroundColor: theme.palette.secondary.main,
+                  color: theme.palette.common.white,
                   '&:hover': {
-                    backgroundColor: '#40a9ff',
+                    backgroundColor: theme.palette.secondary.light,
                   },
                 }}
               >
@@ -222,10 +226,10 @@ function HeaderActions() {
             {!currentUser?.activeKey && (
               <IconButton
                 sx={{
-                  backgroundColor: '#ec971f',
-                  color: '#fff',
+                  backgroundColor: theme.palette.warning.main,
+                  color: theme.palette.common.white,
                   '&:hover': {
-                    backgroundColor: '#e08e0b',
+                    backgroundColor: theme.palette.warning.dark,
                   },
                 }}
                 onClick={() => setOpenActivate(true)}
@@ -267,6 +271,7 @@ function HeaderActions() {
             </Dialog>
             {currentUser ? (
               <Stack direction="row" spacing={1} alignItems="center">
+                <ThemeToggle />
                 <DropAvatar bgcolor="tertiary.main" width={32} height={32} />
                 <NotiDrop />
                 <IconButton
@@ -274,10 +279,10 @@ function HeaderActions() {
                   component={Link}
                   to={config.routes.login}
                   sx={{
-                    backgroundColor: '#ff4d4f',
-                    color: '#fff',
+                    backgroundColor: theme.palette.error.main,
+                    color: theme.palette.common.white,
                     '&:hover': {
-                      backgroundColor: '#ff7875',
+                      backgroundColor: theme.palette.error.light,
                     },
                   }}
                 >
@@ -286,14 +291,15 @@ function HeaderActions() {
               </Stack>
             ) : (
               <>
+                <ThemeToggle />
                 <IconButton
                   component={Link}
                   to={config.routes.register}
                   sx={{
-                    backgroundColor: '#1890ff',
-                    color: '#fff',
+                    backgroundColor: theme.palette.secondary.main,
+                    color: theme.palette.common.white,
                     '&:hover': {
-                      backgroundColor: '#40a9ff',
+                      backgroundColor: theme.palette.secondary.light,
                     },
                   }}
                 >
@@ -303,10 +309,10 @@ function HeaderActions() {
                   component={Link}
                   to={config.routes.login}
                   sx={{
-                    backgroundColor: '#1890ff',
-                    color: '#fff',
+                    backgroundColor: theme.palette.secondary.main,
+                    color: theme.palette.common.white,
                     '&:hover': {
-                      backgroundColor: '#40a9ff',
+                      backgroundColor: theme.palette.secondary.light,
                     },
                   }}
                 >

@@ -10,6 +10,7 @@ import {
   FormControlLabel,
   CircularProgress,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import Form from '../components/Form'
 import TextInput from '../components/TextInput'
@@ -26,6 +27,7 @@ import profileSchema from '@/schemas/profileSchema'
 import { toast } from 'react-toastify'
 
 const Profile = () => {
+  const theme = useTheme()
   const currentUser = useCurrentUser()
 
   const [changePassword, setChangePassword] = useState(false)
@@ -107,7 +109,7 @@ const Profile = () => {
                   <IconButton
                     size="small"
                     component="label"
-                    sx={{ position: 'absolute', right: 8, top: 8, bgcolor: '#fff', boxShadow: 1 }}
+                    sx={{ position: 'absolute', right: 8, top: 8, bgcolor: theme.palette.common.white, boxShadow: 1 }}
                     disabled={isUploading}
                   >
                     {isUploading ? (

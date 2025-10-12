@@ -1,13 +1,13 @@
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { styled } from '@mui/material'
 
-const StyledLink = styled(RouterLink)(({ active }) => ({
-  color: active ? '#f56751' : 'inherit',
+const StyledLink = styled(RouterLink)(({ theme, active }) => ({
+  color: active ? theme.palette.tertiary.main : 'inherit',
   textTransform: 'none',
   textDecoration: 'none',
   transition: 'all 0.1s',
   '&:hover': {
-    color: '#f56751',
+    color: theme.palette.tertiary.main,
   },
 }))
 

@@ -4,6 +4,7 @@ import loginSchema from '@/schemas/loginSchema'
 import config from '@/routes/config'
 import authService from '@/services/authService'
 import { Box, Button, Container, Typography, Divider, Stack, Checkbox, FormControlLabel } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import LogoIcon from '@/components/LogoIcon'
 import Form from '@/components/Form'
 import TextInput from '@/components/TextInput'
@@ -13,6 +14,7 @@ import { getCurrentUser } from '@/features/auth/authSlice'
 import { useGoogleLogin } from '@react-oauth/google'
 
 function Login() {
+  const theme = useTheme()
   const [params] = useSearchParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -118,12 +120,12 @@ function Login() {
                 mt: 2,
                 padding: 1,
                 boxShadow: '0 2px 0 rgba(0, 0, 0, .015)',
-                border: '1px solid #d9d9d9',
+                border: `1px solid ${theme.palette.gray.divider}`,
                 color: 'rgba(0, 0, 0, 0.65)',
                 touchAction: 'manipulation',
                 transition: 'all .3s cubic-bezier(.645,.045,.355,1)',
                 '&:hover': {
-                  background: '#fff',
+                  background: theme.palette.common.white,
                   color: 'secondary.light',
                   borderColor: 'secondary.light',
                 },

@@ -3,9 +3,11 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
+import { useTheme } from '@mui/material/styles'
 import { useSearchParams } from 'react-router-dom'
 
 export default function Selection() {
+  const theme = useTheme()
   const [searchParams, setSearchParams] = useSearchParams()
   const currentSort = searchParams.get('sort') || 'newest'
 
@@ -40,7 +42,7 @@ export default function Selection() {
             minWidth: 180,
             maxHeight: 36,
             fontSize: 14,
-            color: '#000000a6',
+            color: theme.palette.text.muted,
             '& .MuiSelect-select': {
               padding: 1,
               minHeight: 0,
@@ -53,7 +55,7 @@ export default function Selection() {
               boxShadow: '0 0 0 2px rgba(24,144,255,.2)',
             },
             '& .MuiSelect-icon': {
-              color: '#c4c4c4',
+              color: theme.palette.text.hint,
             },
           }}
           MenuProps={{
@@ -64,7 +66,7 @@ export default function Selection() {
                 mt: 1,
                 borderRadius: 1,
                 boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                bgcolor: '#fff',
+                bgcolor: theme.palette.common.white,
                 '& .MuiMenu-list': {
                   p: 0,
                 },
@@ -72,7 +74,7 @@ export default function Selection() {
                   fontSize: 14,
                   '&:hover': {
                     bgcolor: 'secondary.light',
-                    color: '#fff',
+                    color: theme.palette.common.white,
                     transition: 'all 0.1s ease',
                   },
                 },

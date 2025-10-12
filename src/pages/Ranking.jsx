@@ -15,11 +15,13 @@ import {
   Skeleton,
   Alert,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { EmojiEvents, School, LocationOn, Star } from '@mui/icons-material'
 import { useGetAllStudentsQuery } from '@/features/api/userApi'
 import LocalImageLazy from '@/components/LocalImageLazy'
 
 function Ranking() {
+  const theme = useTheme()
   const { data: students = [], isLoading, error } = useGetAllStudentsQuery()
 
   if (isLoading) {
@@ -59,11 +61,11 @@ function Ranking() {
   const getRankIcon = (index) => {
     switch (index) {
       case 0:
-        return <EmojiEvents sx={{ color: '#FFD700', fontSize: 32 }} /> // Gold
+        return <EmojiEvents sx={{ color: theme.palette.medal.gold, fontSize: 32 }} /> // Gold
       case 1:
-        return <EmojiEvents sx={{ color: '#C0C0C0', fontSize: 32 }} /> // Silver
+        return <EmojiEvents sx={{ color: theme.palette.medal.silver, fontSize: 32 }} /> // Silver
       case 2:
-        return <EmojiEvents sx={{ color: '#CD7F32', fontSize: 32 }} /> // Bronze
+        return <EmojiEvents sx={{ color: theme.palette.medal.bronze, fontSize: 32 }} /> // Bronze
       default:
         return (
           <Box
@@ -124,10 +126,10 @@ function Ranking() {
                     position: 'relative',
                     background:
                       index === 0
-                        ? 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)'
+                        ? theme.palette.medal.goldGradient
                         : index === 1
-                        ? 'linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%)'
-                        : 'linear-gradient(135deg, #CD7F32 0%, #B8860B 100%)',
+                        ? theme.palette.medal.silverGradient
+                        : theme.palette.medal.bronzeGradient,
                     color: 'white',
                     transform: index === 0 ? 'scale(1.05)' : 'scale(1)',
                     transition: 'transform 0.3s ease',

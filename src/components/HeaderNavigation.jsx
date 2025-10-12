@@ -1,17 +1,19 @@
 import NavLink from '@/components/NavLink'
 import config from '@/routes/config'
 import { Box } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import React, { useState } from 'react'
 import HeaderMenu from './HeaderMenu'
 import useResponsive from '@/hooks/useResponsive'
-import theme from '@/theme/theme'
 import { lazy, Suspense } from 'react'
 import NotiDrop from './NotiDrop'
+import ThemeToggle from './ThemeToggle'
 
 // Lazy load PaymentModal since it's only used when needed
 const PaymentModal = lazy(() => import('./PaymentModal'))
 
 function HeaderNavigation() {
+  const theme = useTheme()
   const { isLaptop, isDesktop } = useResponsive()
   const [openModal, setOpenModal] = useState(false)
   return (
@@ -29,12 +31,17 @@ function HeaderNavigation() {
           transition: 'all 0.1s',
           display: 'block',
           '&:hover': {
-            color: '#f56751',
+            color: theme.palette.tertiary.main,
           },
         },
       }}
     >
-      {!isLaptop && !isDesktop ? <NotiDrop /> : null}
+      {!isLaptop && !isDesktop ? (
+        <>
+          <ThemeToggle />
+          <NotiDrop />
+        </>
+      ) : null}
 
       <HeaderMenu />
       {isLaptop || isDesktop ? (

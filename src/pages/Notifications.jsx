@@ -198,7 +198,7 @@ const Notifications = () => {
                   onClick={() => handleNotificationClick(notification.id)}
                   sx={{
                     cursor: 'pointer',
-                    bgcolor: !notification.isRead ? '#8bc58dff' : 'background.paper',
+                    bgcolor: !notification.isRead ? 'theme.palette.success.notification' : 'background.paper',
                     '&:hover': {
                       bgcolor: !notification.isRead ? 'primary.light' : 'grey.50',
                     },

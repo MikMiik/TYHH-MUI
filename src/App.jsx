@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { ThemeProvider } from '@mui/material/styles'
 import { CssBaseline } from '@mui/material'
+import InitColorSchemeScript from '@mui/material/InitColorSchemeScript'
 import theme from '@/theme/theme'
 
 import AppRoutes from './components/AppRoutes'
@@ -19,6 +20,11 @@ import 'react-toastify/dist/ReactToastify.css'
 function App() {
   return (
     <>
+      <InitColorSchemeScript
+        attribute="data-mui-color-scheme"
+        defaultColorScheme="light"
+        storageKey="mui-color-scheme"
+      />
       <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
         <ErrorBoundary>
           <Provider store={store}>
@@ -48,7 +54,6 @@ function App() {
           </Provider>
         </ErrorBoundary>
 
-        {/* Preload important components in background */}
         <ComponentPreloader />
       </GoogleOAuthProvider>
     </>

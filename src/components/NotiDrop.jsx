@@ -5,6 +5,7 @@ import MuiBox from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
 import { Stack, List, ListItem, ListItemText, Badge, Divider, Avatar, Button } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import {
   useGetAllNotificationsQuery,
   useMarkNotificationAsReadMutation,
@@ -16,6 +17,7 @@ import socketClient from '@/utils/socketClient'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 
 const NotiDrop = () => {
+  const theme = useTheme()
   const [anchorEl, setAnchorEl] = useState(null)
   const iconRef = useRef(null)
   const currentUser = useCurrentUser()
@@ -150,7 +152,7 @@ const NotiDrop = () => {
           },
         }}
       >
-        <MuiBox sx={{ px: 2, py: 1.5, borderBottom: '1px solid #eee', bgcolor: 'grey.50' }}>
+        <MuiBox sx={{ px: 2, py: 1.5, borderBottom: `1px solid ${theme.palette.gray.border}`, bgcolor: 'grey.50' }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="subtitle1" fontWeight={600}>
               Thông báo ({unreadCount > 0 ? `${unreadCount} chưa đọc` : 'đã đọc hết'})
@@ -187,7 +189,7 @@ const NotiDrop = () => {
                       py: 1.5,
                       '&:hover': { bgcolor: 'grey.50' },
                       cursor: 'pointer',
-                      bgcolor: !notification.isRead ? '#8bc58dff' : 'transparent',
+                      bgcolor: !notification.isRead ? theme.palette.success.notification : 'transparent',
                       transition: 'background-color 0.3s',
                     }}
                   >
@@ -258,7 +260,7 @@ const NotiDrop = () => {
         </LoadingStateComponent>
 
         {/* Footer với link "Xem tất cả" */}
-        <MuiBox sx={{ px: 2, py: 1.5, borderTop: '1px solid #eee', bgcolor: 'grey.50' }}>
+        <MuiBox sx={{ px: 2, py: 1.5, borderTop: `1px solid ${theme.palette.gray.border}`, bgcolor: 'grey.50' }}>
           <Button
             component={Link}
             to="/notifications"
