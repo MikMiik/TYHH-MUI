@@ -13,6 +13,7 @@ import CreateLivestreamModal from '@/components/CreateLivestreamModal'
 import EditOutlineModal from '@/components/EditOutlineModal'
 import CreateCourseModal from '@/components/CreateCourseModal'
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal'
+import PaymentModal from '@/components/PaymentModal'
 import {
   useGetCourseQuery,
   useDeleteCourseOutlineMutation,
@@ -25,6 +26,7 @@ import { toast } from 'react-toastify'
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useUserRole } from '@/hooks/useUserRole'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 
 const CourseDetail = () => {
   const { slug } = useParams()
@@ -35,6 +37,9 @@ const CourseDetail = () => {
     loadingText: 'Đang tải thông tin khóa học...',
     emptyText: 'Không tìm thấy khóa học này',
   })
+
+  // Get current user info for payment
+  const user = useCurrentUser()
 
   const [openOutlineModal, setOpenOutlineModal] = useState(false)
   const [editModal, setEditModal] = useState({
@@ -51,6 +56,7 @@ const CourseDetail = () => {
     outline: null,
   })
   const [editCourseModal, setEditCourseModal] = useState(false)
+  const [paymentModal, setPaymentModal] = useState(false)
 
   const [deleteOutline, { isLoading: isDeleting }] = useDeleteCourseOutlineMutation()
   const [reorderOutlines] = useReorderCourseOutlinesMutation()
@@ -206,6 +212,27 @@ const CourseDetail = () => {
     }
   }
 
+  // Handle payment modal
+  const handleOpenPayment = () => {
+    if (!user) {
+      toast.error('Vui lòng đăng nhập để đăng ký khóa học')
+      return
+    }
+    setPaymentModal(true)
+  }
+
+  const handleClosePayment = () => {
+    setPaymentModal(false)
+  }
+
+  const handlePaymentSuccess = (paymentResult) => {
+    console.log('Payment successful:', paymentResult)
+    setPaymentModal(false)
+    // You could refetch course data here to update enrollment status
+    // or redirect to a success page
+    toast.success('Đăng ký khóa học thành công!')
+  }
+
   return (
     <LoadingStateComponent>
       <Container>
@@ -269,7 +296,12 @@ const CourseDetail = () => {
               )}
 
               <Stack direction="row" gap={2} flexWrap="wrap" justifyContent="center">
-                <Button startIcon={<AppRegistrationIcon />} variant="contained" color="tertiary">
+                <Button
+                  startIcon={<AppRegistrationIcon />}
+                  variant="contained"
+                  color="tertiary"
+                  onClick={handleOpenPayment}
+                >
                   Đăng ký khóa học
                 </Button>
 
@@ -402,6 +434,16 @@ const CourseDetail = () => {
               message="Bạn có chắc chắn muốn xóa outline này? Tất cả livestream liên quan sẽ bị xóa vĩnh viễn."
               itemName={deleteModal.outlineName}
               loading={isDeleting}
+            />
+
+            {/* Payment Modal */}
+            <PaymentModal
+              open={paymentModal}
+              onClose={handleClosePayment}
+              onPaymentSuccess={handlePaymentSuccess}
+              course={course}
+              user={user}
+              amount={course?.discount || course?.price}
             />
           </Box>
         </Box>
