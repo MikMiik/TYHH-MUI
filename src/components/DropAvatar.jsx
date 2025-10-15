@@ -71,7 +71,7 @@ const DropAvatar = ({ bgcolor, width, height }) => {
                     padding: '2px 6px',
                     textAlign: 'center',
                     '&:hover': {
-                      bgcolor: '#e6f7ff',
+                      bgcolor: (theme) => theme.palette.info.light,
                       borderRadius: 1,
                     },
                   },

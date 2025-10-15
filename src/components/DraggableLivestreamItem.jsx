@@ -177,17 +177,35 @@ const DraggableLivestreamItem = ({ livestream, courseSlug, onDeleteLivestream, i
                 to={`/documents/${livestream.documents[0].slug}`}
                 style={{ display: 'inline-flex', alignItems: 'center' }}
               >
-                <EditDocumentIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
+                <EditDocumentIcon
+                  sx={{
+                    color: (theme) => theme.palette.icon.light,
+                    ':hover': { color: (theme) => theme.palette.icon.main },
+                  }}
+                  fontSize="smaller"
+                />
               </Link>
             ) : (
-              <EditDocumentIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
+              <EditDocumentIcon
+                sx={{
+                  color: (theme) => theme.palette.icon.light,
+                  ':hover': { color: (theme) => theme.palette.icon.main },
+                }}
+                fontSize="smaller"
+              />
             )}
-            <Typography fontSize={14} color="#888">
+            <Typography fontSize={14} color={(theme) => theme.palette.gray.text}>
               {Array.isArray(livestream.documents) ? livestream.documents.length : 0}
             </Typography>
 
-            <RemoveRedEyeRoundedIcon sx={{ color: '#999', ':hover': { color: '#666' } }} fontSize="smaller" />
-            <Typography fontSize={14} color="#888">
+            <RemoveRedEyeRoundedIcon
+              sx={{
+                color: (theme) => theme.palette.icon.light,
+                ':hover': { color: (theme) => theme.palette.icon.main },
+              }}
+              fontSize="smaller"
+            />
+            <Typography fontSize={14} color={(theme) => theme.palette.gray.text}>
               {livestream.view || 0}
             </Typography>
           </Stack>

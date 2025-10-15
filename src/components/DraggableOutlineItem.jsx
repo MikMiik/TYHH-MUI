@@ -226,7 +226,7 @@ const DraggableOutlineItem = ({
           expandIcon={<ExpandMoreIcon />}
           sx={{
             minHeight: 48,
-            bgcolor: '#e0e0e0',
+            bgcolor: (theme) => theme.palette.gray.medium,
             borderRadius: 2,
             position: 'relative',
             '&:hover .drag-handle': {

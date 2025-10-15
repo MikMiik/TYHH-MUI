@@ -72,8 +72,8 @@ function HeaderMenu() {
                     padding: '2px 6px',
                     textAlign: 'center',
                     '&:hover': {
-                      color: '#007bff',
-                      bgcolor: '#e6f7ff',
+                      color: (theme) => theme.palette.info.main,
+                      bgcolor: (theme) => theme.palette.info.light,
                     },
                   },
                   '& .MuiTypography-root': {

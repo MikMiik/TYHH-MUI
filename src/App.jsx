@@ -53,7 +53,6 @@ function App() {
             </PersistGate>
           </Provider>
         </ErrorBoundary>
-
         <ComponentPreloader />
       </GoogleOAuthProvider>
     </>

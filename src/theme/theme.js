@@ -81,6 +81,13 @@ const theme = extendTheme({
           text: '#888',
           border: '#eee',
           divider: '#d9d9d9',
+          // Custom grays for backgrounds and borders
+          cardShadow: '#eaebea',
+          borderAlt: '#ccc',
+          borderDashed: '#e0e0e0',
+          borderDashedAlt: '#fafafa',
+          bgF5: '#f5f5f5',
+          bgF9: '#f9f9f9',
         },
         // Success colors (Green variants)
         success: {
@@ -170,6 +177,9 @@ const theme = extendTheme({
         video: {
           overlay: '#000',
           background: 'rgba(0, 0, 0, 0.8)',
+          // Custom greens for BackTop, etc.
+          backTop: '#00543B',
+          backTopHover: '#003d2a',
         },
       },
     },
