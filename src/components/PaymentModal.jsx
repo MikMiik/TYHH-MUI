@@ -286,10 +286,6 @@ const PaymentModal = ({ open, onClose, onPaymentSuccess, course, user, amount })
                 />
               </Grid>
             </Grid>
-
-            <Alert severity="info" sx={{ mt: 2 }}>
-              💳 <strong>Thẻ test:</strong> 4242 4242 4242 4242, bất kỳ ngày trong tương lai, bất kỳ CVV 3 chữ số
-            </Alert>
           </Box>
         )}
 

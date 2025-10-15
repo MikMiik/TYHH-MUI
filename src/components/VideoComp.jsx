@@ -1,5 +1,5 @@
 import { lazy, Suspense, useRef } from 'react'
-import { CircularProgress, Box } from '@mui/material'
+import { CircularProgress, Box, Paper } from '@mui/material'
 
 // Lazy load VideoJS component
 const VideoJS = lazy(() => import('@/components/VideoJS'))
@@ -26,6 +26,7 @@ const VideoComp = ({ src, poster, options, livestreamSlug }) => {
     responsive: true,
     playbackRates: [0.25, 0.5, 1, 1.5, 2],
     fluid: true,
+    fill: true,
     inactivityTimeout: 2000,
     sources: [
       {
@@ -33,7 +34,7 @@ const VideoComp = ({ src, poster, options, livestreamSlug }) => {
         type: 'video/mp4',
       },
     ],
-    poster: poster || '/poster-bg-livestreams.svg',
+    poster: poster || '/bg-video.jpg',
     ...options, // Spread additional options if provided
   }
 

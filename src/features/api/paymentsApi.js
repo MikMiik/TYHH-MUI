@@ -8,7 +8,7 @@ export const paymentsApi = baseApi.injectEndpoints({
         method: 'POST',
         body: paymentData,
       }),
-      invalidatesTags: ['Course', 'User'],
+      invalidatesTags: ['Course', 'User', 'Enrollment'],
     }),
     getMockReceipt: builder.query({
       query: (paymentId) => `/payments/mock/receipt/${paymentId}`,
@@ -18,8 +18,17 @@ export const paymentsApi = baseApi.injectEndpoints({
       query: () => '/payments/history',
       providesTags: ['Payment'],
     }),
+    checkEnrollment: builder.query({
+      query: (courseId) => `/payments/enrollment/${courseId}`,
+      providesTags: (result, error, courseId) => [{ type: 'Enrollment', id: courseId }],
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useCreateMockPaymentMutation, useGetMockReceiptQuery, useGetUserPaymentsQuery } = paymentsApi
+export const {
+  useCreateMockPaymentMutation,
+  useGetMockReceiptQuery,
+  useGetUserPaymentsQuery,
+  useCheckEnrollmentQuery,
+} = paymentsApi

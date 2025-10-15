@@ -1,9 +1,10 @@
 import BreadCrumbsPath from '@/components/BreadCrumbsPath'
-import { Box, Button, Chip, Container, Divider, Stack, Typography } from '@mui/material'
+import { Box, Button, Chip, Container, Divider, Paper, Stack, Typography } from '@mui/material'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import AddIcon from '@mui/icons-material/Add'
 import EditIcon from '@mui/icons-material/Edit'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import VideoComp from '@/components/VideoComp'
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined'
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration'
@@ -19,6 +20,7 @@ import {
   useDeleteCourseOutlineMutation,
   useReorderCourseOutlinesMutation,
 } from '@/features/api/courseApi'
+import { useCheckEnrollmentQuery } from '@/features/api/paymentsApi'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useLoadingState } from '@/components/withLoadingState'
 import { useState } from 'react'
@@ -40,6 +42,16 @@ const CourseDetail = () => {
 
   // Get current user info for payment
   const user = useCurrentUser()
+
+  // Check enrollment status
+  const { data: enrollmentData, isLoading: isEnrollmentLoading } = useCheckEnrollmentQuery(course?.id, {
+    skip: !course?.id || !user?.id, // Skip query if course or user not loaded
+  })
+
+  const isEnrolled = enrollmentData?.data?.enrolled || false
+  const isLoadingEnrollment = isEnrollmentLoading && course?.id && user?.id
+
+  // Enrollment check performed via RTK Query (no debug logs in production)
 
   const [openOutlineModal, setOpenOutlineModal] = useState(false)
   const [editModal, setEditModal] = useState({
@@ -225,8 +237,7 @@ const CourseDetail = () => {
     setPaymentModal(false)
   }
 
-  const handlePaymentSuccess = (paymentResult) => {
-    console.log('Payment successful:', paymentResult)
+  const handlePaymentSuccess = () => {
     setPaymentModal(false)
     // You could refetch course data here to update enrollment status
     // or redirect to a success page
@@ -266,7 +277,19 @@ const CourseDetail = () => {
           <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" gap={1} my={1}>
             {/* Left */}
             <Box width={{ md: '66.7%', xs: '100%' }}>
-              <VideoComp src={course?.introVideo} />
+              <Paper
+                elevation={2}
+                sx={{
+                  borderRadius: 1,
+                  overflow: 'hidden',
+                  '& .video-js .vjs-poster': {
+                    backgroundSize: 'cover !important',
+                    backgroundPosition: 'center !important',
+                  },
+                }}
+              >
+                <VideoComp src={course?.introVideo} />
+              </Paper>
             </Box>
 
             {/* Right */}
@@ -297,12 +320,18 @@ const CourseDetail = () => {
 
               <Stack direction="row" gap={2} flexWrap="wrap" justifyContent="center">
                 <Button
-                  startIcon={<AppRegistrationIcon />}
+                  startIcon={isEnrolled ? <CheckCircleIcon /> : <AppRegistrationIcon />}
                   variant="contained"
-                  color="tertiary"
-                  onClick={handleOpenPayment}
+                  color={isEnrolled ? 'success' : 'tertiary'}
+                  onClick={isEnrolled ? undefined : handleOpenPayment}
+                  disabled={isEnrolled || isLoadingEnrollment}
+                  sx={isEnrolled ? { cursor: 'default' } : {}}
                 >
-                  Đăng ký khóa học
+                  {isLoadingEnrollment
+                    ? 'Đang kiểm tra...'
+                    : isEnrolled
+                    ? 'Bạn đã đăng ký khóa học này'
+                    : 'Đăng ký khóa học'}
                 </Button>
 
                 <Button

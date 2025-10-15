@@ -1,4 +1,4 @@
-import { Box, Container, Link, Stack, Typography } from '@mui/material'
+import { Box, Container, Link, Paper, Stack, Typography } from '@mui/material'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import { Suspense } from 'react'
 import Spline from '@splinetool/react-spline'
@@ -245,12 +245,13 @@ function Home() {
         </Typography>
         <FreeCoursesLoadingState>
           {freeCourses.length > 0 && (
-            <Stack direction="row">
+            <Paper sx={{ display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
               {/* Left Section: 2/3 width */}
               <Box width="66.7%">
                 <VideoComp src={freeCourses[0]?.introVideo} />
               </Box>
               {/* Right Section: 1/3 width */}
+
               <Stack direction="column" bgcolor="#60a1d5" width="33.3%">
                 {freeCourses.slice(0, 4).map((course) => (
                   <Stack
@@ -282,7 +283,7 @@ function Home() {
                   </Stack>
                 ))}
               </Stack>
-            </Stack>
+            </Paper>
           )}
         </FreeCoursesLoadingState>
 
