@@ -115,7 +115,7 @@ const Livestream = () => {
                   width: '100%',
                   bgcolor: 'background.paper',
                   borderRadius: 1,
-                  border: '1px solid #e0e0e0',
+                  border: (theme) => `1px solid ${theme.palette.gray.medium}`,
                   '& .green-circle-step-icon': {
                     width: '16px !important',
                     height: '16px !important',
@@ -128,14 +128,14 @@ const Livestream = () => {
                     width: 6,
                   },
                   '&::-webkit-scrollbar-track': {
-                    backgroundColor: '#f1f1f1',
+                    backgroundColor: (theme) => theme.palette.gray.light,
                     borderRadius: 3,
                   },
                   '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: '#c1c1c1',
+                    backgroundColor: (theme) => theme.palette.gray.dark,
                     borderRadius: 3,
                     '&:hover': {
-                      backgroundColor: '#a8a8a8',
+                      backgroundColor: (theme) => theme.palette.gray.darker,
                     },
                   },
                 }}
