@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 function DocumentListItem({ doc }) {
   return (
-    <ListItem alignItems="flex-start" sx={{ borderBottom: (theme) => `1px solid ${theme.palette.gray.border}`, px: 0 }}>
+    <ListItem alignItems="flex-start" sx={{ borderBottom: `1px solid #eee`, px: 0 }}>
       <ListItemAvatar>
         <Box width={80} height={80} borderRadius={1} overflow="hidden" boxShadow={1}>
           <LocalImageLazy placeholder="/document-placeholder.svg" src={doc.thumbnail} w="100%" h="100%" />
@@ -35,7 +35,7 @@ function DocumentListItem({ doc }) {
                 size="small"
                 sx={{
                   bgcolor: (theme) => theme.palette.warning.amber,
-                  color: (theme) => theme.palette.common.white,
+                  color: (theme) => theme.palette.text.white,
                   fontWeight: 700,
                   ml: 1,
                 }}

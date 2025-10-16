@@ -194,7 +194,7 @@ const DraggableLivestreamItem = ({ livestream, courseSlug, onDeleteLivestream, i
                 fontSize="smaller"
               />
             )}
-            <Typography fontSize={14} color={(theme) => theme.palette.gray.text}>
+            <Typography fontSize={14} color={(theme) => theme.palette.text.secondary}>
               {Array.isArray(livestream.documents) ? livestream.documents.length : 0}
             </Typography>
 
@@ -205,7 +205,7 @@ const DraggableLivestreamItem = ({ livestream, courseSlug, onDeleteLivestream, i
               }}
               fontSize="smaller"
             />
-            <Typography fontSize={14} color={(theme) => theme.palette.gray.text}>
+            <Typography fontSize={14} color={(theme) => theme.palette.text.secondary}>
               {livestream.view || 0}
             </Typography>
           </Stack>

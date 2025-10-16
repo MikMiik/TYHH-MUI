@@ -152,7 +152,7 @@ const NotiDrop = () => {
           },
         }}
       >
-        <MuiBox sx={{ px: 2, py: 1.5, borderBottom: `1px solid ${theme.palette.gray.border}`, bgcolor: 'grey.50' }}>
+        <MuiBox sx={{ px: 2, py: 1.5, borderBottom: `1px solid #eee`, bgcolor: 'grey.50' }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="subtitle1" fontWeight={600}>
               Thông báo ({unreadCount > 0 ? `${unreadCount} chưa đọc` : 'đã đọc hết'})
@@ -260,7 +260,7 @@ const NotiDrop = () => {
         </LoadingStateComponent>
 
         {/* Footer với link "Xem tất cả" */}
-        <MuiBox sx={{ px: 2, py: 1.5, borderTop: `1px solid ${theme.palette.gray.border}`, bgcolor: 'grey.50' }}>
+        <MuiBox sx={{ px: 2, py: 1.5, borderTop: `1px solid #eee`, bgcolor: 'grey.50' }}>
           <Button
             component={Link}
             to="/notifications"

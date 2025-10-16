@@ -100,7 +100,7 @@ const EditOutlineModal = ({ open, onClose, onOutlineUpdated, outline }) => {
             onClick={handleClose}
             disabled={isUpdating}
             sx={{
-              color: (theme) => theme.palette.grey[500],
+              color: (theme) => theme.palette.icon.button,
             }}
           >
             <CloseIcon />

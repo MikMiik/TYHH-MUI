@@ -21,7 +21,7 @@ function HeaderBottomBar() {
         justifyContent: 'center',
         gap: 2,
         inset: 0,
-        zIndex: 10,
+        zIndex: 20,
         bgcolor: 'white',
         width: '100%',
         height: height,

@@ -24,6 +24,7 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 import { useReorderLivestreamsMutation } from '@/features/api/livestreamApi'
 import { toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
+import { grey } from '@mui/material/colors'
 
 const DraggableOutlineItem = ({
   outline,
@@ -226,7 +227,7 @@ const DraggableOutlineItem = ({
           expandIcon={<ExpandMoreIcon />}
           sx={{
             minHeight: 48,
-            bgcolor: (theme) => theme.palette.gray.medium,
+            bgcolor: grey[200],
             borderRadius: 2,
             position: 'relative',
             '&:hover .drag-handle': {

@@ -109,7 +109,13 @@ const Profile = () => {
                   <IconButton
                     size="small"
                     component="label"
-                    sx={{ position: 'absolute', right: 8, top: 8, bgcolor: theme.palette.common.white, boxShadow: 1 }}
+                    sx={{
+                      position: 'absolute',
+                      right: 8,
+                      top: 8,
+                      bgcolor: theme.palette.background.default,
+                      boxShadow: 1,
+                    }}
                     disabled={isUploading}
                   >
                     {isUploading ? (

@@ -132,7 +132,7 @@ const IntroVideoUploadModal = ({ open, onClose, onUploadSuccess, course }) => {
             onClick={handleClose}
             disabled={isSaving}
             sx={{
-              color: (theme) => theme.palette.grey[500],
+              color: (theme) => theme.palette.icon.button,
             }}
           >
             <CloseIcon />

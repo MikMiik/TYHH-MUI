@@ -136,7 +136,7 @@ const CreateLivestreamModal = ({ open, onClose, onLivestreamCreated, outline }) 
             onClick={handleClose}
             disabled={isCreating}
             sx={{
-              color: (theme) => theme.palette.grey[500],
+              color: (theme) => theme.palette.icon.button,
             }}
           >
             <CloseIcon />

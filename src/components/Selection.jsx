@@ -66,7 +66,7 @@ export default function Selection() {
                 mt: 1,
                 borderRadius: 1,
                 boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                bgcolor: theme.palette.common.white,
+                bgcolor: theme.palette.text.white,
                 '& .MuiMenu-list': {
                   p: 0,
                 },
@@ -74,7 +74,7 @@ export default function Selection() {
                   fontSize: 14,
                   '&:hover': {
                     bgcolor: 'secondary.light',
-                    color: theme.palette.common.white,
+                    color: theme.palette.text.white,
                     transition: 'all 0.1s ease',
                   },
                 },

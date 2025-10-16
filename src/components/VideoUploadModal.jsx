@@ -102,7 +102,7 @@ const VideoUploadModal = ({ open, onClose, onUploadSuccess, livestream }) => {
             aria-label="close"
             onClick={handleClose}
             sx={{
-              color: (theme) => theme.palette.grey[500],
+              color: (theme) => theme.palette.icon.button,
             }}
           >
             <CloseIcon />

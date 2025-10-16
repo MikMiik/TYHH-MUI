@@ -1,3 +1,4 @@
+import { grey } from '@mui/material/colors'
 import { extendTheme } from '@mui/material/styles'
 
 const theme = extendTheme({
@@ -54,8 +55,8 @@ const theme = extendTheme({
           light: '#999',
           main: '#666',
           dark: '#333',
+          button: grey[500],
         },
-        // Common colors found throughout the app
         common: {
           white: '#fff',
           black: '#000',
@@ -144,6 +145,7 @@ const theme = extendTheme({
           primary: '#333333',
           secondary: '#666666',
           disabled: '#999999',
+          white: '#ffffff',
           hint: '#c4c4c4',
           inverse: '#ffffff',
           muted: '#000000a6',
