@@ -1,4 +1,3 @@
-import { grey } from '@mui/material/colors'
 import { extendTheme } from '@mui/material/styles'
 
 const theme = extendTheme({
@@ -36,9 +35,9 @@ const theme = extendTheme({
     light: {
       palette: {
         primary: {
-          light: '#4caf50',
-          main: '#034c31',
-          dark: '#007a33',
+          light: '#388e3c',
+          main: '#2e7d32',
+          dark: '#1b5e20',
         },
         secondary: {
           light: '#40a9ff',
@@ -51,44 +50,19 @@ const theme = extendTheme({
           dark: '#c94c3a',
           contrastText: '#fff',
         },
+        gradient: {
+          chromia: 'linear-gradient(140deg, #083b2b 0%, #1f6a4f 50%, #072a1f 100%)',
+        },
         icon: {
           light: '#999',
           main: '#666',
           dark: '#333',
-          button: grey[500],
+          button: '#9e9e9e',
         },
         common: {
           white: '#fff',
           black: '#000',
           transparent: 'transparent',
-        },
-        // Gray scale colors
-        gray: {
-          50: '#f9fafb',
-          100: '#f3f4f6',
-          200: '#e5e7eb',
-          300: '#d1d5db',
-          400: '#9ca3af',
-          500: '#6b7280',
-          600: '#4b5563',
-          700: '#374151',
-          800: '#1f2937',
-          900: '#111827',
-          // Additional grays found in codebase
-          light: '#f1f1f1',
-          medium: '#e0e0e0',
-          dark: '#c1c1c1',
-          darker: '#a8a8a8',
-          text: '#888',
-          border: '#eee',
-          divider: '#d9d9d9',
-          // Custom grays for backgrounds and borders
-          cardShadow: '#eaebea',
-          borderAlt: '#ccc',
-          borderDashed: '#e0e0e0',
-          borderDashedAlt: '#fafafa',
-          bgF5: '#f5f5f5',
-          bgF9: '#f9f9f9',
         },
         // Success colors (Green variants)
         success: {
@@ -126,10 +100,10 @@ const theme = extendTheme({
           default: '#ffffff',
           paper: '#ffffff',
           light: '#f8f9fa',
+          grey: '#f3f4f6',
           gradient: {
             green: 'linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 50%, #e1f0e1 100%)',
           },
-          dark: '#2a2a2a',
         },
         // Medal/Ranking colors
         medal: {
@@ -145,43 +119,14 @@ const theme = extendTheme({
           primary: '#333333',
           secondary: '#666666',
           disabled: '#999999',
-          white: '#ffffff',
           hint: '#c4c4c4',
           inverse: '#ffffff',
           muted: '#000000a6',
-        },
-        // Action colors for buttons and interactive elements
-        action: {
-          hover: 'rgba(0, 0, 0, 0.04)',
-          selected: 'rgba(0, 0, 0, 0.08)',
-          disabled: 'rgba(0, 0, 0, 0.26)',
-          disabledBackground: 'rgba(0, 0, 0, 0.12)',
-        },
-        // Border colors
-        border: {
-          light: '#f3f4f6',
-          main: '#e0e0e0',
-          medium: '#d9d9d9',
-          dark: '#c1c1c1',
-        },
-        // Shadow colors
-        shadow: {
-          main: '#eaebea',
-          light: 'rgba(0, 0, 0, 0.1)',
-          medium: 'rgba(0, 0, 0, 0.2)',
         },
         // Comment/notification specific colors
         comment: {
           highlight: '#e3f2fd',
           unread: '#8bc58dff',
-        },
-        // Video/media specific colors
-        video: {
-          overlay: '#000',
-          background: 'rgba(0, 0, 0, 0.8)',
-          // Custom greens for BackTop, etc.
-          backTop: '#00543B',
-          backTopHover: '#003d2a',
         },
       },
     },

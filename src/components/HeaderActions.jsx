@@ -103,7 +103,7 @@ function HeaderActions() {
                   startIcon={<KeyIcon />}
                   sx={{
                     backgroundColor: theme.palette.warning.main,
-                    color: theme.palette.text.white,
+                    color: theme.palette.text.inverse,
                     '&:hover': {
                       backgroundColor: theme.palette.warning.dark,
                     },
@@ -167,7 +167,7 @@ function HeaderActions() {
                 startIcon={<PersonAddAltIcon />}
                 sx={{
                   backgroundColor: theme.palette.secondary.main,
-                  color: theme.palette.text.white,
+                  color: theme.palette.text.inverse,
                   '&:hover': {
                     backgroundColor: theme.palette.secondary.light,
                   },
@@ -183,7 +183,7 @@ function HeaderActions() {
                 startIcon={<ExitToAppIcon />}
                 sx={{
                   backgroundColor: theme.palette.error.main,
-                  color: theme.palette.text.white,
+                  color: theme.palette.text.inverse,
                   '&:hover': {
                     backgroundColor: theme.palette.error.light,
                   },
@@ -199,7 +199,7 @@ function HeaderActions() {
                 startIcon={<LoginIcon />}
                 sx={{
                   backgroundColor: theme.palette.secondary.main,
-                  color: theme.palette.text.white,
+                  color: theme.palette.text.inverse,
                   '&:hover': {
                     backgroundColor: theme.palette.secondary.light,
                   },
@@ -227,7 +227,7 @@ function HeaderActions() {
               <IconButton
                 sx={{
                   backgroundColor: theme.palette.warning.main,
-                  color: theme.palette.text.white,
+                  color: theme.palette.text.inverse,
                   '&:hover': {
                     backgroundColor: theme.palette.warning.dark,
                   },
@@ -280,7 +280,7 @@ function HeaderActions() {
                   to={config.routes.login}
                   sx={{
                     backgroundColor: theme.palette.error.main,
-                    color: theme.palette.text.white,
+                    color: theme.palette.text.inverse,
                     '&:hover': {
                       backgroundColor: theme.palette.error.light,
                     },
@@ -297,7 +297,7 @@ function HeaderActions() {
                   to={config.routes.register}
                   sx={{
                     backgroundColor: theme.palette.secondary.main,
-                    color: theme.palette.text.white,
+                    color: theme.palette.text.inverse,
                     '&:hover': {
                       backgroundColor: theme.palette.secondary.light,
                     },
@@ -310,7 +310,7 @@ function HeaderActions() {
                   to={config.routes.login}
                   sx={{
                     backgroundColor: theme.palette.secondary.main,
-                    color: theme.palette.text.white,
+                    color: theme.palette.text.inverse,
                     '&:hover': {
                       backgroundColor: theme.palette.secondary.light,
                     },

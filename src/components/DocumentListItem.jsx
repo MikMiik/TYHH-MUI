@@ -35,7 +35,7 @@ function DocumentListItem({ doc }) {
                 size="small"
                 sx={{
                   bgcolor: (theme) => theme.palette.warning.amber,
-                  color: (theme) => theme.palette.text.white,
+                  color: (theme) => theme.palette.text.inverse,
                   fontWeight: 700,
                   ml: 1,
                 }}

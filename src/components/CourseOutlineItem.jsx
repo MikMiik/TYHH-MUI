@@ -50,7 +50,7 @@ const CourseOutlineItem = ({ title, livestreams = [], outlineId, onDeleteOutline
           expandIcon={<ExpandMoreIcon />}
           sx={{
             minHeight: 48,
-            bgcolor: (theme) => theme.palette.gray.medium,
+            bgcolor: (theme) => theme.palette.background.grey,
             borderRadius: 2,
             position: 'relative',
           }}
@@ -132,7 +132,7 @@ const CourseOutlineItem = ({ title, livestreams = [], outlineId, onDeleteOutline
                         fontSize="smaller"
                       />
                     )}
-                    <Typography fontSize={14} color={(theme) => theme.palette.gray.text}>
+                    <Typography fontSize={14} color={(theme) => theme.palette.text.secondary}>
                       {Array.isArray(item.documents) ? item.documents.length : 0}
                     </Typography>
 
@@ -143,7 +143,7 @@ const CourseOutlineItem = ({ title, livestreams = [], outlineId, onDeleteOutline
                       }}
                       fontSize="smaller"
                     />
-                    <Typography fontSize={14} color={(theme) => theme.palette.gray.text}>
+                    <Typography fontSize={14} color={(theme) => theme.palette.text.secondary}>
                       {item.view || 0}
                     </Typography>
                   </Stack>

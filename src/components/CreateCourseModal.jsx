@@ -444,12 +444,12 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                 ) : (
                   <Box
                     sx={{
-                      border: (theme) => `2px dashed ${theme.palette.gray.medium}`,
+                      border: '2px dashed #e0e0e0',
                       borderRadius: 2,
                       p: 4,
                       textAlign: 'center',
                       mb: 2,
-                      backgroundColor: (theme) => theme.palette.gray.borderDashedAlt,
+                      backgroundColor: (theme) => theme.palette.background.light,
                       height: '200px',
                       display: 'flex',
                       flexDirection: 'column',

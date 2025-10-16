@@ -28,7 +28,7 @@ export default function CircularDeterminate({ progress: externalProgress, ...pro
           variant="determinate"
           value={100}
           sx={{
-            color: (theme) => theme.palette.gray.bgF5,
+            color: (theme) => theme.palette.text.hint,
             position: 'absolute',
             left: 0,
           }}

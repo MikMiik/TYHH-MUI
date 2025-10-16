@@ -273,7 +273,7 @@ function Home() {
                       <Typography
                         noWrap
                         variant="subtitle2"
-                        color={(theme) => theme.palette.common.white}
+                        color={(theme) => theme.palette.text.inverse}
                         fontWeight={600}
                       >
                         {course.title}
@@ -281,7 +281,7 @@ function Home() {
                       <Typography
                         noWrap
                         variant="subtitle2"
-                        color={(theme) => theme.palette.common.white}
+                        color={(theme) => theme.palette.text.inverse}
                         fontWeight={600}
                       >
                         Giáo viên:{' '}

@@ -8,11 +8,11 @@ const TimeBox = ({ value, label }) => (
       sx={{
         width: '32px',
         height: '26px',
-        color: (theme) => theme.palette.text.white,
+        color: (theme) => theme.palette.text.inverse,
         textAlign: 'center',
         backgroundColor: 'transparent',
         borderRadius: '5px',
-        border: (theme) => `1px solid ${theme.palette.text.white}`,
+        border: (theme) => `1px solid ${theme.palette.text.inverse}`,
       }}
     >
       <Typography sx={{ fontWeight: '700', textAlign: 'center', fontSize: '0.875rem', lineHeight: 1.8 }}>
@@ -42,7 +42,7 @@ const CountDown = ({ duration }) => {
   let minutes = parseInt(totalMinutes % 60)
   let hours = parseInt(totalHours % 24)
   return (
-    <Stack sx={{ color: (theme) => theme.palette.text.white }} direction="row" spacing={0.5} alignItems="center">
+    <Stack sx={{ color: (theme) => theme.palette.text.inverse }} direction="row" spacing={0.5} alignItems="center">
       <TimeBox value={days} label="Day" />
       <Typography sx={{ transform: 'translateY(-25%)' }} variant="h6">
         :

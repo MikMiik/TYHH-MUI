@@ -43,7 +43,7 @@ const CourseOutlineItemCompact = ({ title, livestreams = [], courseSlug }) => {
       <AccordionSummary
         expandIcon={<ExpandMoreIcon fontSize="small" />}
         sx={{
-          bgcolor: (theme) => theme.palette.gray.bgF5,
+          bgcolor: (theme) => theme.palette.background.grey,
           borderRadius: 1,
           py: 0.5,
         }}
@@ -65,7 +65,7 @@ const CourseOutlineItemCompact = ({ title, livestreams = [], courseSlug }) => {
                 px: 1,
                 minHeight: 28,
                 '&:hover': {
-                  bgcolor: (theme) => theme.palette.gray.bgF9,
+                  bgcolor: (theme) => theme.palette.background.light,
                 },
               }}
             >
@@ -101,13 +101,13 @@ const CourseOutlineItemCompact = ({ title, livestreams = [], courseSlug }) => {
                         <EditDocumentIcon sx={{ color: (theme) => theme.palette.icon.light, fontSize: 10 }} />
                       </Link>
                     ) : (
-                      <EditDocumentIcon sx={{ color: (theme) => theme.palette.gray.borderAlt, fontSize: 10 }} />
+                      <EditDocumentIcon sx={{ color: (theme) => theme.palette.icon.light, fontSize: 10 }} />
                     )}
                     <Typography
                       component="span"
                       variant="caption"
                       fontSize={10}
-                      color={(theme) => theme.palette.gray.text}
+                      color={(theme) => theme.palette.text.secondary}
                     >
                       {Array.isArray(item.documents) ? item.documents.length : 0}
                     </Typography>
@@ -117,7 +117,7 @@ const CourseOutlineItemCompact = ({ title, livestreams = [], courseSlug }) => {
                       component="span"
                       variant="caption"
                       fontSize={10}
-                      color={(theme) => theme.palette.gray.text}
+                      color={(theme) => theme.palette.text.secondary}
                     >
                       {item.view || 0}
                     </Typography>

@@ -115,7 +115,7 @@ const Livestream = () => {
                   width: '100%',
                   bgcolor: 'background.paper',
                   borderRadius: 1,
-                  border: (theme) => `1px solid ${theme.palette.gray.medium}`,
+                  border: `1px solid #e0e0e0`,
                   '& .green-circle-step-icon': {
                     width: '16px !important',
                     height: '16px !important',

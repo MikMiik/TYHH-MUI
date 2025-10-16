@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 
 import CountDown from '@/components/CountDown'
@@ -14,7 +14,7 @@ function HeaderTopBar() {
       alignItems="center"
       p={1}
       sx={{
-        color: '#fff',
+        color: (theme) => theme.palette.text.inverse,
         backgroundColor: 'primary.main',
         width: '100%',
         minHeight: (theme) => theme.muiVars.headerTopBarHeight,

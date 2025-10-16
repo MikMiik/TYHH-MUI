@@ -12,9 +12,9 @@ const TopicList = ({ items = [] }) => {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            bgcolor: (theme) => theme.palette.common.white,
+            bgcolor: (theme) => theme.palette.background.default,
             borderRadius: 1,
-            boxShadow: (theme) => `4px 4px 15px 0 ${theme.palette.gray.cardShadow}`,
+            boxShadow: '4px 4px 15px 0 #eaebea',
           }}
         >
           <Box
