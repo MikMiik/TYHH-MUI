@@ -50,7 +50,7 @@ const CourseOutlineItem = ({ title, livestreams = [], outlineId, onDeleteOutline
           expandIcon={<ExpandMoreIcon />}
           sx={{
             minHeight: 48,
-            bgcolor: (theme) => theme.palette.background.grey,
+            bgcolor: (theme) => theme.palette.bg.grey,
             borderRadius: 2,
             position: 'relative',
           }}

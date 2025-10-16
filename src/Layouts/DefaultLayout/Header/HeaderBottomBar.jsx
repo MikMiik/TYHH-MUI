@@ -13,7 +13,7 @@ function HeaderBottomBar() {
       component="nav"
       sx={{
         position: {
-          xs: 'static', // màn hình nhỏ (mobile)
+          xs: 'static',
           md: 'sticky',
         },
         display: 'flex',
@@ -22,8 +22,7 @@ function HeaderBottomBar() {
         gap: 2,
         inset: 0,
         zIndex: 20,
-        bgcolor: 'white',
-        width: '100%',
+        background: (theme) => theme.palette.background.default,
         height: height,
         boxShadow: '0 4px 4px 0 rgba(199,194,194,.25)',
       }}

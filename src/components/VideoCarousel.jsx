@@ -79,9 +79,8 @@ function VideoCarousel({ videoList = [] }) {
         onClick={scrollPrev}
         sx={{
           position: 'absolute',
-          left: { xs: -8, sm: -12, md: -16 }, // Responsive positioning
-          top: '50%',
-          transform: 'translateY(-50%)',
+          left: { xs: -8, sm: -12, md: -12 }, // Responsive positioning
+          top: '42%',
           bgcolor: 'rgba(255, 255, 255, 0.95)',
           border: '2px solid',
           borderColor: 'secondary.light',
@@ -155,9 +154,8 @@ function VideoCarousel({ videoList = [] }) {
         onClick={scrollNext}
         sx={{
           position: 'absolute',
-          right: { xs: -8, sm: -12, md: -16 }, // Responsive positioning
-          top: '50%',
-          transform: 'translateY(-50%)',
+          right: { xs: -8, sm: -12, md: -20 }, // Responsive positioning
+          top: '42%',
           bgcolor: 'rgba(255, 255, 255, 0.95)',
           border: '2px solid',
           borderColor: 'secondary.light',

@@ -35,9 +35,9 @@ const theme = extendTheme({
     light: {
       palette: {
         primary: {
-          light: '#388e3c',
-          main: '#2e7d32',
-          dark: '#1b5e20',
+          light: '#4f9b79',
+          main: '#1f6a4f',
+          dark: '#0b3e2a',
         },
         secondary: {
           light: '#40a9ff',
@@ -49,9 +49,6 @@ const theme = extendTheme({
           main: '#f56751',
           dark: '#c94c3a',
           contrastText: '#fff',
-        },
-        gradient: {
-          chromia: 'linear-gradient(140deg, #083b2b 0%, #1f6a4f 50%, #072a1f 100%)',
         },
         icon: {
           light: '#999',
@@ -95,15 +92,15 @@ const theme = extendTheme({
           gradient: '#60a1d5',
           navy: '#49708d',
         },
+        gradient: {
+          main: 'linear-gradient(140deg, #083b2b 0%, #1f6a4f 50%, #072a1f 100%)',
+          green: 'linear-gradient(to bottom, #d6eadd 0%, #e8f5e8 5%, #f4faf4 33%, #ffffff 100%)',
+        },
         // Background colors
-        background: {
+        bg: {
           default: '#ffffff',
-          paper: '#ffffff',
           light: '#f8f9fa',
           grey: '#f3f4f6',
-          gradient: {
-            green: 'linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 50%, #e1f0e1 100%)',
-          },
         },
         // Medal/Ranking colors
         medal: {
@@ -133,9 +130,9 @@ const theme = extendTheme({
     dark: {
       palette: {
         primary: {
-          light: '#4caf50',
-          main: '#034c31',
-          dark: '#007a33',
+          light: '#4f9b79',
+          main: '#1f6a4f',
+          dark: '#0b3e2a',
         },
         secondary: {
           light: '#40a9ff',
@@ -152,76 +149,56 @@ const theme = extendTheme({
           light: '#999',
           main: '#666',
           dark: '#333',
+          button: '#9e9e9e',
         },
-        // Common colors
         common: {
           white: '#fff',
           black: '#000',
           transparent: 'transparent',
         },
-        // Gray scale colors for dark mode
-        gray: {
-          50: '#1f2937',
-          100: '#374151',
-          200: '#4b5563',
-          300: '#6b7280',
-          400: '#9ca3af',
-          500: '#d1d5db',
-          600: '#e5e7eb',
-          700: '#f3f4f6',
-          800: '#f9fafb',
-          900: '#ffffff',
-          // Additional grays for dark mode
-          light: '#4b5563',
-          medium: '#374151',
-          dark: '#1f2937',
-          darker: '#111827',
-          text: '#9ca3af',
-          border: '#374151',
-          divider: '#4b5563',
-        },
-        // Success colors for dark mode
+        // Success colors (Green variants)
         success: {
-          light: '#065f46',
-          main: '#10b981',
-          dark: '#34d399',
-          pale: '#064e3b',
-          bright: '#6ee7b7',
-          notification: '#059669',
+          light: '#e8f5e9',
+          main: '#4caf50',
+          dark: '#007a33',
+          pale: '#e8f5e8',
+          bright: '#66ec83',
+          notification: '#8bc58dff',
         },
-        // Warning colors for dark mode
+        // Warning colors (Orange/Amber variants)
         warning: {
-          light: '#78350f',
-          main: '#f59e0b',
-          dark: '#fbbf24',
-          orange: '#fb923c',
-          amber: '#fcd34d',
+          light: '#fff3cd',
+          main: '#ec971f',
+          dark: '#e08e0b',
+          orange: '#F37021',
+          amber: '#ffb300',
         },
-        // Error colors for dark mode
+        // Error colors (Red variants)
         error: {
-          light: '#dc2626',
-          main: '#ef4444',
-          dark: '#f87171',
+          light: '#ff7875',
+          main: '#ff4d4f',
+          dark: '#c94c3a',
         },
-        // Info colors for dark mode
+        // Info colors (Blue variants)
         info: {
-          light: '#1e3a8a',
-          main: '#3b82f6',
-          dark: '#60a5fa',
-          gradient: '#1e40af',
-          navy: '#1e3a8a',
+          light: '#e6f7ff',
+          main: '#007bff',
+          dark: '#0056b3',
+          gradient: '#60a1d5',
+          navy: '#49708d',
         },
-        // Background colors for dark mode
-        background: {
-          default: '#0f172a',
-          paper: '#1e293b',
-          light: '#334155',
-          gradient: {
-            green: 'linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%)',
-          },
-          dark: '#000000',
+        gradient: {
+          main: 'linear-gradient(140deg, #083b2b 0%, #1f6a4f 50%, #072a1f 100%)',
+          green: 'linear-gradient(to bottom, #d6eadd 0%, #e8f5e8 5%, #f4faf4 33%, #ffffff 100%)',
         },
-        // Medal colors remain same for dark mode
+        // Background colors
+        bg: {
+          default: '#ffffff',
+          paper: '#ffffff',
+          light: '#f8f9fa',
+          grey: '#f3f4f6',
+        },
+        // Medal/Ranking colors
         medal: {
           gold: '#FFD700',
           goldGradient: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
@@ -230,44 +207,19 @@ const theme = extendTheme({
           bronze: '#CD7F32',
           bronzeGradient: 'linear-gradient(135deg, #CD7F32 0%, #B8860B 100%)',
         },
-        // Text colors for dark mode
+        // Text colors
         text: {
-          primary: '#f1f5f9',
-          secondary: '#e2e8f0',
-          disabled: '#64748b',
-          hint: '#475569',
-          inverse: '#0f172a',
-          muted: '#94a3b8',
+          primary: '#333333',
+          secondary: '#666666',
+          disabled: '#999999',
+          hint: '#c4c4c4',
+          inverse: '#ffffff',
+          muted: '#000000a6',
         },
-        // Action colors for dark mode
-        action: {
-          hover: 'rgba(255, 255, 255, 0.08)',
-          selected: 'rgba(255, 255, 255, 0.12)',
-          disabled: 'rgba(255, 255, 255, 0.3)',
-          disabledBackground: 'rgba(255, 255, 255, 0.12)',
-        },
-        // Border colors for dark mode
-        border: {
-          light: '#334155',
-          main: '#475569',
-          medium: '#64748b',
-          dark: '#94a3b8',
-        },
-        // Shadow colors for dark mode
-        shadow: {
-          main: 'rgba(0, 0, 0, 0.4)',
-          light: 'rgba(0, 0, 0, 0.2)',
-          medium: 'rgba(0, 0, 0, 0.6)',
-        },
-        // Comment/notification colors for dark mode
+        // Comment/notification specific colors
         comment: {
-          highlight: '#1e40af',
-          unread: '#059669',
-        },
-        // Video/media colors for dark mode
-        video: {
-          overlay: '#000',
-          background: 'rgba(0, 0, 0, 0.9)',
+          highlight: '#e3f2fd',
+          unread: '#8bc58dff',
         },
       },
     },

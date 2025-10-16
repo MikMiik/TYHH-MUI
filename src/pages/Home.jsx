@@ -58,16 +58,18 @@ function Home() {
     // Tự động fit scene vào viewport và căn giữa
     spline.setZoom(0.8)
   }
-  console.log(freeCourses)
 
   return (
-    <Box>
+    <Box
+      sx={{
+        background: (theme) => theme.palette.gradient.green,
+      }}
+    >
       {/* Head Banner */}
       <Box
         sx={{
           width: '100%',
           minHeight: '700px',
-          background: (theme) => theme.palette.background.gradient.green,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -149,7 +151,6 @@ function Home() {
                     boxShadow: '0 8px 32px rgba(3, 76, 49, 0.15)',
                     border: '1px solid',
                     borderColor: 'primary.light',
-                    bgcolor: (theme) => theme.palette.info.navy,
                     position: 'relative',
                     display: 'flex',
                     alignItems: 'center',
@@ -245,7 +246,15 @@ function Home() {
         </Typography>
         <FreeCoursesLoadingState>
           {freeCourses.length > 0 && (
-            <Paper sx={{ display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
+            <Paper
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                overflow: 'hidden',
+                border: '2px solid',
+                borderColor: (theme) => theme.palette.primary.light,
+              }}
+            >
               {/* Left Section: 2/3 width */}
               <Box width="66.7%">
                 <VideoComp src={freeCourses[0]?.introVideo} />

@@ -449,7 +449,7 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                       p: 4,
                       textAlign: 'center',
                       mb: 2,
-                      backgroundColor: (theme) => theme.palette.background.light,
+                      backgroundColor: (theme) => theme.palette.bg.light,
                       height: '200px',
                       display: 'flex',
                       flexDirection: 'column',

@@ -52,43 +52,6 @@ function FooterMainArea() {
             <Typography>086.546.9889</Typography>
           </ListItem>
         </ListItemStack>
-
-        {/* <Stack sx={{ flex: 1 }}>
-          <Typography variant="h6" sx={{ fontWeight: 700 }}>
-            THÔNG TIN
-          </Typography>
-          <ListItemStack spacing={2} sx={{ flex: 1, mt: 1, '& .MuiListItem-root': { display: 'list-item' } }}>
-            <ListItem>
-              <Typography>Giới Thiệu</Typography>
-            </ListItem>
-            <ListItem>
-              <Typography>Câu Hỏi Thường Gặp</Typography>
-            </ListItem>
-            <ListItem>
-              <Typography>Điều Khoản Dịch Vụ</Typography>
-            </ListItem>
-            <ListItem>
-              <Typography>Chính Sách Bảo Mật</Typography>
-            </ListItem>
-          </ListItemStack>
-        </Stack>
-
-        <Stack sx={{ flex: 1 }}>
-          <Typography variant="h6" sx={{ fontWeight: 700 }}>
-            ĐIỀU KHOẢN
-          </Typography>
-          <ListItemStack spacing={2} sx={{ flex: 1, mt: 1, '& .MuiListItem-root': { display: 'list-item' } }}>
-            <ListItem>
-              <Typography>Hướng Dẫn Thanh Toán</Typography>
-            </ListItem>
-            <ListItem>
-              <Typography>Kích Hoạt Khoá Học</Typography>
-            </ListItem>
-            <ListItem>
-              <Typography>Cộng Tác Viên</Typography>
-            </ListItem>
-          </ListItemStack>
-        </Stack> */}
       </Stack>
     </>
   )

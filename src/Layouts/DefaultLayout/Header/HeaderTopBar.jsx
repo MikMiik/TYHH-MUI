@@ -15,7 +15,7 @@ function HeaderTopBar() {
       p={1}
       sx={{
         color: (theme) => theme.palette.text.inverse,
-        backgroundColor: 'primary.main',
+        background: (theme) => theme.palette.gradient.main,
         width: '100%',
         minHeight: (theme) => theme.muiVars.headerTopBarHeight,
       }}

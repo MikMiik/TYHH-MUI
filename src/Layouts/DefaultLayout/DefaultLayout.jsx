@@ -22,7 +22,7 @@ function DefaultLayout() {
       <Outlet />
 
       {/* Footer */}
-      <Box sx={{ bgcolor: 'primary.main', minHeight: '630px' }}>
+      <Box sx={{ background: (theme) => theme.palette.gradient.main, minHeight: '630px' }}>
         <Container sx={{ py: 4 }} display="flex">
           <FooterMainArea />
         </Container>

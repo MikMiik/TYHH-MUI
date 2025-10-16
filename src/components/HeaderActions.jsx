@@ -198,10 +198,10 @@ function HeaderActions() {
                 disableElevation
                 startIcon={<LoginIcon />}
                 sx={{
-                  backgroundColor: theme.palette.secondary.main,
+                  backgroundColor: theme.palette.primary.main,
                   color: theme.palette.text.inverse,
                   '&:hover': {
-                    backgroundColor: theme.palette.secondary.light,
+                    backgroundColor: theme.palette.primary.light,
                   },
                 }}
               >
@@ -309,10 +309,10 @@ function HeaderActions() {
                   component={Link}
                   to={config.routes.login}
                   sx={{
-                    backgroundColor: theme.palette.secondary.main,
+                    backgroundColor: theme.palette.primary.main,
                     color: theme.palette.text.inverse,
                     '&:hover': {
-                      backgroundColor: theme.palette.secondary.light,
+                      backgroundColor: theme.palette.primary.light,
                     },
                   }}
                 >
