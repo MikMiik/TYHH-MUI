@@ -43,7 +43,7 @@ const CourseOutlineItemCompact = ({ title, livestreams = [], courseSlug }) => {
       <AccordionSummary
         expandIcon={<ExpandMoreIcon fontSize="small" />}
         sx={{
-          bgcolor: '#f5f5f5',
+          bgcolor: (theme) => theme.palette.gray.bgF5,
           borderRadius: 1,
           py: 0.5,
         }}
@@ -65,7 +65,7 @@ const CourseOutlineItemCompact = ({ title, livestreams = [], courseSlug }) => {
                 px: 1,
                 minHeight: 28,
                 '&:hover': {
-                  bgcolor: '#f9f9f9',
+                  bgcolor: (theme) => theme.palette.gray.bgF9,
                 },
               }}
             >
@@ -98,17 +98,27 @@ const CourseOutlineItemCompact = ({ title, livestreams = [], courseSlug }) => {
                         to={`/documents/${item.documents[0].slug}`}
                         style={{ display: 'inline-flex', alignItems: 'center' }}
                       >
-                        <EditDocumentIcon sx={{ color: '#999', fontSize: 10 }} />
+                        <EditDocumentIcon sx={{ color: (theme) => theme.palette.icon.light, fontSize: 10 }} />
                       </Link>
                     ) : (
-                      <EditDocumentIcon sx={{ color: '#ccc', fontSize: 10 }} />
+                      <EditDocumentIcon sx={{ color: (theme) => theme.palette.gray.borderAlt, fontSize: 10 }} />
                     )}
-                    <Typography component="span" variant="caption" fontSize={10} color="#888">
+                    <Typography
+                      component="span"
+                      variant="caption"
+                      fontSize={10}
+                      color={(theme) => theme.palette.gray.text}
+                    >
                       {Array.isArray(item.documents) ? item.documents.length : 0}
                     </Typography>
 
-                    <RemoveRedEyeRoundedIcon sx={{ color: '#999', fontSize: 10 }} />
-                    <Typography component="span" variant="caption" fontSize={10} color="#888">
+                    <RemoveRedEyeRoundedIcon sx={{ color: (theme) => theme.palette.icon.light, fontSize: 10 }} />
+                    <Typography
+                      component="span"
+                      variant="caption"
+                      fontSize={10}
+                      color={(theme) => theme.palette.gray.text}
+                    >
                       {item.view || 0}
                     </Typography>
                   </Stack>

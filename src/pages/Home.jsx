@@ -67,7 +67,7 @@ function Home() {
         sx={{
           width: '100%',
           minHeight: '700px',
-          background: 'linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 50%, #e1f0e1 100%)',
+          background: (theme) => theme.palette.background.gradient.green,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -149,7 +149,7 @@ function Home() {
                     boxShadow: '0 8px 32px rgba(3, 76, 49, 0.15)',
                     border: '1px solid',
                     borderColor: 'primary.light',
-                    bgcolor: '#2a2a2a',
+                    bgcolor: (theme) => theme.palette.info.navy,
                     position: 'relative',
                     display: 'flex',
                     alignItems: 'center',
@@ -252,7 +252,7 @@ function Home() {
               </Box>
               {/* Right Section: 1/3 width */}
 
-              <Stack direction="column" bgcolor="#60a1d5" width="33.3%">
+              <Stack direction="column" bgcolor={(theme) => theme.palette.info.gradient} width="33.3%">
                 {freeCourses.slice(0, 4).map((course) => (
                   <Stack
                     key={course.id}
@@ -264,18 +264,28 @@ function Home() {
                     sx={{
                       textDecoration: 'none',
                       ':hover': {
-                        bgcolor: '#49708d',
+                        bgcolor: (theme) => theme.palette.info.navy,
                       },
                     }}
                   >
                     <LocalImageLazy src={course.thumbnail || ''} alt={course.title} w={80} h={50} />
                     <Box ml={1} maxWidth="calc(100% - 108px)">
-                      <Typography noWrap variant="subtitle2" color="#fff" fontWeight={600}>
+                      <Typography
+                        noWrap
+                        variant="subtitle2"
+                        color={(theme) => theme.palette.common.white}
+                        fontWeight={600}
+                      >
                         {course.title}
                       </Typography>
-                      <Typography noWrap variant="subtitle2" color="#fff" fontWeight={600}>
+                      <Typography
+                        noWrap
+                        variant="subtitle2"
+                        color={(theme) => theme.palette.common.white}
+                        fontWeight={600}
+                      >
                         Giáo viên:{' '}
-                        <Typography component="span" color="#66ec83">
+                        <Typography component="span" color={(theme) => theme.palette.success.bright}>
                           {course.teacher?.name || 'TYHH'}
                         </Typography>
                       </Typography>

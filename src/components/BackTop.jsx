@@ -31,10 +31,10 @@ const BackTop = () => {
           sx={{
             width: 48,
             height: 48,
-            bgcolor: '#00543B',
+            bgcolor: (theme) => theme.palette.video.backTop,
             borderRadius: 1,
             boxShadow: 3,
-            '&:hover': { bgcolor: '#003d2a' },
+            '&:hover': { bgcolor: (theme) => theme.palette.video.backTopHover },
           }}
         >
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">

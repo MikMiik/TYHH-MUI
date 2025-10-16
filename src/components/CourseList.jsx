@@ -12,15 +12,15 @@ const TopicList = ({ items = [] }) => {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            bgcolor: '#fff',
+            bgcolor: (theme) => theme.palette.common.white,
             borderRadius: 1,
-            boxShadow: '4px 4px 15px 0 #eaebea',
+            boxShadow: (theme) => `4px 4px 15px 0 ${theme.palette.gray.cardShadow}`,
           }}
         >
           <Box
             component="span"
             sx={{
-              color: '#F37021',
+              color: (theme) => theme.palette.warning.orange,
               fontSize: 18,
               display: 'flex',
               alignItems: 'center',

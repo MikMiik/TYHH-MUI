@@ -14,6 +14,7 @@ import {
   DialogContent,
   DialogActions,
   Stack,
+  useTheme,
 } from '@mui/material'
 import {
   MoreVert as MoreVertIcon,
@@ -53,6 +54,7 @@ const CommentItem = ({
 
   const canEdit = currentUser?.id === comment.commenter.id
   const canDelete = currentUser?.id === comment.commenter.id
+  const theme = useTheme()
 
   const { id, commenter, content, isLiked = false, isEdited = false, createdAt, parent } = comment
 
@@ -250,7 +252,7 @@ const CommentItem = ({
                     const parentElement = document.getElementById(`comment-${parent.id}`)
                     if (parentElement) {
                       parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
-                      parentElement.style.backgroundColor = '#e3f2fd'
+                      parentElement.style.backgroundColor = theme.palette.comment.highlight
                       setTimeout(() => {
                         parentElement.style.backgroundColor = ''
                       }, 2000)

@@ -118,7 +118,7 @@ const DocumentUploadModal = ({ open, onClose, livestream, onUploadSuccess }) => 
                 <Box>
                   <Box
                     sx={{
-                      border: '2px dashed #ccc',
+                      border: (theme) => `2px dashed ${theme.palette.gray.borderAlt}`,
                       borderRadius: 2,
                       p: 3,
                       textAlign: 'center',
