@@ -29,33 +29,36 @@ const CountDown = ({ duration }) => {
   const [time, setTime] = useState(duration)
   useEffect(() => {
     const timeID = setTimeout(() => {
-      setTime(time - 1000)
+      setTime((t) => Math.max(0, t - 1000))
     }, 1000)
     return () => clearTimeout(timeID)
   }, [time])
-  let totalSeconds = parseInt(Math.floor(time / 1000))
-  let totalMinutes = parseInt(Math.floor(totalSeconds / 60))
-  let totalHours = parseInt(Math.floor(totalMinutes / 1000))
-  let days = parseInt(Math.floor(totalHours / 24))
 
-  let seconds = parseInt(totalSeconds % 60)
-  let minutes = parseInt(totalMinutes % 60)
-  let hours = parseInt(totalHours % 24)
+  // Clamp to zero to avoid negative values
+  const remaining = Math.max(0, time)
+  const totalSeconds = Math.floor(remaining / 1000)
+  const totalMinutes = Math.floor(totalSeconds / 60)
+  const totalHours = Math.floor(totalMinutes / 60)
+  const days = Math.floor(totalHours / 24)
+
+  const seconds = totalSeconds % 60
+  const minutes = totalMinutes % 60
+  const hours = totalHours % 24
   return (
     <Stack sx={{ color: (theme) => theme.palette.text.inverse }} direction="row" spacing={0.5} alignItems="center">
-      <TimeBox value={days} label="Day" />
+      <TimeBox value={days} label="Ngày" />
       <Typography sx={{ transform: 'translateY(-25%)' }} variant="h6">
         :
       </Typography>
-      <TimeBox value={hours} label="Hour" />
+      <TimeBox value={hours} label="Giờ" />
       <Typography sx={{ transform: 'translateY(-25%)' }} variant="h6">
         :
       </Typography>
-      <TimeBox value={minutes} label="Minutes" />
+      <TimeBox value={minutes} label="Phút" />
       <Typography sx={{ transform: 'translateY(-25%)' }} variant="h6">
         :
       </Typography>
-      <TimeBox value={seconds} label="Seconds" />
+      <TimeBox value={seconds} label="Giây" />
     </Stack>
   )
 }

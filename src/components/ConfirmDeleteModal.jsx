@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Typography, Button, Box, Stack } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Typography, Button, Box, Stack, Paper } from '@mui/material'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 
 export default function ConfirmDeleteModal({
@@ -55,22 +55,20 @@ export default function ConfirmDeleteModal({
         </Typography>
 
         {itemName && (
-          <Box
+          <Paper
             sx={{
               p: 2,
-              bgcolor: 'grey.50',
               borderRadius: 1,
-              border: '1px solid',
-              borderColor: 'grey.200',
             }}
+            elevation={3}
           >
-            <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography variant="body2" color="text.primary" gutterBottom>
               Tên khóa học:
             </Typography>
             <Typography variant="subtitle1" fontWeight={600}>
               {itemName}
             </Typography>
-          </Box>
+          </Paper>
         )}
 
         <Typography variant="body2" color="error.main" mt={2}>

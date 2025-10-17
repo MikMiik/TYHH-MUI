@@ -168,7 +168,7 @@ function CreatedCourses() {
 
   if (isError) {
     return (
-      <Container sx={{ my: 3 }}>
+      <Container sx={{ py: 3 }}>
         <Alert severity="error">
           Có lỗi xảy ra khi tải danh sách khóa học: {error?.data?.message || error?.message || 'Lỗi không xác định'}
         </Alert>
@@ -177,7 +177,7 @@ function CreatedCourses() {
   }
 
   return (
-    <Container sx={{ my: 3 }}>
+    <Container sx={{ py: 3 }}>
       {/* Header */}
       <Box mb={4}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>

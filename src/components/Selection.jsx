@@ -29,7 +29,9 @@ export default function Selection() {
   return (
     <Box>
       <FormControl fullWidth>
-        <InputLabel id="sort">Sort</InputLabel>
+        <InputLabel color="text.primary" id="sort">
+          Sort
+        </InputLabel>
         <Select
           labelId="sort"
           name="sort"
@@ -42,20 +44,19 @@ export default function Selection() {
             minWidth: 180,
             maxHeight: 36,
             fontSize: 14,
-            color: theme.palette.text.paper,
             '& .MuiSelect-select': {
               padding: 1,
               minHeight: 0,
             },
             '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'secondary.light', // màu khi hover
+              borderColor: 'primary.light', // màu khi hover
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'secondary.main',
-              boxShadow: '0 0 0 2px rgba(24,144,255,.2)',
+              borderColor: 'primary.main',
+              boxShadow: '0 0 0 2px rgba(24, 255, 78, 0.2)',
             },
             '& .MuiSelect-icon': {
-              color: theme.palette.text.hint,
+              color: theme.vars.palette.text.hint,
             },
           }}
           MenuProps={{
@@ -66,15 +67,15 @@ export default function Selection() {
                 mt: 1,
                 borderRadius: 1,
                 boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                bgcolor: theme.palette.text.inverse,
+                bgcolor: theme.vars.palette.background.light,
                 '& .MuiMenu-list': {
                   p: 0,
                 },
                 '& .MuiMenuItem-root': {
                   fontSize: 14,
                   '&:hover': {
-                    bgcolor: 'secondary.light',
-                    color: theme.palette.text.inverse,
+                    bgcolor: 'primary.light',
+                    color: theme.palette.text.primary,
                     transition: 'all 0.1s ease',
                   },
                 },

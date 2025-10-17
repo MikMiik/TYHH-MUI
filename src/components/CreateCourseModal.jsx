@@ -408,6 +408,7 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                   Ảnh thumbnail khóa học
                 </Typography>
                 <LocalImageUploader
+                  height={300}
                   currentImage={formData.thumbnail ? `${import.meta.env.VITE_SERVER_URL}/${formData.thumbnail}` : null}
                   onUploadSuccess={(response) => {
                     setFormData((prev) => ({
@@ -424,7 +425,6 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                   }}
                   title="Ảnh thumbnail khóa học"
                   fileName="course_thumbnail"
-                  height="auto"
                 />
                 {validationErrors.thumbnail && (
                   <Box sx={{ mt: 0.5, fontSize: '0.75rem', color: 'error.main' }}>{validationErrors.thumbnail}</Box>

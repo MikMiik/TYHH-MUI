@@ -62,10 +62,11 @@ function MenuLayout() {
                   borderColor: 'grey.300',
                 },
                 '&:hover fieldset': {
-                  borderColor: 'secondary.main',
+                  borderColor: 'primary.light',
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: 'secondary.main',
+                  borderColor: 'primary.main',
+                  boxShadow: '0 0 0 2px rgba(24, 255, 147, 0.2)',
                 },
               },
             }}

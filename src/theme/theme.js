@@ -262,6 +262,13 @@ const theme = extendTheme({
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          background: theme.vars.palette.background.default,
+        }),
+      },
+    },
   },
 })
 
