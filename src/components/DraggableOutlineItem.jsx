@@ -153,7 +153,7 @@ const DraggableOutlineItem = ({
     >
       {/* Action Icons - Create Livestream, Edit and Delete */}
       {activeAction && (
-        <Box sx={{ position: 'absolute', right: 8, top: 8, zIndex: 10, pointerEvents: 'auto' }}>
+        <Box sx={{ position: 'absolute', right: 40, top: 8, zIndex: 10, pointerEvents: 'auto' }}>
           <Stack direction="row" spacing={1}>
             {/* Create Livestream Icon */}
             {onCreateLivestream && (
@@ -226,7 +226,7 @@ const DraggableOutlineItem = ({
           expandIcon={<ExpandMoreIcon />}
           sx={{
             minHeight: 48,
-            background: (theme) => theme.vars?.palette?.background?.paper || theme.palette.background.paper,
+            background: (theme) => theme.vars.palette.primary.light,
             borderRadius: 2,
             position: 'relative',
             '&:hover .drag-handle': {
@@ -279,7 +279,7 @@ const DraggableOutlineItem = ({
           </Stack>
         </AccordionSummary>
 
-        <AccordionDetails sx={{ p: 0 }}>
+        <AccordionDetails sx={{ p: 0, background: (theme) => theme.vars.palette.background.paper }}>
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleLivestreamDragEnd}>
             <SortableContext items={livestreams.map((item) => item.id)} strategy={verticalListSortingStrategy}>
               <Stepper
@@ -295,7 +295,6 @@ const DraggableOutlineItem = ({
                     courseSlug={courseSlug}
                     isDragDisabled={isDragDisabled}
                     onDeleteLivestream={(deletedId) => {
-                      // Remove from local state
                       setReorderedLivestreams((prev) => prev.filter((item) => item.id !== deletedId))
                     }}
                   />

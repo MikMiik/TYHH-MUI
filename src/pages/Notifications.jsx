@@ -16,12 +16,14 @@ import {
   IconButton,
 } from '@mui/material'
 import { Add as AddIcon, Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material'
+import DoneAllIcon from '@mui/icons-material/DoneAll'
 import { useSearchParams } from 'react-router-dom'
 import {
   useGetAllNotificationsQuery,
   useMarkNotificationAsReadMutation,
   useMarkAllNotificationsAsReadMutation,
 } from '@/features/api/notificationApi'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { useLoadingState } from '@/components/withLoadingState'
 import CreateNotificationModal from '@/components/CreateNotificationModal'
 import BreadCrumbsPath from '@/components/BreadCrumbsPath'
@@ -40,6 +42,7 @@ const Notifications = () => {
 
   const userRole = useUserRole()
   const isTeacher = userRole?.includes('teacher')
+  const currentUser = useCurrentUser()
 
   // Update URL params when debounced search value changes
   useEffect(() => {
@@ -68,13 +71,15 @@ const Notifications = () => {
     },
     {
       refetchOnMountOrArgChange: true,
+      // Skip API call when user is not logged in
+      skip: !currentUser?.id,
     }
   )
 
   const [markAsRead] = useMarkNotificationAsReadMutation()
   const [markAllAsRead] = useMarkAllNotificationsAsReadMutation()
 
-  const { data: { notifications, totalPages } = {}, LoadingStateComponent } = useLoadingState(queryResult, {
+  const { data: { notifications = [], totalPages = 0 } = {}, LoadingStateComponent } = useLoadingState(queryResult, {
     variant: 'section',
     loadingText: 'Đang tải thông báo...',
     emptyText: 'Chưa có thông báo nào',
@@ -187,76 +192,85 @@ const Notifications = () => {
         </Box>
 
         {/* Notifications List */}
-        <LoadingStateComponent>
-          <Stack spacing={2}>
-            {notifications &&
-              notifications.length > 0 &&
-              notifications.map((notification, index) => (
-                <Card
-                  key={notification.id}
-                  elevation={1}
-                  onClick={() => handleNotificationClick(notification.id)}
-                  sx={{
-                    cursor: 'pointer',
-                    bgcolor: !notification.isRead ? 'theme.palette.success.notification' : 'background.paper',
-                    '&:hover': {
-                      bgcolor: !notification.isRead ? 'primary.light' : 'grey.50',
-                    },
-                    transition: 'background-color 0.2s ease',
-                  }}
-                >
-                  <CardContent>
-                    <Stack direction="row" spacing={2} alignItems="flex-start">
-                      <Avatar
-                        src={notification.teacher?.avatar}
-                        sx={{
-                          width: 48,
-                          height: 48,
-                          bgcolor: 'primary.main',
-                        }}
-                      >
-                        {notification.teacher?.name?.charAt(0)?.toUpperCase() || 'T'}
-                      </Avatar>
-
-                      <Box flex={1}>
-                        <Typography variant="h6" fontWeight={600} gutterBottom>
-                          {notification.title}
-                        </Typography>
-
-                        {notification.message && (
-                          <Typography variant="body1" color="text.secondary" sx={{ mb: 2, lineHeight: 1.6 }}>
-                            {notification.message}
-                          </Typography>
-                        )}
-
-                        <Stack direction="row" alignItems="center" spacing={2}>
-                          <Chip label={notification.teacher?.name || 'Giáo viên'} size="small" variant="outlined" />
-                          <Typography variant="caption" color="text.secondary">
-                            {formatTimeAgo(notification.createdAt)}
-                          </Typography>
-                        </Stack>
-                      </Box>
-                    </Stack>
-                  </CardContent>
-                  {index < notifications.length - 1 && <Divider />}
-                </Card>
-              ))}
+        {!currentUser ? (
+          <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 200, p: 3 }}>
+            <DoneAllIcon sx={{ fontSize: 48, color: 'grey.400', mb: 1 }} />
+            <Typography variant="body2" color="text.secondary">
+              Chưa có thông báo nào
+            </Typography>
           </Stack>
+        ) : (
+          <LoadingStateComponent>
+            <Stack spacing={2}>
+              {notifications &&
+                notifications.length > 0 &&
+                notifications.map((notification, index) => (
+                  <Card
+                    key={notification.id}
+                    elevation={1}
+                    onClick={() => handleNotificationClick(notification.id)}
+                    sx={{
+                      cursor: 'pointer',
+                      bgcolor: !notification.isRead ? 'theme.palette.success.notification' : 'background.paper',
+                      '&:hover': {
+                        bgcolor: !notification.isRead ? 'primary.light' : 'text.hint',
+                      },
+                      transition: 'background-color 0.2s ease',
+                    }}
+                  >
+                    <CardContent>
+                      <Stack direction="row" spacing={2} alignItems="flex-start">
+                        <Avatar
+                          src={notification.teacher?.avatar}
+                          sx={{
+                            width: 48,
+                            height: 48,
+                            bgcolor: 'primary.main',
+                          }}
+                        >
+                          {notification.teacher?.name?.charAt(0)?.toUpperCase() || 'T'}
+                        </Avatar>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <Box display="flex" justifyContent="center" mt={4}>
-              <Pagination
-                count={totalPages}
-                page={page}
-                onChange={handlePageChange}
-                color="primary"
-                shape="rounded"
-                size="large"
-              />
-            </Box>
-          )}
-        </LoadingStateComponent>
+                        <Box flex={1}>
+                          <Typography variant="h6" fontWeight={600} gutterBottom>
+                            {notification.title}
+                          </Typography>
+
+                          {notification.message && (
+                            <Typography variant="body1" color="text.secondary" sx={{ mb: 2, lineHeight: 1.6 }}>
+                              {notification.message}
+                            </Typography>
+                          )}
+
+                          <Stack direction="row" alignItems="center" spacing={2}>
+                            <Chip label={notification.teacher?.name || 'Giáo viên'} size="small" variant="outlined" />
+                            <Typography variant="caption" color="text.secondary">
+                              {formatTimeAgo(notification.createdAt)}
+                            </Typography>
+                          </Stack>
+                        </Box>
+                      </Stack>
+                    </CardContent>
+                    {index < notifications.length - 1 && <Divider />}
+                  </Card>
+                ))}
+            </Stack>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <Box display="flex" justifyContent="center" mt={4}>
+                <Pagination
+                  count={totalPages}
+                  page={page}
+                  onChange={handlePageChange}
+                  color="primary"
+                  shape="rounded"
+                  size="large"
+                />
+              </Box>
+            )}
+          </LoadingStateComponent>
+        )}
 
         {/* Create Modal */}
         <CreateNotificationModal

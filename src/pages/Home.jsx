@@ -98,7 +98,7 @@ function Home() {
               <Typography
                 variant="h6"
                 sx={{
-                  color: 'primary.dark',
+                  color: 'primary.main',
                   opacity: 0.8,
                   fontSize: { xs: '1rem', md: '1.125rem' },
                 }}
@@ -163,7 +163,7 @@ function Home() {
               <Typography
                 variant="body1"
                 sx={{
-                  color: 'text.secondary',
+                  color: 'primary.light',
                   lineHeight: 1.7,
                   fontSize: { xs: '0.9rem', md: '1rem' },
                 }}

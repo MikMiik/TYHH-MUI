@@ -36,7 +36,7 @@ function LiveSchedule() {
   return (
     <LoadingStateComponent>
       <Container>
-        <Box width="100%" mt={2}>
+        <Box width="100%" py={2}>
           <BreadCrumbsPath />
           <Tabs
             value={tab}

@@ -7,26 +7,87 @@ import ListItemText from '@mui/material/ListItemText'
 import LogoutIcon from '@mui/icons-material/Logout'
 import PersonIcon from '@mui/icons-material/Person'
 import BookmarkIcon from '@mui/icons-material/Bookmark'
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 import VpnKeyIcon from '@mui/icons-material/VpnKey'
-import DescriptionIcon from '@mui/icons-material/Description'
 import { useNavigate } from 'react-router-dom'
+import config from '@/routes/config'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  CircularProgress,
+  Alert,
+} from '@mui/material'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import authService from '@/services/authService'
+import { removeCurrentUser } from '@/features/auth/authSlice'
 
 const menuItems = [
   { label: 'Đăng xuất', icon: <LogoutIcon />, action: 'logout' },
   { label: 'Thông tin cá nhân', icon: <PersonIcon />, route: '/profile' },
   { label: 'Khoá học của tôi', icon: <BookmarkIcon />, route: '/my-courses' },
-  { label: 'Thanh toán', icon: <AccountBalanceIcon />, route: '/payment' },
-  { label: 'Kích hoạt khoá học', icon: <VpnKeyIcon />, route: '/activate' },
-  { label: 'Tài liệu VIP', icon: <DescriptionIcon />, route: '/vip-documents' },
+  { label: 'Kích hoạt khoá học', icon: <VpnKeyIcon />, action: 'activate' },
 ]
 
 export default function PopoverMenu({ anchorEl, open, onClose }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const currentUser = useCurrentUser()
+  const [openActivate, setOpenActivate] = useState(false)
+  const [keyValue, setKeyValue] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
+
+  const handleLogout = async () => {
+    try {
+      dispatch(removeCurrentUser())
+      await authService.logout()
+      onClose()
+      navigate('/')
+    } catch (error) {
+      console.error('Logout error:', error)
+      onClose()
+      navigate('/')
+    }
+  }
+
+  const handleActivate = async () => {
+    setLoading(true)
+    setErrorMsg('')
+    setSuccessMsg('')
+    try {
+      const res = await authService.checkKey(keyValue)
+      if (res?.data?.activeKey) {
+        setSuccessMsg(res.data.message || 'Kích hoạt khoá học thành công!')
+        setErrorMsg('')
+        setTimeout(() => {
+          setOpenActivate(false)
+          setSuccessMsg('')
+          window.location.reload()
+        }, 1200)
+      } else {
+        setErrorMsg(res?.data?.message || 'Mã kích hoạt không hợp lệ hoặc đã được sử dụng.')
+        setSuccessMsg('')
+      }
+    } catch (err) {
+      setErrorMsg(err.response?.data?.message || 'Kích hoạt thất bại')
+    }
+    setLoading(false)
+  }
 
   const handleItemClick = (item) => {
     if (item.action === 'logout') {
-      // TODO: Add logout logic
+      handleLogout()
+      return
+    }
+    if (item.action === 'activate') {
+      // open activation dialog
+      setOpenActivate(true)
       onClose()
       return
     }
@@ -37,28 +98,93 @@ export default function PopoverMenu({ anchorEl, open, onClose }) {
   }
 
   return (
-    <Popover
-      open={open}
-      anchorEl={anchorEl}
-      onClose={onClose}
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      slotProps={{ paper: { sx: { minWidth: 220, p: 1, borderRadius: 2 }, elevation: 2 } }}
-      disableScrollLock
-    >
-      <List disablePadding>
-        {menuItems.map((item) => (
-          <ListItem
-            button
-            key={item.label}
-            onClick={() => handleItemClick(item)}
-            sx={{ color: 'primary.dark', cursor: 'pointer' }}
-          >
-            <ListItemIcon sx={{ color: 'primary.dark', minWidth: 32 }}>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.label} slotProps={{ primary: { fontWeight: 500 } }} />
-          </ListItem>
-        ))}
-      </List>
-    </Popover>
+    <>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={onClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        slotProps={{
+          paper: {
+            sx: { minWidth: 220, p: 1, borderRadius: 2, background: (theme) => theme.vars.palette.background.light },
+            elevation: 2,
+          },
+        }}
+        disableScrollLock
+      >
+        <List disablePadding>
+          {currentUser ? (
+            menuItems.map((item) => (
+              <ListItem
+                button
+                key={item.label}
+                onClick={() => handleItemClick(item)}
+                sx={{ color: 'primary.dark', cursor: 'pointer' }}
+              >
+                <ListItemIcon sx={{ color: 'primary.dark', minWidth: 32 }}>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} slotProps={{ primary: { fontWeight: 500 } }} />
+              </ListItem>
+            ))
+          ) : (
+            <>
+              <ListItem
+                button
+                onClick={() => {
+                  navigate(config.routes.register)
+                  onClose()
+                }}
+                sx={{ color: 'primary.light', cursor: 'pointer' }}
+              >
+                <ListItemText primary="Đăng ký" slotProps={{ primary: { fontWeight: 500 } }} />
+              </ListItem>
+              <ListItem
+                button
+                onClick={() => {
+                  navigate(config.routes.login)
+                  onClose()
+                }}
+                sx={{ color: 'primary.light', cursor: 'pointer' }}
+              >
+                <ListItemText primary="Đăng nhập" slotProps={{ primary: { fontWeight: 500 } }} />
+              </ListItem>
+            </>
+          )}
+        </List>
+      </Popover>
+
+      <Dialog open={openActivate} onClose={() => setOpenActivate(false)}>
+        <DialogTitle>Kích hoạt khoá học</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Nhập mã kích hoạt"
+            fullWidth
+            value={keyValue}
+            onChange={(e) => setKeyValue(e.target.value)}
+            disabled={loading}
+          />
+          {errorMsg && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {errorMsg}
+            </Alert>
+          )}
+          {successMsg && (
+            <Alert severity="success" sx={{ mt: 2 }}>
+              {successMsg}
+            </Alert>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenActivate(false)} disabled={loading}>
+            Đóng
+          </Button>
+          <Button onClick={handleActivate} disabled={loading || !keyValue} variant="contained" color="primary">
+            {loading ? <CircularProgress size={20} /> : 'Xác nhận'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   )
 }

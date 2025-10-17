@@ -97,7 +97,7 @@ const theme = extendTheme({
         // Background colors
         background: {
           default: '#ffffff',
-          paper: '#fefefe1d',
+          paper: '#fefefe39',
           light: '#f8f9fa',
           grey: '#f3f4f6',
         },

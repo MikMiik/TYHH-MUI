@@ -407,10 +407,9 @@ const CourseDetail = () => {
                   {isTeacher && (
                     <Button
                       variant="outlined"
-                      color="primary"
                       startIcon={<AddIcon />}
                       onClick={handleCreateOutline}
-                      sx={{ alignSelf: 'flex-start', mt: 2 }}
+                      sx={{ alignSelf: 'flex-start', mt: 2, color: 'primary.light' }}
                     >
                       Tạo Outline Mới
                     </Button>

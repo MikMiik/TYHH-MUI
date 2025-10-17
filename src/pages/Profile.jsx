@@ -87,7 +87,7 @@ const Profile = () => {
 
   return (
     <Container>
-      <Box my={2}>
+      <Box py={2}>
         <BreadCrumbsPath />
         <Typography mt={4} variant="subtitle1" color="text.secondary" fontWeight={500}>
           Thông tin cá nhân
@@ -113,7 +113,7 @@ const Profile = () => {
                       position: 'absolute',
                       right: 8,
                       top: 8,
-                      bgcolor: theme.palette.background.default,
+                      bgcolor: theme.vars.palette.background.default,
                       boxShadow: 1,
                     }}
                     disabled={isUploading}
@@ -121,7 +121,7 @@ const Profile = () => {
                     {isUploading ? (
                       <CircularProgress color="secondary" size={16} />
                     ) : (
-                      <PhotoCameraIcon fontSize="small" />
+                      <PhotoCameraIcon fontSize="small" sx={{ color: (theme) => theme.vars.palette.icon.button }} />
                     )}
                     <input
                       hidden

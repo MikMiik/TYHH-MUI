@@ -61,17 +61,20 @@ const DropAvatar = ({ bgcolor, width, height }) => {
               transition={{ duration: 0.2, ease: 'easeInOut' }}
               style={{ overflow: 'hidden' }}
               layout
-              sx={{ minWidth: 180 }}
+              sx={{
+                minWidth: 180,
+                background: open ? (theme) => theme.vars.palette.background.default : 'transparent',
+              }}
             >
               <List
                 sx={{
                   py: '4px',
-                  color: 'rgba(0, 0, 0, .65)',
+                  color: 'text.primary',
                   '& .MuiListItemButton-root': {
                     padding: '2px 6px',
                     textAlign: 'center',
                     '&:hover': {
-                      bgcolor: (theme) => theme.palette.info.light,
+                      bgcolor: (theme) => theme.vars.palette.background.paper,
                       borderRadius: 1,
                     },
                   },

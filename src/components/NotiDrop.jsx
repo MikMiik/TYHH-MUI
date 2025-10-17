@@ -22,7 +22,8 @@ const NotiDrop = () => {
   const iconRef = useRef(null)
   const currentUser = useCurrentUser()
 
-  const queryResult = useGetAllNotificationsQuery({ page: 1, limit: 5 })
+  // Skip API query when there's no current user to avoid unnecessary calls
+  const queryResult = useGetAllNotificationsQuery({ page: 1, limit: 5 }, { skip: !currentUser?.id })
   const { data: { notifications: apiNotifications } = {}, LoadingStateComponent } = useLoadingState(queryResult, {
     variant: 'inline',
     loadingText: 'Đang tải thông báo...',
@@ -41,8 +42,11 @@ const NotiDrop = () => {
   useEffect(() => {
     if (apiNotifications) {
       setNotifications(apiNotifications)
+    } else if (!currentUser) {
+      // ensure empty when there's no user
+      setNotifications([])
     }
-  }, [apiNotifications])
+  }, [apiNotifications, currentUser])
 
   // Listen for real-time notifications via socket
   useEffect(() => {
@@ -65,7 +69,7 @@ const NotiDrop = () => {
     return () => {
       socketClient.unsubscribe(`notifications`)
     }
-  }, [currentUser?.id]) // Remove notifications from dependency
+  }, [currentUser?.id])
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -103,7 +107,7 @@ const NotiDrop = () => {
   }
 
   const open = Boolean(anchorEl)
-  const unreadCount = notifications?.filter((notification) => !notification.isRead).length || 0
+  const unreadCount = currentUser ? notifications?.filter((notification) => !notification.isRead).length || 0 : 0
 
   const formatTimeAgo = (dateString) => {
     try {
@@ -148,13 +152,14 @@ const NotiDrop = () => {
               maxHeight: 500,
               boxShadow: 3,
               overflow: 'hidden',
+              bgcolor: theme.vars.palette.background.light,
             },
           },
         }}
       >
-        <MuiBox sx={{ px: 2, py: 1.5, borderBottom: `1px solid #eee`, bgcolor: 'grey.50' }}>
+        <MuiBox sx={{ px: 2, py: 1.5, borderBottom: `1px solid #eee`, bgcolor: theme.vars.palette.background.light }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography variant="subtitle1" fontWeight={600}>
+            <Typography variant="subtitle1" fontWeight={600} color="text.primary">
               Thông báo ({unreadCount > 0 ? `${unreadCount} chưa đọc` : 'đã đọc hết'})
             </Typography>
             {unreadCount > 0 && (
@@ -177,7 +182,7 @@ const NotiDrop = () => {
         </MuiBox>
 
         <LoadingStateComponent>
-          {notifications && notifications.length > 0 ? (
+          {currentUser && notifications && notifications.length > 0 ? (
             <List sx={{ p: 0, maxHeight: 400, overflowY: 'auto' }}>
               {notifications.map((notification, index) => (
                 <div key={notification.id}>
@@ -187,7 +192,7 @@ const NotiDrop = () => {
                     sx={{
                       px: 2,
                       py: 1.5,
-                      '&:hover': { bgcolor: 'grey.50' },
+                      '&:hover': { bgcolor: theme.vars.palette.primary.light },
                       cursor: 'pointer',
                       bgcolor: !notification.isRead ? theme.palette.success.notification : 'transparent',
                       transition: 'background-color 0.3s',
@@ -260,7 +265,7 @@ const NotiDrop = () => {
         </LoadingStateComponent>
 
         {/* Footer với link "Xem tất cả" */}
-        <MuiBox sx={{ px: 2, py: 1.5, borderTop: `1px solid #eee`, bgcolor: 'grey.50' }}>
+        <MuiBox sx={{ px: 2, py: 1.5, background: theme.vars.palette.background.light }}>
           <Button
             component={Link}
             to="/notifications"

@@ -34,7 +34,7 @@ function Register() {
   }
   return (
     <Container>
-      <Box mx="auto" maxWidth={500} textAlign="center" my={2}>
+      <Box mx="auto" maxWidth={500} textAlign="center" py={2}>
         <Form
           schema={registerSchema}
           defaultValues={{

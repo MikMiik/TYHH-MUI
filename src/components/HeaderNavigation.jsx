@@ -5,12 +5,10 @@ import { useTheme } from '@mui/material/styles'
 import React, { useState } from 'react'
 import HeaderMenu from './HeaderMenu'
 import useResponsive from '@/hooks/useResponsive'
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 import NotiDrop from './NotiDrop'
 import ThemeToggle from './ThemeToggle'
-
-// Lazy load PaymentModal since it's only used when needed
-const PaymentModal = lazy(() => import('./PaymentModal'))
+import Payment from './Payment'
 
 function HeaderNavigation() {
   const theme = useTheme()
@@ -56,11 +54,7 @@ function HeaderNavigation() {
       ) : null}
 
       {/* Only render PaymentModal when needed */}
-      {openModal && (
-        <Suspense fallback={null}>
-          <PaymentModal open={openModal} onClose={() => setOpenModal(false)} />
-        </Suspense>
-      )}
+      {openModal && <Payment open={openModal} onClose={() => setOpenModal(false)} />}
     </Box>
   )
 }

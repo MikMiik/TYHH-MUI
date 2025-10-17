@@ -82,7 +82,7 @@ const Livestream = () => {
   return (
     <LoadingStateComponent>
       <Container>
-        <Box width="100%" my={2}>
+        <Box width="100%" py={2}>
           <BreadCrumbsPath
             customData={{
               courseTitle: livestream?.course?.title,
@@ -128,14 +128,14 @@ const Livestream = () => {
                     width: 6,
                   },
                   '&::-webkit-scrollbar-track': {
-                    backgroundColor: (theme) => theme.palette.gray.light,
+                    backgroundColor: (theme) => theme.palette.background.light,
                     borderRadius: 3,
                   },
                   '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: (theme) => theme.palette.gray.dark,
+                    backgroundColor: (theme) => theme.palette.background.dark,
                     borderRadius: 3,
                     '&:hover': {
-                      backgroundColor: (theme) => theme.palette.gray.darker,
+                      backgroundColor: (theme) => theme.palette.background.darker,
                     },
                   },
                 }}

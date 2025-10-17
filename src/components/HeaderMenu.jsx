@@ -67,13 +67,14 @@ function HeaderMenu() {
               <List
                 sx={{
                   py: '4px',
-                  color: 'rgba(0, 0, 0, .65)',
+                  color: 'text.primary',
+                  background: (theme) => theme.vars.palette.background.paper,
                   '& .MuiListItemButton-root': {
                     padding: '2px 6px',
                     textAlign: 'center',
                     '&:hover': {
-                      color: (theme) => theme.palette.info.main,
-                      bgcolor: (theme) => theme.palette.info.light,
+                      color: (theme) => theme.palette.primary.main,
+                      bgcolor: (theme) => theme.vars.palette.background.paper,
                     },
                   },
                   '& .MuiTypography-root': {

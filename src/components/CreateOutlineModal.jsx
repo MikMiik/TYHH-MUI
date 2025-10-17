@@ -81,7 +81,7 @@ const CreateOutlineModal = ({ open, onClose, onOutlineCreated, courseId }) => {
     >
       <DialogTitle sx={{ m: 0, p: 3, pb: 1 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6" fontWeight={600} color="primary.main">
+          <Typography variant="h6" fontWeight={600} color="primary.light">
             Tạo Outline Mới
           </Typography>
           <IconButton
