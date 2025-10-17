@@ -81,7 +81,7 @@ function Login() {
 
   return (
     <Container>
-      <Box mx="auto" maxWidth={500} textAlign="center" my={2}>
+      <Box mx="auto" maxWidth={500} textAlign="center" py={2}>
         <Form
           schema={loginSchema}
           defaultValues={{
@@ -121,7 +121,7 @@ function Login() {
                 padding: 1,
                 boxShadow: '0 2px 0 rgba(0, 0, 0, .015)',
                 border: '1px solid #d9d9d9',
-                color: 'rgba(0, 0, 0, 0.65)',
+                color: (theme) => theme.vars.palette.text.secondary,
                 touchAction: 'manipulation',
                 transition: 'all .3s cubic-bezier(.645,.045,.355,1)',
                 '&:hover': {
@@ -193,7 +193,7 @@ function Login() {
                 display: 'flex',
                 justifyContent: 'space-between',
                 fontSize: 14,
-                color: 'secondary.dark',
+                color: 'secondary.light',
                 '& .MuiLink-root': {
                   transition: 'all 0.1s',
                   '&:hover': {

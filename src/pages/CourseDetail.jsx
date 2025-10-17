@@ -239,15 +239,13 @@ const CourseDetail = () => {
 
   const handlePaymentSuccess = () => {
     setPaymentModal(false)
-    // You could refetch course data here to update enrollment status
-    // or redirect to a success page
     toast.success('Đăng ký khóa học thành công!')
   }
 
   return (
     <LoadingStateComponent>
       <Container>
-        <Box width="100%" my={2}>
+        <Box width="100%" py={2}>
           <BreadCrumbsPath />
           <Typography my={2} variant="h6" fontWeight={600}>
             {course?.title || 'No title available'}

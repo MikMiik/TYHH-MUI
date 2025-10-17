@@ -183,7 +183,7 @@ function Register() {
             }}
           >
             <span>Đã có tài khoản.</span>
-            <MuiLink color="secondary.dark" to={config.routes.login}>
+            <MuiLink color="secondary.light" to={config.routes.login}>
               {' '}
               Đăng nhập
             </MuiLink>

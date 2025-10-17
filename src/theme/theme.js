@@ -90,11 +90,14 @@ const theme = extendTheme({
         },
         gradient: {
           main: 'linear-gradient(140deg, #083b2b 0%, #1f6a4f 50%, #072a1f 100%)',
+          intersection:
+            'linear-gradient(to bottom, #1f6a4f 0%, #3a7d63 20%, #5a9d7f 40%, #7cb895 60%, #a8d4b8 80%, #d6eadd 100%)',
           secondary: 'linear-gradient(to bottom, #d6eadd 0%, #e8f5e8 5%, #f4faf4 33%, #ffffff 100%)',
         },
         // Background colors
         background: {
           default: '#ffffff',
+          paper: '#fefefe1d',
           light: '#f8f9fa',
           grey: '#f3f4f6',
         },
@@ -132,9 +135,9 @@ const theme = extendTheme({
           dark: '#0b3e2a',
         },
         secondary: {
-          light: '#40a9ff',
-          main: '#1890ff',
-          dark: '#096dd9',
+          light: '#5b9fd9',
+          main: '#3a7fb5',
+          dark: '#1f5a8a',
         },
         tertiary: {
           light: '#fa8a75',

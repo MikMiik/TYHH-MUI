@@ -31,7 +31,7 @@ function ForgotPassword() {
   if (isSubmitted) {
     return (
       <Container>
-        <Box mx="auto" maxWidth={500} textAlign="center" my={5}>
+        <Box mx="auto" maxWidth={500} textAlign="center" py={5}>
           <Typography color="info" variant="h6" fontWeight={700} mb={2}>
             Kiểm tra email của bạn
           </Typography>
@@ -50,7 +50,7 @@ function ForgotPassword() {
 
   return (
     <Container>
-      <Box mx="auto" maxWidth={500} textAlign="center" my={5}>
+      <Box mx="auto" maxWidth={500} textAlign="center" py={5}>
         <Form
           schema={forgotPasswordSchema}
           defaultValues={{
@@ -110,7 +110,7 @@ function ForgotPassword() {
                 display: 'flex',
                 justifyContent: 'center',
                 fontSize: 14,
-                color: 'secondary.dark',
+                color: 'secondary.light',
                 '& .MuiLink-root': {
                   transition: 'all 0.1s',
                   '&:hover': {
