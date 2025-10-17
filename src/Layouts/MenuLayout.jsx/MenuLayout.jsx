@@ -34,7 +34,7 @@ function MenuLayout() {
   }
 
   return (
-    <Container sx={{ my: 2 }}>
+    <Container sx={{ py: 2 }}>
       <BreadCrumbsPath />
 
       <Stack

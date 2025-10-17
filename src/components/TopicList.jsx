@@ -16,7 +16,7 @@ const TopicList = ({ items = [] }) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              bgcolor: (theme) => theme.palette.text.inverse,
+              background: (theme) => theme.vars?.palette?.background?.light || theme.palette.background.light,
               borderRadius: 1,
               boxShadow: '4px 4px 15px 0 #eaebea',
               cursor: 'pointer',

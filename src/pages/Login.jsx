@@ -125,7 +125,7 @@ function Login() {
                 touchAction: 'manipulation',
                 transition: 'all .3s cubic-bezier(.645,.045,.355,1)',
                 '&:hover': {
-                  background: theme.palette.bg.default,
+                  background: theme.palette.background.default,
                   color: 'secondary.light',
                   borderColor: 'secondary.light',
                 },

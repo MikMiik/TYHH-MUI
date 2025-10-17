@@ -34,6 +34,7 @@ const theme = extendTheme({
   colorSchemes: {
     light: {
       palette: {
+        mode: 'light',
         primary: {
           light: '#4f9b79',
           main: '#1f6a4f',
@@ -55,11 +56,6 @@ const theme = extendTheme({
           main: '#666',
           dark: '#333',
           button: '#9e9e9e',
-        },
-        common: {
-          white: '#fff',
-          black: '#000',
-          transparent: 'transparent',
         },
         // Success colors (Green variants)
         success: {
@@ -94,10 +90,10 @@ const theme = extendTheme({
         },
         gradient: {
           main: 'linear-gradient(140deg, #083b2b 0%, #1f6a4f 50%, #072a1f 100%)',
-          green: 'linear-gradient(to bottom, #d6eadd 0%, #e8f5e8 5%, #f4faf4 33%, #ffffff 100%)',
+          secondary: 'linear-gradient(to bottom, #d6eadd 0%, #e8f5e8 5%, #f4faf4 33%, #ffffff 100%)',
         },
         // Background colors
-        bg: {
+        background: {
           default: '#ffffff',
           light: '#f8f9fa',
           grey: '#f3f4f6',
@@ -129,6 +125,7 @@ const theme = extendTheme({
     },
     dark: {
       palette: {
+        mode: 'dark',
         primary: {
           light: '#4f9b79',
           main: '#1f6a4f',
@@ -146,17 +143,11 @@ const theme = extendTheme({
           contrastText: '#fff',
         },
         icon: {
-          light: '#999',
-          main: '#666',
-          dark: '#333',
+          light: '#ccc',
+          main: '#999',
+          dark: '#666',
           button: '#9e9e9e',
         },
-        common: {
-          white: '#fff',
-          black: '#000',
-          transparent: 'transparent',
-        },
-        // Success colors (Green variants)
         success: {
           light: '#e8f5e9',
           main: '#4caf50',
@@ -189,14 +180,15 @@ const theme = extendTheme({
         },
         gradient: {
           main: 'linear-gradient(140deg, #083b2b 0%, #1f6a4f 50%, #072a1f 100%)',
-          green: 'linear-gradient(to bottom, #d6eadd 0%, #e8f5e8 5%, #f4faf4 33%, #ffffff 100%)',
+          intersection: 'linear-gradient(180deg, #0b3f2f 0%,#144e3b 15%,#1b2e29 40%,  #222222 70%,  #2d2d2d 100%)',
+          secondary: 'linear-gradient(to bottom, #1a1a1a 0%, #2d2d2d 5%, #3a3a3a 33%, #4a4a4a 100%)',
         },
         // Background colors
-        bg: {
-          default: '#ffffff',
-          paper: '#ffffff',
-          light: '#f8f9fa',
-          grey: '#f3f4f6',
+        background: {
+          default: '#1a1a1a',
+          paper: '#242424',
+          light: '#2d2d2d',
+          grey: '#333333',
         },
         // Medal/Ranking colors
         medal: {
@@ -209,16 +201,16 @@ const theme = extendTheme({
         },
         // Text colors
         text: {
-          primary: '#333333',
-          secondary: '#666666',
-          disabled: '#999999',
-          hint: '#c4c4c4',
-          inverse: '#ffffff',
-          muted: '#000000a6',
+          primary: '#ffffff',
+          secondary: '#cccccc',
+          disabled: '#666666',
+          hint: '#999999',
+          inverse: '#333333',
+          muted: '#ffffff66',
         },
         // Comment/notification specific colors
         comment: {
-          highlight: '#e3f2fd',
+          highlight: '#1e293b',
           unread: '#8bc58dff',
         },
       },

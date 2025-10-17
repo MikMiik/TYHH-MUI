@@ -60,11 +60,7 @@ function Home() {
   }
 
   return (
-    <Box
-      sx={{
-        background: (theme) => theme.palette.gradient.green,
-      }}
-    >
+    <Box>
       {/* Head Banner */}
       <Box
         sx={{
@@ -307,7 +303,7 @@ function Home() {
         </FreeCoursesLoadingState>
 
         {/* Bottom Banner */}
-        <Box position="relative" my={2}>
+        <Box position="relative" py={2}>
           <Box
             sx={{
               ':before': {

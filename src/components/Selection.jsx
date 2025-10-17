@@ -42,7 +42,7 @@ export default function Selection() {
             minWidth: 180,
             maxHeight: 36,
             fontSize: 14,
-            color: theme.palette.text.muted,
+            color: theme.palette.text.paper,
             '& .MuiSelect-select': {
               padding: 1,
               minHeight: 0,

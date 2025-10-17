@@ -22,7 +22,7 @@ function HeaderBottomBar() {
         gap: 2,
         inset: 0,
         zIndex: 20,
-        background: (theme) => theme.palette.background.default,
+        background: (theme) => theme.vars?.palette?.gradient?.intersection || theme.palette.background.default,
         height: height,
         boxShadow: '0 4px 4px 0 rgba(199,194,194,.25)',
       }}

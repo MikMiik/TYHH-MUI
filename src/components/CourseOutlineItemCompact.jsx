@@ -43,7 +43,7 @@ const CourseOutlineItemCompact = ({ title, livestreams = [], courseSlug }) => {
       <AccordionSummary
         expandIcon={<ExpandMoreIcon fontSize="small" />}
         sx={{
-          bgcolor: (theme) => theme.palette.bg.grey,
+          bgcolor: (theme) => theme.palette.background.grey,
           borderRadius: 1,
           py: 0.5,
         }}
@@ -65,7 +65,7 @@ const CourseOutlineItemCompact = ({ title, livestreams = [], courseSlug }) => {
                 px: 1,
                 minHeight: 28,
                 '&:hover': {
-                  bgcolor: (theme) => theme.palette.bg.light,
+                  bgcolor: (theme) => theme.palette.background.light,
                 },
               }}
             >

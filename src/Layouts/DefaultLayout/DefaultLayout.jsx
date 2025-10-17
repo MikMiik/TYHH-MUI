@@ -12,14 +12,20 @@ import useResponsive from '@/hooks/useResponsive'
 function DefaultLayout() {
   const { isMobile, isTablet } = useResponsive()
   return (
-    <Box sx={{ minHeight: '100vh' }}>
+    <Box>
       {/* Header */}
       <HeaderTopBar />
       <HeaderBottomBar />
       {(isMobile || isTablet) && <MuiBottomNavigation />}
       {/* Body */}
 
-      <Outlet />
+      <Box
+        sx={{
+          background: (theme) => theme.vars?.palette?.gradient?.secondary || theme.palette.gradient.secondary,
+        }}
+      >
+        <Outlet />
+      </Box>
 
       {/* Footer */}
       <Box sx={{ background: (theme) => theme.palette.gradient.main, minHeight: '630px' }}>

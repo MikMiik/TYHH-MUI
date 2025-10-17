@@ -113,7 +113,7 @@ const Profile = () => {
                       position: 'absolute',
                       right: 8,
                       top: 8,
-                      bgcolor: theme.palette.bg.default,
+                      bgcolor: theme.palette.background.default,
                       boxShadow: 1,
                     }}
                     disabled={isUploading}
