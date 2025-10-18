@@ -9,6 +9,7 @@ import LogoIcon from '@/components/LogoIcon'
 import Form from '@/components/Form'
 import TextInput from '@/components/TextInput'
 import MuiLink from '@/components/MuiLink'
+import googleIcon from '@/assets/images/googleIcon.png'
 import { useEffect, useState } from 'react'
 import { getCurrentUser } from '@/features/auth/authSlice'
 import { useGoogleLogin } from '@react-oauth/google'
@@ -134,7 +135,7 @@ function Login() {
               disableRipple
               fullWidth
               variant="outlined"
-              startIcon={<LogoIcon mr={1} size={24} src="./src/assets/images/googleIcon.png" />}
+              startIcon={<LogoIcon mr={1} size={24} src={googleIcon} />}
             >
               <Typography>Đăng nhập bằng Google</Typography>
             </Button>
