@@ -60,7 +60,7 @@ function Home() {
   }
 
   return (
-    <Box>
+    <Box py={2}>
       {/* Head Banner */}
       <Box
         sx={{
@@ -303,13 +303,13 @@ function Home() {
         </FreeCoursesLoadingState>
 
         {/* Bottom Banner */}
-        <Box position="relative" py={2}>
+        <Box position="relative">
           <Box
             sx={{
               ':before': {
                 height: '100%',
                 width: '100%',
-                border: '10px solid hsla(0, 0%, 100%, .45)',
+                border: '8px solid hsla(0, 0%, 100%, .45)',
                 background: 'hsla(0, 0%, 100%, .15)',
                 content: '""',
                 position: 'absolute',
