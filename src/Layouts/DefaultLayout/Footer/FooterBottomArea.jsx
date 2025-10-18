@@ -1,6 +1,6 @@
 import LogoIcon from '@/components/LogoIcon'
 import fbIcon from '@/assets/images/fbIcon.png'
-import youtubeIcon from '@/assets/images/youtubeIcon.png'
+import youtubeIcon from '@/assets/images/youtubeicon.png'
 import tiktokIcon from '@/assets/images/tiktokIcon.png'
 
 import { Box, Stack, Typography, Link } from '@mui/material'

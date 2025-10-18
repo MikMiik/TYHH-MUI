@@ -40,11 +40,6 @@ const courseSchema = yup.object().shape({
 
   isFree: yup.boolean().default(false),
 
-  status: yup
-    .string()
-    .oneOf(['draft', 'published'], 'Trạng thái không hợp lệ')
-    .required('Trạng thái không được để trống'),
-
   topicIds: yup
     .array()
     .of(yup.number().positive('ID chủ đề không hợp lệ'))
