@@ -78,7 +78,7 @@ function PaymentModal({ open, onClose }) {
                 },
               }}
             >
-              <LocalImageLazy src="uploads/transfer-info.jpg" />
+              <img src="transfer-info.jpg" />
             </Box>
           </Box>
         </Box>
