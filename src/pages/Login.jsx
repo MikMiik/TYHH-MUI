@@ -14,8 +14,7 @@ import { useEffect, useState } from 'react'
 import { getCurrentUser } from '@/features/auth/authSlice'
 import { useGoogleLogin } from '@react-oauth/google'
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID
-console.log('GOOGLE_CLIENT_ID', GOOGLE_CLIENT_ID);
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID || ''
 
 
 function Login() {
