@@ -34,6 +34,8 @@ const DraggableOutlineItem = ({
   onCreateLivestream,
   isDragDisabled = false,
   activeAction = false,
+  isEnrolled = false,
+  isTeacher = false,
   ...accordionProps
 }) => {
   const [reorderedLivestreams, setReorderedLivestreams] = useState(outline.livestreams || [])
@@ -294,6 +296,8 @@ const DraggableOutlineItem = ({
                     livestream={item}
                     courseSlug={courseSlug}
                     isDragDisabled={isDragDisabled}
+                    isEnrolled={isEnrolled}
+                    isTeacher={isTeacher}
                     onDeleteLivestream={(deletedId) => {
                       setReorderedLivestreams((prev) => prev.filter((item) => item.id !== deletedId))
                     }}

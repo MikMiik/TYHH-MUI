@@ -29,7 +29,14 @@ import EditLivestreamModal from './EditLivestreamModal'
 import { useDeleteLivestreamMutation } from '@/features/api/livestreamApi'
 import { toast } from 'react-toastify'
 
-const DraggableLivestreamItem = ({ livestream, courseSlug, onDeleteLivestream, isDragDisabled = false }) => {
+const DraggableLivestreamItem = ({ 
+  livestream, 
+  courseSlug, 
+  onDeleteLivestream, 
+  isDragDisabled = false,
+  isEnrolled = false,
+  isTeacher = false 
+}) => {
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [deleteLivestream, { isLoading: isDeleting }] = useDeleteLivestreamMutation()
@@ -67,6 +74,15 @@ const DraggableLivestreamItem = ({ livestream, courseSlug, onDeleteLivestream, i
       console.error('Error deleting livestream:', error)
       const errorMessage = error?.data?.message || 'Có lỗi xảy ra khi xóa livestream'
       toast.error(errorMessage)
+    }
+  }
+
+  const handleLivestreamClick = (e) => {
+    // Allow access if user is enrolled or is a teacher
+    if (!isEnrolled && !isTeacher) {
+      e.preventDefault()
+      e.stopPropagation()
+      toast.warning('Vui lòng đăng ký khóa học để xem livestream này')
     }
   }
 
@@ -108,7 +124,11 @@ const DraggableLivestreamItem = ({ livestream, courseSlug, onDeleteLivestream, i
             )}
 
             {/* Livestream Title */}
-            <Link to={`/courses/${courseSlug}/${livestream.slug}`} style={{ textDecoration: 'none', flex: 1 }}>
+            <Link 
+              to={`/courses/${courseSlug}/${livestream.slug}`} 
+              style={{ textDecoration: 'none', flex: 1 }}
+              onClick={handleLivestreamClick}
+            >
               <Typography
                 variant="body2"
                 fontWeight={600}

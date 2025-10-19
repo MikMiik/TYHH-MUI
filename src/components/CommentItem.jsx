@@ -328,7 +328,7 @@ const CommentItem = ({
               sx={{
                 mt: 2,
                 p: 2,
-                bgcolor: 'grey.50',
+                bgcolor: 'background.paper',
                 borderRadius: 2,
                 border: '1px solid',
                 borderColor: 'divider',

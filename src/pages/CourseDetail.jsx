@@ -321,14 +321,16 @@ const CourseDetail = () => {
                   startIcon={isEnrolled ? <CheckCircleIcon /> : <AppRegistrationIcon />}
                   variant="contained"
                   color={isEnrolled ? 'success' : 'tertiary'}
-                  onClick={isEnrolled ? undefined : handleOpenPayment}
-                  disabled={isEnrolled || isLoadingEnrollment}
-                  sx={isEnrolled ? { cursor: 'default' } : {}}
+                  onClick={isEnrolled || isTeacher ? undefined : handleOpenPayment}
+                  disabled={isEnrolled || isLoadingEnrollment || isTeacher}
+                  sx={isEnrolled || isTeacher ? { cursor: 'default' } : {}}
                 >
                   {isLoadingEnrollment
                     ? 'Đang kiểm tra...'
                     : isEnrolled
                     ? 'Bạn đã đăng ký khóa học này'
+                    : isTeacher
+                    ? 'Đã đăng ký khóa học'
                     : 'Đăng ký khóa học'}
                 </Button>
 
@@ -387,6 +389,8 @@ const CourseDetail = () => {
                         onCreateLivestream={handleCreateLivestream}
                         isDragDisabled={!isTeacher}
                         activeAction={isTeacher}
+                        isEnrolled={isEnrolled}
+                        isTeacher={isTeacher}
                         defaultExpanded
                       />
                     ))

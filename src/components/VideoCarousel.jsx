@@ -93,7 +93,6 @@ function VideoCarousel({ videoList = [] }) {
           '&:hover': {
             bgcolor: 'secondary.main',
             '& svg': { color: 'white' },
-            transform: 'translateY(-50%) scale(1.05)',
           },
         }}
         disabled={!showControls}
@@ -168,7 +167,6 @@ function VideoCarousel({ videoList = [] }) {
           '&:hover': {
             bgcolor: 'secondary.main',
             '& svg': { color: 'white' },
-            transform: 'translateY(-50%) scale(1.05)',
           },
         }}
         disabled={!showControls}

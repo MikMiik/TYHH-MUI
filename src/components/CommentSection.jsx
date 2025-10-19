@@ -172,7 +172,7 @@ const CommentSection = ({
           sx={{
             mb: 4,
             p: 3,
-            bgcolor: 'grey.50',
+            bgcolor: 'background.paper',
             border: '1px solid',
             borderColor: 'divider',
             borderRadius: 2,
@@ -230,7 +230,7 @@ const CommentSection = ({
           sx={{
             mb: 4,
             p: 3,
-            bgcolor: 'grey.50',
+            bgcolor: 'background.paper',
             border: '1px solid',
             borderColor: 'divider',
             borderRadius: 2,
@@ -248,7 +248,7 @@ const CommentSection = ({
       )}
 
       {/* Comments List */}
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ py: 2 }}>
         {rootComments.length === 0 ? (
           <Box sx={{ textAlign: 'center', py: 8 }}>
             <Typography variant="h6" color="text.secondary" sx={{ mb: 1 }}>
