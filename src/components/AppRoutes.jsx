@@ -1,10 +1,11 @@
 import { Routes, Route } from 'react-router-dom'
-import { Suspense } from 'react'
+import { Fragment, Suspense } from 'react'
 import LoadingState from './LoadingState'
 
 import routes from '@/routes'
 import DefaultLayout from '@/Layouts/DefaultLayout/DefaultLayout'
 import { NotFound } from '@/pages'
+import ProtectedRoute from './ProtectedRoute'
 
 function AppRoutes() {
   // Separate the NotFound route from other routes
@@ -25,6 +26,7 @@ function AppRoutes() {
     <Routes>
       {regularRoutes.map((route) => {
         const Layout = route.layout || false
+        const RouteWrapper = route.protected ? ProtectedRoute : Fragment;
         const Component = route.component
         return (
           <Route key={route.path} element={<DefaultLayout />}>
@@ -34,7 +36,9 @@ function AppRoutes() {
                   index
                   element={
                     <Suspense fallback={<PageLoadingFallback />}>
-                      <Component />
+                      <RouteWrapper>
+                        <Component />
+                      </RouteWrapper>
                     </Suspense>
                   }
                 />
@@ -44,7 +48,9 @@ function AppRoutes() {
                 path={route.path}
                 element={
                   <Suspense fallback={<PageLoadingFallback />}>
-                    <Component />
+                    <RouteWrapper>
+                      <Component />
+                    </RouteWrapper>
                   </Suspense>
                 }
               />

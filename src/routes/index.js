@@ -72,6 +72,7 @@ const routes = [
   {
     path: config.routes.profile,
     component: Profile,
+    protected: true,
   },
   {
     path: config.routes.courseDetail,
@@ -84,14 +85,17 @@ const routes = [
   {
     path: config.routes.myCourses,
     component: MyCourses,
+    protected: true,
   },
   {
     path: config.routes.createdCourses,
     component: CreatedCourses,
+    protected: true,
   },
   {
     path: config.routes.notifications,
     component: Notifications,
+    protected: true,
   },
   {
     path: config.routes.ranking,
