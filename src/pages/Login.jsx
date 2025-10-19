@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react'
 import { getCurrentUser } from '@/features/auth/authSlice'
 import { useGoogleLogin } from '@react-oauth/google'
 
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID
+
 function Login() {
   const theme = useTheme()
   const [params] = useSearchParams()
@@ -24,6 +26,7 @@ function Login() {
   const [submitError, setSubmitError] = useState(null)
   const currentUser = useSelector((state) => state.auth.currentUser)
   const token = params.get('token')
+  const isGoogleLoginAvailable = !!GOOGLE_CLIENT_ID
 
   useEffect(() => {
     if (!token) return
@@ -51,7 +54,6 @@ function Login() {
       const res = await authService.googleLogin(tokenResponse.access_token)
       if (res.success) {
         setSubmitError(null)
-        // Cookies are set automatically by backend, no need to store in localStorage
         dispatch(getCurrentUser())
         navigate(params.get('continue') || '/')
       } else {
@@ -116,29 +118,45 @@ function Login() {
             spacing={2.5}
           >
             <Typography color="success.light">{location.state?.message}</Typography>
-            <Button
-              sx={{
-                mt: 2,
-                padding: 1,
-                boxShadow: '0 2px 0 rgba(0, 0, 0, .015)',
-                border: '1px solid #d9d9d9',
-                color: (theme) => theme.vars.palette.text.secondary,
-                touchAction: 'manipulation',
-                transition: 'all .3s cubic-bezier(.645,.045,.355,1)',
-                '&:hover': {
-                  background: theme.palette.background.default,
-                  color: 'secondary.light',
-                  borderColor: 'secondary.light',
-                },
-              }}
-              onClick={handleLoginWithGoogle}
-              disableRipple
-              fullWidth
-              variant="outlined"
-              startIcon={<LogoIcon mr={1} size={24} src={googleIcon} />}
-            >
-              <Typography>Đăng nhập bằng Google</Typography>
-            </Button>
+            {isGoogleLoginAvailable ? (
+              <Button
+                sx={{
+                  mt: 2,
+                  padding: 1,
+                  boxShadow: '0 2px 0 rgba(0, 0, 0, .015)',
+                  border: '1px solid #d9d9d9',
+                  color: (theme) => theme.vars.palette.text.secondary,
+                  touchAction: 'manipulation',
+                  transition: 'all .3s cubic-bezier(.645,.045,.355,1)',
+                  '&:hover': {
+                    background: theme.palette.background.default,
+                    color: 'secondary.light',
+                    borderColor: 'secondary.light',
+                  },
+                }}
+                onClick={handleLoginWithGoogle}
+                disableRipple
+                fullWidth
+                variant="outlined"
+                startIcon={<LogoIcon mr={1} size={24} src={googleIcon} />}
+              >
+                <Typography>Đăng nhập bằng Google</Typography>
+              </Button>
+            ) : (
+              <Typography 
+                color="text.secondary" 
+                variant="body2" 
+                sx={{ 
+                  mt: 2, 
+                  p: 2, 
+                  border: '1px dashed #d9d9d9', 
+                  borderRadius: 1,
+                  bgcolor: 'action.hover'
+                }}
+              >
+                Google login hiện không khả dụng
+              </Typography>
+            )}
             <Divider
               sx={{
                 fontSize: 14,

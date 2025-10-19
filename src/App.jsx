@@ -17,6 +17,9 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import ErrorBoundary from './components/ErrorBoundary'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID || ''
+
 function App() {
   return (
     <>
@@ -25,7 +28,7 @@ function App() {
         defaultColorScheme="light"
         storageKey="mui-color-scheme"
       />
-      <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
+      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
         <ErrorBoundary>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
