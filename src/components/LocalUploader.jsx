@@ -2,25 +2,6 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import httpRequest from '@/utils/httpRequest'
 
-/**
- * LocalUploader - Generic wrapper component for local file uploads
- * Provides upload functionality to children components via render prop pattern
- *
- * Props:
- * - children: Function that receives upload utilities { uploadFile, isUploading, progress, error, resetError }
- * - onUploadSuccess: Callback when upload succeeds, receives uploadResponse
- * - onUploadError: Callback when upload fails, receives error
- *
- * Usage:
- * <LocalUploader
- *   onUploadSuccess={(response) => console.log('Success:', response)}
- *   onUploadError={(error) => console.log('Error:', error)}
- * >
- *   {({ uploadFile, isUploading, progress, error, resetError }) => (
- *     <YourUploadUI onUpload={uploadFile} loading={isUploading} />
- *   )}
- * </LocalUploader>
- */
 const LocalUploader = ({ children, onUploadSuccess, onUploadError }) => {
   const [isUploading, setIsUploading] = useState(false)
   const [progress, setProgress] = useState(0)
