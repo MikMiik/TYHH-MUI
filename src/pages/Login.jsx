@@ -181,7 +181,7 @@ function Login() {
 
             <FormControlLabel
               name="rememberMe"
-              sx={{ '& .MuiButtonBase-root.MuiCheckbox-root': { p: 0, mr: 1, color: 'secondary.dark' } }}
+              sx={{ '& .MuiButtonBase-root.MuiCheckbox-root': { p: 0, mr: 1, color: 'secondary.light' } }}
               control={<Checkbox defaultChecked />}
               label="Remember me"
             />

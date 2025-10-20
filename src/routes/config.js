@@ -5,7 +5,7 @@ const config = {
     myCourses: '/my-courses',
     createdCourses: '/created-courses',
     vipDocuments: '/vipdocuments',
-    documents: '/document',
+    documents: '/documents',
     documentDetail: '/documents/:slug',
     liveSchedule: '/liveschedule',
     login: '/login',

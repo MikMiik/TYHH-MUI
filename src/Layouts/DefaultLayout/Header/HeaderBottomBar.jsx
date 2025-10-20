@@ -5,8 +5,11 @@ import logoImg from '@/assets/images/mainlogo.png'
 import HeaderNavigation from '@/components/HeaderNavigation'
 import HeaderActions from '@/components/HeaderActions'
 import { Link } from 'react-router-dom'
+import useResponsive from '@/hooks/useResponsive'
+import ThemeToggle from '@/components/ThemeToggle'
 
 function HeaderBottomBar() {
+  const { isMobile } = useResponsive()
   const height = (theme) => theme.muiVars.headerBottomBarHeight
   return (
     <Box
@@ -27,6 +30,7 @@ function HeaderBottomBar() {
         boxShadow: '0 4px 4px 0 rgba(199,194,194,.25)',
       }}
     >
+      {isMobile && <ThemeToggle />}
       <Link to="/">
         <LogoIcon size={height} src={logoImg} />
       </Link>

@@ -17,7 +17,7 @@ function Form({ schema = yup.object({}), defaultValues = {}, formProps, onSubmit
     register,
     handleSubmit,
     control,
-    formState: { errors, isDirty, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm(config)
 
   const onError = (error) => {
@@ -81,7 +81,7 @@ function Form({ schema = yup.object({}), defaultValues = {}, formProps, onSubmit
     // Handle submit buttons
     if (child.type === Button && (child.props.type === 'submit' || !child.props.type)) {
       return cloneElement(child, {
-        disabled: !isDirty || isSubmitting,
+        disabled: isSubmitting,
       })
     }
 

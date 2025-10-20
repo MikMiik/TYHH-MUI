@@ -35,7 +35,8 @@ const DraggableLivestreamItem = ({
   onDeleteLivestream, 
   isDragDisabled = false,
   isEnrolled = false,
-  isTeacher = false 
+  isTeacher = false,
+  hasActiveKey = false
 }) => {
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -78,8 +79,8 @@ const DraggableLivestreamItem = ({
   }
 
   const handleLivestreamClick = (e) => {
-    // Allow access if user is enrolled or is a teacher
-    if (!isEnrolled && !isTeacher) {
+    // Allow access if user is enrolled, is a teacher, or has activeKey
+    if (!isEnrolled && !isTeacher && !hasActiveKey) {
       e.preventDefault()
       e.stopPropagation()
       toast.warning('Vui lòng đăng ký khóa học để xem livestream này')

@@ -59,7 +59,6 @@ export const useBreadcrumb = (customData = {}) => {
           '/courses': 'Khóa học',
           '/my-courses': 'Khóa học của tôi',
           '/vipdocuments': 'Tài liệu VIP',
-          '/document': 'Tài liệu',
           '/documents': 'Tài liệu',
           '/liveschedule': 'Lịch livestream',
           '/profile': 'Hồ sơ',

@@ -30,10 +30,10 @@ const menuItems = [
   { label: 'Đăng xuất', icon: <LogoutIcon />, action: 'logout' },
   { label: 'Thông tin cá nhân', icon: <PersonIcon />, route: '/profile' },
   { label: 'Khoá học của tôi', icon: <BookmarkIcon />, route: '/my-courses' },
-  { label: 'Kích hoạt khoá học', icon: <VpnKeyIcon />, action: 'activate' },
+  { label: 'Kích hoạt VIP', icon: <VpnKeyIcon />, action: 'activate' },
 ]
 
-export default function PopoverMenu({ anchorEl, open, onClose }) {
+export default function PopoverMenu({ anchorEl, open, onClose, additionalItems = [], onPaymentClick }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentUser = useCurrentUser()
@@ -91,6 +91,14 @@ export default function PopoverMenu({ anchorEl, open, onClose }) {
       onClose()
       return
     }
+    if (item.action === 'payment') {
+      // trigger payment modal
+      if (onPaymentClick) {
+        onPaymentClick()
+      }
+      onClose()
+      return
+    }
     if (item.route) {
       navigate(item.route)
       onClose()
@@ -115,17 +123,30 @@ export default function PopoverMenu({ anchorEl, open, onClose }) {
       >
         <List disablePadding>
           {currentUser ? (
-            menuItems.map((item) => (
-              <ListItem
-                button
-                key={item.label}
-                onClick={() => handleItemClick(item)}
-                sx={{ color: 'primary.dark', cursor: 'pointer' }}
-              >
-                <ListItemIcon sx={{ color: 'primary.dark', minWidth: 32 }}>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} slotProps={{ primary: { fontWeight: 500 } }} />
-              </ListItem>
-            ))
+            <>
+              {additionalItems.map((item) => (
+                <ListItem
+                  button
+                  key={item.label}
+                  onClick={() => handleItemClick(item)}
+                  sx={{ color: 'primary.light', cursor: 'pointer' }}
+                >
+                  <ListItemIcon sx={{ color: 'primary.light', minWidth: 32 }}>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.label} slotProps={{ primary: { fontWeight: 500 } }} />
+                </ListItem>
+              ))}
+              {menuItems.map((item) => (
+                <ListItem
+                  button
+                  key={item.label}
+                  onClick={() => handleItemClick(item)}
+                  sx={{ color: 'primary.light', cursor: 'pointer' }}
+                >
+                  <ListItemIcon sx={{ color: 'primary.light', minWidth: 32 }}>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.label} slotProps={{ primary: { fontWeight: 500 } }} />
+                </ListItem>
+              ))}
+            </>
           ) : (
             <>
               <ListItem

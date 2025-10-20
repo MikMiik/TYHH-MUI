@@ -23,7 +23,7 @@ function HeaderNavigation() {
         },
         display: 'flex',
         alignItems: 'center',
-        gap: 2,
+        gap: {xs: 1, sm: 2},
         '& .MuiLink-root': {
           transition: 'all 0.1s',
           display: 'block',
@@ -35,7 +35,6 @@ function HeaderNavigation() {
     >
       {!isLaptop && !isDesktop ? (
         <>
-          <ThemeToggle />
           <NotiDrop />
         </>
       ) : null}

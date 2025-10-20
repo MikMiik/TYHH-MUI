@@ -15,7 +15,6 @@ import { useTheme } from '@mui/material/styles'
 import KeyIcon from '@mui/icons-material/Key'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import LoginIcon from '@mui/icons-material/Login'
 
 import { Link, useNavigate } from 'react-router-dom'
@@ -110,7 +109,7 @@ function HeaderActions() {
                   }}
                   onClick={() => setOpenActivate(true)}
                 >
-                  Kích hoạt thẻ
+                  Kích hoạt VIP
                 </Button>
                 <Dialog open={openActivate} onClose={() => setOpenActivate(false)}>
                   <DialogTitle>Kích hoạt thẻ VIP</DialogTitle>

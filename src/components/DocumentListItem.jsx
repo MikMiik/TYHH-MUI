@@ -1,10 +1,23 @@
-import { Avatar, Box, Chip, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from '@mui/material'
+import { Box, Chip, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from '@mui/material'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import DownloadIcon from '@mui/icons-material/Download'
 import LocalImageLazy from './LocalImageLazy'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
-function DocumentListItem({ doc }) {
+function DocumentListItem({ doc, isTeacher = false, hasActiveKey = false }) {
+  // Check if user has access to VIP document
+  const isEnrolled = doc.isEnrolled || false
+  const hasAccess = !doc.vip || isTeacher || hasActiveKey || isEnrolled
+
+  const handleDocumentClick = (e) => {
+    if (!hasAccess) {
+      e.preventDefault()
+      e.stopPropagation()
+      toast.warning('Vui lòng đăng ký khóa học hoặc kích hoạt tài khoản VIP để xem tài liệu này')
+    }
+  }
+
   return (
     <ListItem alignItems="flex-start" sx={{ borderBottom: `1px solid #eee`, px: 0 }}>
       <ListItemAvatar>
@@ -15,7 +28,7 @@ function DocumentListItem({ doc }) {
       <ListItemText
         primary={
           <Stack component="span" direction="row" alignItems="center" spacing={2}>
-            <Link to={`/documents/${doc.slug}`} style={{ textDecoration: 'none' }}>
+            <Link to={`/documents/${doc.slug}`} style={{ textDecoration: 'none' }} onClick={handleDocumentClick}>
               <Typography
                 component="span"
                 variant="subtitle2"

@@ -147,8 +147,8 @@ const NotiDrop = () => {
             sx: {
               mt: 1,
               borderRadius: 2,
-              minWidth: 380,
-              maxWidth: 420,
+              minWidth: {xs: 300, sm: 380 },
+              maxWidth: {xs: 300, sm: 420 },
               maxHeight: 500,
               boxShadow: 3,
               overflow: 'hidden',

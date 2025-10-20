@@ -391,6 +391,7 @@ const CourseDetail = () => {
                         activeAction={isTeacher}
                         isEnrolled={isEnrolled}
                         isTeacher={isTeacher}
+                        hasActiveKey={user?.activeKey}
                         defaultExpanded
                       />
                     ))
