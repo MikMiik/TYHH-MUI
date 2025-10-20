@@ -32,6 +32,13 @@ const LocalVideoUploadModal = ({ open, onClose, onUploadSuccess, livestream }) =
       return
     }
 
+    // Validate file size (max 500MB for video)
+    const maxSize = 4 * 1024 * 1024 * 1024 // 4GB
+    if (file.size > maxSize) {
+      toast.error('Video phải nhỏ hơn 4GB')
+      return
+    }
+
     // Create preview URL
     const preview = URL.createObjectURL(file)
     setPreviewUrl(preview)
@@ -39,6 +46,7 @@ const LocalVideoUploadModal = ({ open, onClose, onUploadSuccess, livestream }) =
     // Upload file
     uploadFile(file, {
       fileName: `${livestream?.slug || 'video'}-${Date.now()}.mp4`,
+      maxSize: maxSize,
     })
   }
 
@@ -168,7 +176,7 @@ const LocalVideoUploadModal = ({ open, onClose, onUploadSuccess, livestream }) =
                         Chọn video để upload
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        Hỗ trợ MP4, MOV, AVI
+                        Hỗ trợ MP4, MOV, AVI. Tối đa 500MB
                       </Typography>
                       <Button variant="contained" component="span" startIcon={<UploadIcon />}>
                         Chọn File

@@ -26,9 +26,10 @@ const LocalImageUploader = ({
     const preview = URL.createObjectURL(file)
     setPreviewUrl(preview)
 
-    // Upload file
+    // Upload file - file size validation will be handled by LocalUploader
     uploadFile(file, {
       fileName: `${fileName}_${Date.now()}.${file.name.split('.').pop()}`,
+      maxSize: 5 * 1024 * 1024, // 5MB limit for images
     })
   }
 

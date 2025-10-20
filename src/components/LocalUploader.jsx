@@ -13,6 +13,15 @@ const LocalUploader = ({ children, onUploadSuccess, onUploadError }) => {
       return null
     }
 
+    // Validate file size (default 4GB for videos, can be overridden in options)
+    const maxSize = options.maxSize || 4 * 1024 * 1024 * 1024 // 4GB default for videos
+    if (file.size > maxSize) {
+      const errorMsg = `File size must be less than ${Math.round(maxSize / 1024 / 1024)}MB`
+      setError(errorMsg)
+      onUploadError?.(new Error(errorMsg))
+      return null
+    }
+
     setIsUploading(true)
     setProgress(0)
     setError(null)
