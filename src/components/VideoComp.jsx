@@ -1,5 +1,5 @@
 import { lazy, Suspense, useRef } from 'react'
-import { CircularProgress, Box, Paper } from '@mui/material'
+import { CircularProgress, Box } from '@mui/material'
 
 // Lazy load VideoJS component
 const VideoJS = lazy(() => import('@/components/VideoJS'))
