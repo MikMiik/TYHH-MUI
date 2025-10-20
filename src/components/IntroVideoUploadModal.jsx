@@ -35,13 +35,6 @@ const IntroVideoUploadModal = ({ open, onClose, onUploadSuccess, course }) => {
       return
     }
 
-    // Validate file size (max 200MB for intro video)
-    const maxSize = 200 * 1024 * 1024 // 200MB
-    if (file.size > maxSize) {
-      toast.error('Video giới thiệu phải nhỏ hơn 200MB')
-      return
-    }
-
     // Create preview URL
     const preview = URL.createObjectURL(file)
     setPreviewUrl(preview)
@@ -49,7 +42,6 @@ const IntroVideoUploadModal = ({ open, onClose, onUploadSuccess, course }) => {
     // Upload file
     uploadFile(file, {
       fileName: `${course?.slug || 'course'}-intro-${Date.now()}.mp4`,
-      maxSize: maxSize,
     })
   }
 
@@ -235,7 +227,7 @@ const IntroVideoUploadModal = ({ open, onClose, onUploadSuccess, course }) => {
                           Chọn video giới thiệu
                         </Typography>
                         <Typography variant="body2" color="text.secondary" textAlign="center">
-                          Hỗ trợ MP4, AVI, MOV. Tối đa 200MB
+                          Hỗ trợ MP4, AVI, MOV
                         </Typography>
                         <input
                           type="file"

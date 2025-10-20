@@ -136,7 +136,7 @@ const DocumentUploadModal = ({ open, onClose, livestream, onUploadSuccess }) => 
                         : 'Chọn file PDF'}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Hỗ trợ file PDF, tối đa 50MB
+                      Hỗ trợ file PDF
                     </Typography>
                     <input
                       type="file"
@@ -147,10 +147,6 @@ const DocumentUploadModal = ({ open, onClose, livestream, onUploadSuccess }) => 
                         if (file) {
                           if (file.type !== 'application/pdf') {
                             toast.error('Chỉ hỗ trợ file PDF')
-                            return
-                          }
-                          if (file.size > 50 * 1024 * 1024) {
-                            toast.error('File không được vượt quá 50MB')
                             return
                           }
                           uploadFile(file, {
