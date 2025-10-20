@@ -8,10 +8,6 @@ import {
   Button,
   Box,
   Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   FormControlLabel,
   Switch,
   Alert,
@@ -364,24 +360,6 @@ const CreateCourseModal = ({ open, onClose, onCourseCreated, editMode = false, i
                   />
                 </Stack>
               )}
-
-              {/* Status */}
-              <FormControl fullWidth error={!!validationErrors.status}>
-                <InputLabel>Trạng thái</InputLabel>
-                <Select
-                  value={formData.status}
-                  label="Trạng thái"
-                  onChange={(e) => handleInputChange('status', e.target.value)}
-                >
-                  <MenuItem value="draft">Bản nháp</MenuItem>
-                  <MenuItem value="published">Xuất bản</MenuItem>
-                </Select>
-                {validationErrors.status && (
-                  <Box sx={{ mt: 0.5, ml: 1.75, fontSize: '0.75rem', color: 'error.main' }}>
-                    {validationErrors.status}
-                  </Box>
-                )}
-              </FormControl>
 
               {/* Content */}
               <TextField
