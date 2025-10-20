@@ -176,7 +176,7 @@ const LocalVideoUploadModal = ({ open, onClose, onUploadSuccess, livestream }) =
                         Chọn video để upload
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        Hỗ trợ MP4, MOV, AVI. Tối đa 500MB
+                        Hỗ trợ MP4, MOV, AVI. Tối đa 4GB
                       </Typography>
                       <Button variant="contained" component="span" startIcon={<UploadIcon />}>
                         Chọn File
