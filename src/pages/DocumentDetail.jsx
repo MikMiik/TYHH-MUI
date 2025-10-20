@@ -22,7 +22,11 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { useGetDocumentBySlugQuery, useDeleteDocumentMutation } from '@/features/api/documentApi'
+import {
+  useGetDocumentBySlugQuery,
+  useDeleteDocumentMutation,
+  useIncrementDownloadMutation,
+} from '@/features/api/documentApi'
 import { useLoadingState } from '@/components/withLoadingState'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
@@ -41,11 +45,25 @@ const DocumentDetail = () => {
   })
 
   const [deleteDocument, { isLoading: isDeleting }] = useDeleteDocumentMutation()
+  const [incrementDownload] = useIncrementDownloadMutation()
   const userRole = useUserRole()
   const isTeacher = userRole?.includes('teacher')
 
   const handleDeleteClick = () => {
     setDeleteDialogOpen(true)
+  }
+
+  const handleIncrementDownload = async () => {
+    try {
+      if (document?.slug || document?.id) {
+        // Fire-and-forget increment download count
+        incrementDownload(document.slug || document.id)
+          .unwrap()
+          .catch(() => {})
+      }
+    } catch {
+      // ignore errors
+    }
   }
 
   const handleDeleteConfirm = async () => {
@@ -241,6 +259,7 @@ const DocumentDetail = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     disabled={!document?.url}
+                    onClick={handleIncrementDownload}
                   >
                     Tải PDF
                   </Button>
@@ -255,6 +274,17 @@ const DocumentDetail = () => {
                       href={`${import.meta.env.VITE_SERVER_URL}${document?.slidenote}`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={async () => {
+                        try {
+                          if (document?.slug || document?.id) {
+                            incrementDownload(document.slug || document.id)
+                              .unwrap()
+                              .catch(() => {})
+                          }
+                        } catch {
+                          // ignore
+                        }
+                      }}
                     >
                       Tải slidenote
                     </Button>

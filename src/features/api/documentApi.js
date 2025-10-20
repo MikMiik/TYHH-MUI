@@ -28,6 +28,13 @@ export const documentApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response) => response.data,
     }),
+    incrementDownload: builder.mutation({
+      query: (slugOrId) => ({
+        url: `/documents/${slugOrId}/download`,
+        method: 'POST',
+      }),
+      transformResponse: (response) => response.data,
+    }),
   }),
 })
 
@@ -36,4 +43,5 @@ export const {
   useGetDocumentBySlugQuery,
   useCreateDocumentMutation,
   useDeleteDocumentMutation,
+  useIncrementDownloadMutation,
 } = documentApi
