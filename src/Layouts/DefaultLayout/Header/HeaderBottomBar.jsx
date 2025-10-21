@@ -1,5 +1,5 @@
 import LogoIcon from '@/components/LogoIcon'
-import { Box } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import logoImg from '@/assets/images/mainlogo.png'
 
 import HeaderNavigation from '@/components/HeaderNavigation'
@@ -7,9 +7,12 @@ import HeaderActions from '@/components/HeaderActions'
 import { Link } from 'react-router-dom'
 import useResponsive from '@/hooks/useResponsive'
 import ThemeToggle from '@/components/ThemeToggle'
+import { Chip } from '@mui/material'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 
 function HeaderBottomBar() {
   const { isMobile } = useResponsive()
+  const currentUser = useCurrentUser()
   const height = (theme) => theme.muiVars.headerBottomBarHeight
   return (
     <Box
@@ -30,7 +33,12 @@ function HeaderBottomBar() {
         boxShadow: '0 4px 4px 0 rgba(199,194,194,.25)',
       }}
     >
-      {isMobile && <ThemeToggle />}
+      {isMobile && (
+        <Stack direction="row" spacing={4} sx={{ position: 'absolute', left: 80 }}>
+          {currentUser?.activeKey && <Chip label="VIP" color="tertiary" variant="contained" sx={{ mr: 1 }} />}
+          <ThemeToggle />
+        </Stack>
+      )}
       <Link to="/">
         <LogoIcon size={height} src={logoImg} />
       </Link>

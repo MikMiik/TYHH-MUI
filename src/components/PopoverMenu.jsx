@@ -37,6 +37,11 @@ export default function PopoverMenu({ anchorEl, open, onClose, additionalItems =
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentUser = useCurrentUser()
+  const filteredMenuItems = React.useMemo(() => {
+    // If user already has an activeKey (VIP), remove the activate action from the menu
+    if (!currentUser) return menuItems
+    return menuItems.filter((item) => !(item.action === 'activate' && currentUser.activeKey))
+  }, [currentUser])
   const [openActivate, setOpenActivate] = useState(false)
   const [keyValue, setKeyValue] = useState('')
   const [loading, setLoading] = useState(false)
@@ -135,7 +140,7 @@ export default function PopoverMenu({ anchorEl, open, onClose, additionalItems =
                   <ListItemText primary={item.label} slotProps={{ primary: { fontWeight: 500 } }} />
                 </ListItem>
               ))}
-              {menuItems.map((item) => (
+              {filteredMenuItems.map((item) => (
                 <ListItem
                   button
                   key={item.label}

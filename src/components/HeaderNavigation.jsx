@@ -1,6 +1,6 @@
 import NavLink from '@/components/NavLink'
 import config from '@/routes/config'
-import { Box } from '@mui/material'
+import { Box, Chip } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import React, { useState } from 'react'
 import HeaderMenu from './HeaderMenu'
@@ -8,11 +8,13 @@ import useResponsive from '@/hooks/useResponsive'
 import NotiDrop from './NotiDrop'
 import ThemeToggle from './ThemeToggle'
 import Payment from './Payment'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 
 function HeaderNavigation() {
   const theme = useTheme()
-  const { isLaptop, isDesktop } = useResponsive()
+  const { isLaptop, isDesktop, isTablet, isMobile } = useResponsive()
   const [openModal, setOpenModal] = useState(false)
+  const currentUser = useCurrentUser()
   return (
     <Box
       sx={{
@@ -23,7 +25,7 @@ function HeaderNavigation() {
         },
         display: 'flex',
         alignItems: 'center',
-        gap: {xs: 1, sm: 2},
+        gap: { xs: 1, sm: 2 },
         '& .MuiLink-root': {
           transition: 'all 0.1s',
           display: 'block',
@@ -33,8 +35,16 @@ function HeaderNavigation() {
         },
       }}
     >
-      {!isLaptop && !isDesktop ? (
+      {isMobile ? (
         <>
+          <NotiDrop />
+        </>
+      ) : null}
+
+      {isTablet ? (
+        <>
+          {currentUser?.activeKey && <Chip label="VIP" color="tertiary" variant="contained" />}
+          <ThemeToggle />
           <NotiDrop />
         </>
       ) : null}

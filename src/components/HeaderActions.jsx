@@ -236,6 +236,23 @@ function HeaderActions() {
                 <KeyIcon fontSize="small" />
               </IconButton>
             )}
+            {isLaptop && currentUser?.activeKey && (
+              <IconButton
+                sx={{
+                  backgroundColor: (theme) => theme.palette.tertiary?.main || theme.palette.primary.main,
+                  color: (theme) => theme.palette.text.inverse,
+                  height: 34,
+                  width: 34,
+                  minWidth: 0,
+                  padding: 0,
+                  m: 0,
+                }}
+                aria-label="VIP"
+                disableRipple
+              >
+                <span style={{ fontWeight: 700, fontSize: 12 }}>V</span>
+              </IconButton>
+            )}
             <Dialog open={openActivate} onClose={() => setOpenActivate(false)}>
               <DialogTitle>Kích hoạt thẻ VIP</DialogTitle>
               <DialogContent>
