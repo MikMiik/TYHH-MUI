@@ -16,7 +16,6 @@ import { useGoogleLogin } from '@react-oauth/google'
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID || ''
 
-
 function Login() {
   const theme = useTheme()
   const [params] = useSearchParams()
@@ -118,7 +117,7 @@ function Login() {
             }}
             spacing={2.5}
           >
-            <Typography color="success.light">{location.state?.message}</Typography>
+            <Typography color="secondary.light">{location.state?.message}</Typography>
             {isGoogleLoginAvailable ? (
               <Button
                 sx={{
@@ -144,15 +143,15 @@ function Login() {
                 <Typography>Đăng nhập bằng Google</Typography>
               </Button>
             ) : (
-              <Typography 
-                color="text.secondary" 
-                variant="body2" 
-                sx={{ 
-                  mt: 2, 
-                  p: 2, 
-                  border: '1px dashed #d9d9d9', 
+              <Typography
+                color="text.secondary"
+                variant="body2"
+                sx={{
+                  mt: 2,
+                  p: 2,
+                  border: '1px dashed #d9d9d9',
                   borderRadius: 1,
-                  bgcolor: 'action.hover'
+                  bgcolor: 'action.hover',
                 }}
               >
                 Google login hiện không khả dụng
