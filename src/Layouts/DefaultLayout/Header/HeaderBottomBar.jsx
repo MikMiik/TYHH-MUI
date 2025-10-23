@@ -34,8 +34,8 @@ function HeaderBottomBar() {
       }}
     >
       {isMobile && (
-        <Stack direction="row" spacing={4} sx={{ position: 'absolute', left: 80 }}>
-          {currentUser?.activeKey && <Chip label="VIP" color="tertiary" variant="contained" sx={{ mr: 1 }} />}
+        <Stack direction="row" spacing={4} sx={{ position: 'absolute', left: 50 }}>
+          {currentUser?.activeKey && <Chip label="VIP" color="tertiary" variant="contained" />}
           <ThemeToggle />
         </Stack>
       )}

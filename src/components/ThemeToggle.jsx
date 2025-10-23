@@ -21,9 +21,9 @@ const ThemeToggle = ({ sx, ...props }) => {
         sx={{
           ...sx,
           p: 0,
+          ml: '10px !important',
         }}
         {...props}
-      
       >
         {mode === 'light' ? <Brightness4 /> : <Brightness7 />}
       </IconButton>
