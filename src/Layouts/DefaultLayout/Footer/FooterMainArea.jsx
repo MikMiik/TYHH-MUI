@@ -26,7 +26,7 @@ function FooterMainArea() {
           <ListItem>
             <HomeFilledIcon sx={{ mr: 1.8 }}></HomeFilledIcon>
             <Typography>
-              Tôi Yêu Hóa Học (tyhh.net) <br /> Trực thuộc Công ty cổ phần Công nghệ và Giáo Dục Hoc 68
+              Tôi Yêu Hóa Học (tyhh.online) <br /> Trực thuộc Công ty cổ phần Công nghệ và Giáo Dục Hoc 68
             </Typography>
           </ListItem>
 

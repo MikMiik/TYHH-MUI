@@ -8,6 +8,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import PersonIcon from '@mui/icons-material/Person'
 import BookmarkIcon from '@mui/icons-material/Bookmark'
 import VpnKeyIcon from '@mui/icons-material/VpnKey'
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import { useNavigate } from 'react-router-dom'
 import config from '@/routes/config'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
@@ -23,6 +24,7 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useUserRole } from '@/hooks/useUserRole'
 import authService from '@/services/authService'
 import { removeCurrentUser } from '@/features/auth/authSlice'
 
@@ -37,11 +39,21 @@ export default function PopoverMenu({ anchorEl, open, onClose, additionalItems =
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentUser = useCurrentUser()
+  const userRole = useUserRole()
+  const isTeacher = userRole?.includes('teacher')
+
   const filteredMenuItems = React.useMemo(() => {
-    // If user already has an activeKey (VIP), remove the activate action from the menu
-    if (!currentUser) return menuItems
-    return menuItems.filter((item) => !(item.action === 'activate' && currentUser.activeKey))
-  }, [currentUser])
+    // Start with base menu and remove activate if user already has an activeKey
+    let items = menuItems.filter((item) => !(item.action === 'activate' && currentUser?.activeKey))
+    // If user is a teacher, add the "Khóa học đã tạo" route if it's not already present
+    if (isTeacher) {
+      const exists = items.some((it) => it.route === '/created-courses')
+      if (!exists) {
+        items = [...items, { label: 'Khóa học đã tạo', icon: <CreateOutlinedIcon />, route: '/created-courses' }]
+      }
+    }
+    return items
+  }, [currentUser, isTeacher])
   const [openActivate, setOpenActivate] = useState(false)
   const [keyValue, setKeyValue] = useState('')
   const [loading, setLoading] = useState(false)
