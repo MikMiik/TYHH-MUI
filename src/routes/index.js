@@ -18,8 +18,10 @@ import {
   Notifications,
   Ranking,
   NotFound,
+  Playground,
 } from '@/pages'
-import MenuLayout from '@/Layouts/MenuLayout.jsx/MenuLayout'
+import MenuLayout from '@/Layouts/MenuLayout/MenuLayout'
+import PlaygroundLayout from '@/Layouts/PlaygroundLayout/PlaygroundLayout'
 
 const routes = [
   {
@@ -100,6 +102,11 @@ const routes = [
   {
     path: config.routes.ranking,
     component: Ranking,
+  },
+  {
+    path: config.routes.playground,
+    component: Playground,
+    layout: PlaygroundLayout,
   },
   {
     path: config.routes.notFound,

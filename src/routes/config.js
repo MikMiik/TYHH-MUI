@@ -17,6 +17,7 @@ const config = {
     courseDetail: '/courses/:slug',
     livestream: '/courses/:courseSlug/:slug',
     notifications: '/notifications',
+    playground: '/playground',
     notFound: '*',
   },
 }

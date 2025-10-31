@@ -1,6 +1,8 @@
-import { Box, Container, Link, Paper, Stack, Typography } from '@mui/material'
+import { Box, Button, Container, Link, Paper, Stack, Typography } from '@mui/material'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
+import ScienceIcon from '@mui/icons-material/Science'
 import { Suspense } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Spline from '@splinetool/react-spline'
 
 import fbIcon from '@/assets/images/fbIcon.png'
@@ -19,6 +21,7 @@ import { useGetAllCoursesQuery } from '@/features/api/courseApi'
 import { useLoadingState } from '@/components/withLoadingState'
 
 function Home() {
+  const navigate = useNavigate()
   const { data: socials, isSuccess: socialsLoaded } = useGetSocialsQuery()
   const topicsQueryResult = useGetAllTopicsQuery()
   const { data: topics = [], LoadingStateComponent: TopicsLoadingState } = useLoadingState(topicsQueryResult, {
@@ -161,7 +164,6 @@ function Home() {
             {/* Description Section */}
             <Box sx={{ mt: 0, maxWidth: 600 }}>
               <Typography
-                variant="body1"
                 sx={{
                   color: 'primary.light',
                   lineHeight: 1.7,
@@ -171,6 +173,32 @@ function Home() {
                 Tham gia cùng chúng tôi trong hành trình khám phá những bí ẩn của hóa học. Từ những phản ứng đơn giản
                 đến các công thức phức tạp, chúng ta sẽ cùng nhau chinh phục môn học tuyệt vời này!
               </Typography>
+
+              {/* Button link to Playground */}
+              <Box sx={{ mt: 3 }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  startIcon={<ScienceIcon />}
+                  onClick={() => navigate(config.routes.playground)}
+                  sx={{
+                    borderRadius: 2,
+                    px: 4,
+                    py: 1.5,
+                    textTransform: 'none',
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    boxShadow: 3,
+                    '&:hover': {
+                      boxShadow: 6,
+                      transform: 'translateY(-2px)',
+                    },
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  Playground
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Container>
