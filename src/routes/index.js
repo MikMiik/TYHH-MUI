@@ -107,6 +107,7 @@ const routes = [
     path: config.routes.playground,
     component: Playground,
     layout: PlaygroundLayout,
+    protected: true,
   },
   {
     path: config.routes.notFound,
