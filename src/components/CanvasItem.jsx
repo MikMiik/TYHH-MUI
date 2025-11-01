@@ -93,7 +93,7 @@ function CanvasItem({ id, item, onRemove }) {
           <Tooltip
             title={item.data.description}
             arrow
-            enterDelay={500} // 0.5s delay
+            enterDelay={1500} // 1.5s delay
             placement="top"
           >
             {chipElement}
