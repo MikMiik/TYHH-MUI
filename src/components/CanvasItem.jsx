@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
-import { Box, Chip, IconButton, Tooltip } from '@mui/material'
+import { Box, Chip, IconButton, Tooltip, CircularProgress } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
@@ -60,6 +60,21 @@ function CanvasItem({ id, item, onRemove }) {
         <Chip label={item.data.symbol} sx={{ boxShadow: 2, bgcolor: 'primary.main', color: 'primary.contrastText' }} />
       )
     } else {
+      // Check if this is a loading/combining entity
+      if (item.data.isLoading) {
+        return (
+          <Chip
+            icon={<CircularProgress size={16} sx={{ color: 'inherit' }} />}
+            label={item.data.name}
+            sx={{
+              boxShadow: 2,
+              bgcolor: 'warning.main',
+              color: 'warning.contrastText',
+            }}
+          />
+        )
+      }
+
       // Entity chip shows name (not formula)
       const chipElement = (
         <Chip

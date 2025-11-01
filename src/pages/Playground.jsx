@@ -44,7 +44,7 @@ function Playground() {
 
   const { data: elements = [], isLoading: elementsLoading, isError: elementsError } = useGetAllElementsQuery()
   const { data: entities = [], isLoading: entitiesLoading, isError: entitiesError } = useGetUserEntitiesQuery()
-  const [combineElements, { isLoading: isCombining }] = useCombineElementsMutation()
+  const [combineElements] = useCombineElementsMutation()
 
   const loading = activeTab === 'elements' ? elementsLoading : entitiesLoading
   const isError = activeTab === 'elements' ? elementsError : entitiesError
@@ -86,8 +86,6 @@ function Playground() {
   // Add item to canvas via click - add to true center of viewport
   const handleAddToCanvas = useCallback(
     (itemData, itemType) => {
-      console.log('✨ Adding to canvas via click:', itemData, itemType)
-
       // Get the canvas element to calculate its dimensions
       const canvasElement = document.getElementById('playground-canvas')
       if (!canvasElement) {
@@ -122,14 +120,6 @@ function Playground() {
           y: canvasY + randomOffsetY,
         },
       }
-
-      console.log('✨ Item added at center:', {
-        screenCenter: { x: screenCenterX, y: screenCenterY },
-        canvasPos: { x: canvasX, y: canvasY },
-        panOffset,
-        zoom,
-        rect: { width: rect.width, height: rect.height },
-      })
       setCanvasItems((prev) => [...prev, newItem])
     },
     [panOffset, zoom]
@@ -142,10 +132,6 @@ function Playground() {
   // Handle drag start
   const handleDragStart = useCallback((event) => {
     const { active } = event
-    console.log('🎯 DRAG START:', {
-      id: active.id,
-      data: active.data.current,
-    })
     setActiveId(active.id)
     setDraggedItem(active.data.current)
   }, [])
@@ -154,19 +140,12 @@ function Playground() {
   const handleDragEnd = useCallback(
     (event) => {
       const { active, over, delta } = event
-      console.log('🎯 DRAG END:', {
-        activeId: active.id,
-        overId: over?.id,
-        delta,
-        activeData: active.data.current,
-      })
 
       const activeData = active.data.current
 
       // Only handle canvas items (no more menu items drag)
       // Case 1: Combining two canvas items (drop on another item)
       if (activeData.type === 'canvas-item' && over?.id && over.id.startsWith('canvas-')) {
-        console.log('✅ Case 1: Attempting to combine items')
         const activeItemId = active.id.replace('canvas-', '')
         const overItemId = over.id.replace('canvas-', '')
 
@@ -176,20 +155,43 @@ function Playground() {
           const overItem = canvasItems.find((item) => item.id === overItemId)
 
           if (activeItem && overItem) {
-            console.log('✅ Combining:', activeItem, overItem)
-            // Combine the two items
+            // Calculate midpoint for the new entity
+            const midX = (activeItem.position.x + overItem.position.x) / 2
+            const midY = (activeItem.position.y + overItem.position.y) / 2
+
+            // Create temporary "Combining" entity with loading state
+            const tempId = `temp-combining-${Date.now()}`
+            const tempCombiningItem = {
+              id: tempId,
+              type: 'entity',
+              data: {
+                isElement: false,
+                name: 'Combining',
+                icon: '⏳', // Loading icon
+                isLoading: true, // Flag to show CircularProgress
+              },
+              position: { x: midX, y: midY },
+            }
+
+            // IMMEDIATELY: Remove the two items and add temporary combining entity
+            setCanvasItems((prev) => {
+              const filtered = prev.filter((item) => item.id !== activeItemId && item.id !== overItemId)
+              return [...filtered, tempCombiningItem]
+            })
+
+            // Store original items for rollback if needed
+            const originalItems = [activeItem, overItem]
+
+            // Get element names for API call
             const element1 = activeItem.type === 'element' ? activeItem.data.symbol : activeItem.data.name
             const element2 = overItem.type === 'element' ? overItem.data.symbol : overItem.data.name
 
-            console.log('Combining:', element1, '+', element2)
+            // Call API to combine
             combineElements({ element1, element2 })
               .unwrap()
               .then((result) => {
-                // Add the new entity to canvas at the midpoint
-                const midX = (activeItem.position.x + overItem.position.x) / 2
-                const midY = (activeItem.position.y + overItem.position.y) / 2
-
-                const newItem = {
+                // SUCCESS: Replace temp entity with real entity
+                const realItem = {
                   id: `entity-${result.entity.id}-${Date.now()}`,
                   type: 'entity',
                   data: {
@@ -201,22 +203,27 @@ function Playground() {
                     description: result.entity.description,
                   },
                   position: { x: midX, y: midY },
+                  isNewCombination: result.isNew,
                 }
 
-                // Remove the two combined items and add the new entity
-                setCanvasItems((prev) => {
-                  const filtered = prev.filter((item) => item.id !== activeItemId && item.id !== overItemId)
-                  return [...filtered, newItem]
-                })
+                setCanvasItems((prev) => prev.map((item) => (item.id === tempId ? realItem : item)))
               })
               .catch((error) => {
-                console.error('Failed to combine:', error)
+                console.error('❌ Failed to combine:', error)
+                
+                // ERROR: Remove temp entity and restore original items
+                setCanvasItems((prev) => {
+                  const filtered = prev.filter((item) => item.id !== tempId)
+                  return [...filtered, ...originalItems]
+                })
+
                 setSnackbar({
                   open: true,
                   message: `Failed to combine: ${error?.data?.message || error.message || 'Unknown error'}`,
                   severity: 'error',
                 })
               })
+
             setActiveId(null)
             setDraggedItem(null)
             return // Don't move item after combining
@@ -226,7 +233,6 @@ function Playground() {
 
       // Case 2: Moving existing canvas item (always move if dragging canvas item)
       if (activeData.type === 'canvas-item' && (delta.x !== 0 || delta.y !== 0)) {
-        console.log('✅ Case 2: Moving canvas item')
         const itemId = active.id.replace('canvas-', '')
         setCanvasItems((prev) =>
           prev.map((item) =>
@@ -243,7 +249,6 @@ function Playground() {
         )
       }
 
-      console.log('🎯 Drag end complete - cleaning up')
       setActiveId(null)
       setDraggedItem(null)
     },
@@ -559,31 +564,6 @@ function Playground() {
             {snackbar.message}
           </Alert>
         </Snackbar>
-        {/* 
-        Loading overlay when combining */}
-        {isCombining && (
-          <Box
-            sx={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              bgcolor: 'rgba(0, 0, 0, 0.3)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 9999,
-            }}
-          >
-            <Box sx={{ textAlign: 'center', bgcolor: 'background.paper', p: 3, borderRadius: 2, boxShadow: 4 }}>
-              <CircularProgress />
-              <Typography variant="body1" sx={{ mt: 2 }}>
-                Combining elements...
-              </Typography>
-            </Box>
-          </Box>
-        )}
       </Box>
     </DndContext>
   )
