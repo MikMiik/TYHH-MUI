@@ -357,7 +357,7 @@ function Playground() {
           {/* Hint text when canvas is empty */}
           {canvasItems.length === 0 && !isPanning && (
             <Typography variant="h6" color="text.secondary" sx={{ pointerEvents: 'none' }}>
-              Kéo thả elements hoặc entities vào đây để bắt đầu
+              Thêm các nguyên tố hoặc thực thể để kết hợp
             </Typography>
           )}
         </Box>
@@ -379,18 +379,18 @@ function Playground() {
                 onClick={() => setActiveTab('elements')}
                 color="primary"
               >
-                Elements
+                Nguyên tố
               </Button>
               <Button
-                variant={activeTab === 'entity' ? 'contained' : 'outlined'}
-                onClick={() => setActiveTab('entity')}
+                variant={activeTab === 'entities' ? 'contained' : 'outlined'}
+                onClick={() => setActiveTab('entities')}
                 color="primary"
               >
-                Entity
+                Thực thể
               </Button>
               <TextField
                 size="small"
-                placeholder={`Search ${activeTab === 'elements' ? 'elements' : 'entities'}...`}
+                placeholder={`Tìm kiếm ${activeTab === 'elements' ? 'nguyên tố' : 'thực thể'}...`}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 InputProps={{
