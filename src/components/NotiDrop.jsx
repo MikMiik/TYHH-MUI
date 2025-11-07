@@ -147,8 +147,8 @@ const NotiDrop = () => {
             sx: {
               mt: 1,
               borderRadius: 2,
-              minWidth: {xs: 300, sm: 380 },
-              maxWidth: {xs: 300, sm: 420 },
+              minWidth: { xs: 300, sm: 380 },
+              maxWidth: { xs: 300, sm: 420 },
               maxHeight: 500,
               boxShadow: 3,
               overflow: 'hidden',
@@ -216,7 +216,7 @@ const NotiDrop = () => {
                             <Typography variant="subtitle2" color="primary" fontWeight="bold">
                               {notification.teacher?.name || 'Admin'}
                             </Typography>
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography variant="caption" color="text.contrastText">
                               {formatTimeAgo(notification.createdAt)}
                             </Typography>
                             {!notification.isRead && (
@@ -235,7 +235,7 @@ const NotiDrop = () => {
                           {notification.message && (
                             <Typography
                               variant="body2"
-                              color="text.secondary"
+                              color="text.main"
                               sx={{
                                 display: '-webkit-box',
                                 WebkitLineClamp: 2,
