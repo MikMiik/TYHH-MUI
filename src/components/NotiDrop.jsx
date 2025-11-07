@@ -214,7 +214,7 @@ const NotiDrop = () => {
                         <>
                           <Stack direction="row" alignItems="center" spacing={1}>
                             <Typography variant="subtitle2" color="primary" fontWeight="bold">
-                              {notification.teacher?.name || 'Giáo viên'}
+                              {notification.teacher?.name || 'Admin'}
                             </Typography>
                             <Typography variant="caption" color="text.secondary">
                               {formatTimeAgo(notification.createdAt)}

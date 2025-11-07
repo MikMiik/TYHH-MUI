@@ -243,7 +243,7 @@ const Notifications = () => {
                           )}
 
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Chip label={notification.teacher?.name || 'Giáo viên'} size="small" variant="outlined" />
+                            <Chip label={notification.teacher?.name || 'Admin'} size="small" variant="outlined" />
                             <Typography variant="caption" color="text.secondary">
                               {formatTimeAgo(notification.createdAt)}
                             </Typography>

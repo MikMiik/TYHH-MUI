@@ -83,7 +83,62 @@ function Playground() {
     })
   )
 
-  // Add item to canvas via click - add to true center of viewport
+  // Check if a position collides with existing items
+  const checkCollision = useCallback((x, y, items, threshold = 80) => {
+    return items.some((item) => {
+      const dx = item.position.x - x
+      const dy = item.position.y - y
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      return distance < threshold
+    })
+  }, [])
+
+  // Find nearest non-colliding position using spiral algorithm
+  const findNonCollidingPosition = useCallback(
+    (centerX, centerY, items) => {
+      // Start at center
+      let x = centerX
+      let y = centerY
+
+      // If center is free, use it
+      if (!checkCollision(x, y, items)) {
+        return { x, y }
+      }
+
+      // Spiral outward to find free position
+      const step = 60 // Distance between check points
+      let angle = 0
+      let radius = step
+
+      // Try up to 50 positions in spiral
+      for (let i = 0; i < 50; i++) {
+        x = centerX + radius * Math.cos(angle)
+        y = centerY + radius * Math.sin(angle)
+
+        if (!checkCollision(x, y, items)) {
+          return { x, y }
+        }
+
+        // Increment angle for spiral
+        angle += Math.PI / 4 // 45 degrees
+        
+        // Increase radius every full rotation
+        if (angle >= Math.PI * 2) {
+          angle = 0
+          radius += step
+        }
+      }
+
+      // Fallback: far offset if no position found
+      return {
+        x: centerX + (Math.random() - 0.5) * 200,
+        y: centerY + (Math.random() - 0.5) * 200,
+      }
+    },
+    [checkCollision]
+  )
+
+  // Add item to canvas via click - add to true center of viewport (with collision detection)
   const handleAddToCanvas = useCallback(
     (itemData, itemType) => {
       // Get the canvas element to calculate its dimensions
@@ -107,22 +162,18 @@ function Playground() {
       const canvasX = (screenCenterX - panOffset.x) / zoom
       const canvasY = (screenCenterY - panOffset.y) / zoom
 
-      // Add small random offset to prevent exact stacking
-      const randomOffsetX = (Math.random() - 0.5) * 30
-      const randomOffsetY = (Math.random() - 0.5) * 30
+      // Find non-colliding position
+      const position = findNonCollidingPosition(canvasX, canvasY, canvasItems)
 
       const newItem = {
         id: `${itemType}-${Date.now()}-${Math.random()}`,
         type: itemType,
         data: itemData,
-        position: {
-          x: canvasX + randomOffsetX,
-          y: canvasY + randomOffsetY,
-        },
+        position,
       }
       setCanvasItems((prev) => [...prev, newItem])
     },
-    [panOffset, zoom]
+    [panOffset, zoom, canvasItems, findNonCollidingPosition]
   )
 
   const { setNodeRef: setDroppableRef, isOver } = useDroppable({

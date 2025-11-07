@@ -9,6 +9,7 @@ import {
   Checkbox,
   FormControlLabel,
   CircularProgress,
+  Alert,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
@@ -31,6 +32,7 @@ const Profile = () => {
   const currentUser = useCurrentUser()
 
   const [changePassword, setChangePassword] = useState(false)
+  const [backendError, setBackendError] = useState('')
 
   const {
     data: cities = [],
@@ -54,12 +56,26 @@ const Profile = () => {
   }
 
   const handleSubmit = async (data) => {
-    const userId = profile.id
-    const res = await updateProfile({ userId, data }).unwrap()
-    if (res.success) {
-      toast.success('Cập nhật thông tin thành công!')
-    } else {
-      toast.error('Cập nhật thông tin thất bại!')
+    try {
+      // Clear previous backend error
+      setBackendError('')
+      
+      const userId = profile.id
+      const res = await updateProfile({ userId, data }).unwrap()
+      console.log(res)
+      if (res.success) {
+        toast.success('Cập nhật thông tin thành công!')
+      } else {
+        // Set backend error message
+        const errorMessage = res.message || 'Cập nhật thông tin thất bại!'
+        setBackendError(errorMessage)
+        toast.error(errorMessage)
+      }
+    } catch (error) {
+      // Handle RTK Query errors
+      const errorMessage = error?.data?.message || error?.message || 'Có lỗi xảy ra khi cập nhật thông tin!'
+      setBackendError(errorMessage)
+      toast.error(errorMessage)
     }
   }
 
@@ -269,6 +285,12 @@ const Profile = () => {
                 </Stack>
               )}
             </Box>
+
+            {backendError && (
+              <Alert severity="error" sx={{ mt: 2 }} onClose={() => setBackendError('')}>
+                {backendError}
+              </Alert>
+            )}
 
             <Box mt={3} display="flex" alignItems="center">
               <Button
