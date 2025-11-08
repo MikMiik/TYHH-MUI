@@ -62,8 +62,7 @@ const Profile = () => {
       
       const userId = profile.id
       const res = await updateProfile({ userId, data }).unwrap()
-      console.log(res)
-      if (res.success) {
+      if (res) {
         toast.success('Cập nhật thông tin thành công!')
       } else {
         // Set backend error message
