@@ -1,7 +1,7 @@
 import { Box, Button, Container, Link, Paper, Stack, Typography } from '@mui/material'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import ScienceIcon from '@mui/icons-material/Science'
-import { Suspense } from 'react'
+import { Suspense, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Spline from '@splinetool/react-spline'
 
@@ -47,6 +47,18 @@ function Home() {
       hasDataCheck: (courses) => courses && courses.length > 0,
     }
   )
+
+  // Lấy random introVideo từ các freeCourses có video
+  const randomIntroVideo = useMemo(() => {
+    // Lọc các courses có introVideo
+    const coursesWithVideo = freeCourses.filter(course => course.introVideo)
+    
+    if (coursesWithVideo.length === 0) return null
+    
+    // Chọn random một course
+    const randomIndex = Math.floor(Math.random() * coursesWithVideo.length)
+    return coursesWithVideo[randomIndex].introVideo
+  }, [freeCourses])
 
   const onSplineLoad = (spline) => {
     // Điều chỉnh camera để căn giữa scene
@@ -269,7 +281,7 @@ function Home() {
           Video Miễn Phí
         </Typography>
         <FreeCoursesLoadingState>
-          {freeCourses.length > 0 && freeCourses[0]?.introVideo && (
+          {freeCourses.length > 0 && (
             <Paper
               sx={{
                 display: 'flex',
@@ -281,7 +293,7 @@ function Home() {
             >
               {/* Left Section: 2/3 width */}
               <Box width="66.7%">
-                <VideoComp src={freeCourses[0]?.introVideo} />
+                <VideoComp src={randomIntroVideo} />
               </Box>
               {/* Right Section: 1/3 width */}
 
