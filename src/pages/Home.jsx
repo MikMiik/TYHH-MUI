@@ -269,7 +269,7 @@ function Home() {
           Video Miễn Phí
         </Typography>
         <FreeCoursesLoadingState>
-          {freeCourses.length > 0 && (
+          {freeCourses.length > 0 && freeCourses[0]?.introVideo && (
             <Paper
               sx={{
                 display: 'flex',
