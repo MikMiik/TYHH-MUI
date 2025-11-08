@@ -223,7 +223,7 @@ function Home() {
           {socialsLoaded &&
             socials.map((social) => (
               <Link key={social.id} href={social.url} target="_blank">
-                <Stack direction="row" alignItems="center" spacing={1} key={social.id}>
+                <Stack direction="row" alignItems="center" spacing={2} key={social.id}>
                   {(() => {
                     switch (social.platform) {
                       case 'facebook':
@@ -236,7 +236,7 @@ function Home() {
                         return null
                     }
                   })()}
-                  <Typography fontWeight={700}>Thầy Phạm Thắng</Typography>
+                  <Typography  fontWeight={700}>{social.platform?.charAt(0).toUpperCase() + social.platform?.slice(1)}</Typography>
                 </Stack>
               </Link>
             ))}
