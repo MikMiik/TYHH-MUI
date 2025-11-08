@@ -263,7 +263,7 @@ const Notifications = () => {
                           </Stack>
                         </Box>
 
-                        {notification.teacherId === currentUser?.id && <IconButton
+                        {notification.teacherId === currentUser?.id && isTeacher && <IconButton
                           onClick={(e) => handleDeleteNotification(e, notification.id)}
                           size="small"
                           sx={{
