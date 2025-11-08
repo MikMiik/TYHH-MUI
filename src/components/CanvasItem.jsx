@@ -77,14 +77,121 @@ function CanvasItem({ id, item, onRemove }) {
 
       // Entity chip shows name (not formula)
       const chipElement = (
-        <Chip
-          label={`${item.data.icon || '🧪'} ${item.data.name}`}
+        <Box
           sx={{
-            boxShadow: 2,
-            bgcolor: item.isNewCombination ? 'success.main' : 'secondary.main',
-            color: 'secondary.contrastText',
+            position: 'relative',
+            display: 'inline-block',
           }}
-        />
+        >
+          {/* Rotating rays effect for new combinations */}
+          {item.isNewCombination && (
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '110px',
+                height: '110px',
+                pointerEvents: 'none',
+                zIndex: -1,
+                '&::before, &::after': {
+                  content: '""',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  width: '100%',
+                  height: '100%',
+                  transform: 'translate(-50%, -50%)',
+                  background: `
+                    linear-gradient(0deg, transparent 40%, rgba(76, 175, 80, 0.6) 47%, rgba(76, 175, 80, 0.8) 50%, rgba(76, 175, 80, 0.6) 53%, transparent 60%),
+                    linear-gradient(45deg, transparent 40%, rgba(56, 142, 60, 0.5) 47%, rgba(56, 142, 60, 0.7) 50%, rgba(56, 142, 60, 0.5) 53%, transparent 60%),
+                    linear-gradient(90deg, transparent 40%, rgba(76, 175, 80, 0.6) 47%, rgba(76, 175, 80, 0.8) 50%, rgba(76, 175, 80, 0.6) 53%, transparent 60%),
+                    linear-gradient(135deg, transparent 40%, rgba(56, 142, 60, 0.5) 47%, rgba(56, 142, 60, 0.7) 50%, rgba(56, 142, 60, 0.5) 53%, transparent 60%)
+                  `,
+                  filter: 'blur(3px)',
+                  animation: 'rotateRays 2s linear forwards',
+                  opacity: 0,
+                },
+                '&::after': {
+                  animationDelay: '1.5s',
+                },
+                '@keyframes rotateRays': {
+                  '0%': {
+                    transform: 'translate(-50%, -50%) rotate(0deg) scale(0.5)',
+                    opacity: 0,
+                  },
+                  '15%': {
+                    opacity: 0.9,
+                  },
+                  '85%': {
+                    opacity: 0.9,
+                  },
+                  '100%': {
+                    transform: 'translate(-50%, -50%) rotate(360deg) scale(1.1)',
+                    opacity: 0,
+                  },
+                },
+              }}
+            />
+          )}
+          
+          {/* Sparkle particles */}
+          {item.isNewCombination && (
+            <>
+              {[0, 1, 2, 3].map((i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    width: '4px',
+                    height: '4px',
+                    borderRadius: '50%',
+                    background: 'rgba(76, 175, 80, 0.9)',
+                    boxShadow: '0 0 10px rgba(76, 175, 80, 0.9)',
+                    filter: 'blur(1px)',
+                    pointerEvents: 'none',
+                    animation: `sparkle${i} 2s ease-out forwards`,
+                    animationDelay: `${i * 0.3}s`,
+                    '@keyframes sparkle0': {
+                      '0%': { transform: 'translate(-50%, -50%) translate(0, 0) scale(1)', opacity: 0 },
+                      '30%': { opacity: 1 },
+                      '100%': { transform: 'translate(-50%, -50%) translate(40px, 0px) scale(0.5)', opacity: 0 },
+                    },
+                    '@keyframes sparkle1': {
+                      '0%': { transform: 'translate(-50%, -50%) translate(0, 0) scale(1)', opacity: 0 },
+                      '30%': { opacity: 1 },
+                      '100%': { transform: 'translate(-50%, -50%) translate(0px, 40px) scale(0.5)', opacity: 0 },
+                    },
+                    '@keyframes sparkle2': {
+                      '0%': { transform: 'translate(-50%, -50%) translate(0, 0) scale(1)', opacity: 0 },
+                      '30%': { opacity: 1 },
+                      '100%': { transform: 'translate(-50%, -50%) translate(-40px, 0px) scale(0.5)', opacity: 0 },
+                    },
+                    '@keyframes sparkle3': {
+                      '0%': { transform: 'translate(-50%, -50%) translate(0, 0) scale(1)', opacity: 0 },
+                      '30%': { opacity: 1 },
+                      '100%': { transform: 'translate(-50%, -50%) translate(0px, -40px) scale(0.5)', opacity: 0 },
+                    },
+                  }}
+                />
+              ))}
+            </>
+          )}
+
+          <Chip
+            label={`${item.data.icon || '🧪'} ${item.data.name}`}
+            sx={{
+              boxShadow: 2,
+              bgcolor: item.isNewCombination ? 'success.main' : 'secondary.main',
+              color: 'secondary.contrastText',
+              position: 'relative',
+              zIndex: 1,
+            }}
+          />
+        </Box>
       )
 
       // Canvas tooltip shows description

@@ -242,8 +242,9 @@ function Playground() {
               .unwrap()
               .then((result) => {
                 // SUCCESS: Replace temp entity with real entity
+                const realItemId = `entity-${result.entity.id}-${Date.now()}`
                 const realItem = {
-                  id: `entity-${result.entity.id}-${Date.now()}`,
+                  id: realItemId,
                   type: 'entity',
                   data: {
                     isElement: false,
@@ -258,6 +259,19 @@ function Playground() {
                 }
 
                 setCanvasItems((prev) => prev.map((item) => (item.id === tempId ? realItem : item)))
+
+                // If it's a new combination, remove the glow effect after 3s
+                if (result.isNew) {
+                  setTimeout(() => {
+                    setCanvasItems((prev) =>
+                      prev.map((item) =>
+                        item.id === realItemId
+                          ? { ...item, isNewCombination: false }
+                          : item
+                      )
+                    )
+                  }, 2000)
+                }
               })
               .catch((error) => {
                 console.error('❌ Failed to combine:', error)

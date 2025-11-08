@@ -13,6 +13,8 @@ dist-ssr
 *.local
 .env
 TYHH-MUI.md
+TYHH-MUI-Demo.md
+TYHH-ADMIN-Demo.md
 excess
 
 
