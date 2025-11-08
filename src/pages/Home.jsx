@@ -343,7 +343,7 @@ function Home() {
         </FreeCoursesLoadingState>
 
         {/* Bottom Banner */}
-        <Box position="relative">
+        <Box position="relative" mt={2}>
           <Box
             sx={{
               ':before': {
