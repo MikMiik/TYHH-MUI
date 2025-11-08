@@ -15,13 +15,14 @@ import {
   InputAdornment,
   IconButton,
 } from '@mui/material'
-import { Add as AddIcon, Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material'
+import { Add as AddIcon, Search as SearchIcon, Clear as ClearIcon, Delete as DeleteIcon } from '@mui/icons-material'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
 import { useSearchParams } from 'react-router-dom'
 import {
   useGetAllNotificationsQuery,
   useMarkNotificationAsReadMutation,
   useMarkAllNotificationsAsReadMutation,
+  useDeleteNotificationMutation,
 } from '@/features/api/notificationApi'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { useLoadingState } from '@/components/withLoadingState'
@@ -78,6 +79,7 @@ const Notifications = () => {
 
   const [markAsRead] = useMarkNotificationAsReadMutation()
   const [markAllAsRead] = useMarkAllNotificationsAsReadMutation()
+  const [deleteNotification] = useDeleteNotificationMutation()
 
   const { data: { notifications = [], totalPages = 0 } = {}, LoadingStateComponent } = useLoadingState(queryResult, {
     variant: 'section',
@@ -121,6 +123,17 @@ const Notifications = () => {
       await markAllAsRead().unwrap()
     } catch (error) {
       console.error('Error marking all notifications as read:', error)
+    }
+  }
+
+  const handleDeleteNotification = async (event, notificationId) => {
+    // Prevent triggering the notification click event
+    event.stopPropagation()
+    
+    try {
+      await deleteNotification(notificationId).unwrap()
+    } catch (error) {
+      console.error('Error deleting notification:', error)
     }
   }
 
@@ -249,6 +262,20 @@ const Notifications = () => {
                             </Typography>
                           </Stack>
                         </Box>
+
+                        {notification.teacherId === currentUser?.id && <IconButton
+                          onClick={(e) => handleDeleteNotification(e, notification.id)}
+                          size="small"
+                          sx={{
+                            color: 'error.main',
+                            '&:hover': {
+                              bgcolor: 'error.light',
+                              color: 'error.dark',
+                            },
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>}
                       </Stack>
                     </CardContent>
                     {index < notifications.length - 1 && <Divider />}
