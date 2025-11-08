@@ -6,6 +6,7 @@ import { Box, Tabs, Tab, Container, Button, IconButton } from '@mui/material'
 import { Add, Edit } from '@mui/icons-material'
 import { useLoadingState } from '@/components/withLoadingState'
 import { useState } from 'react'
+import { useUserRole } from '@/hooks/useUserRole'
 
 function LiveSchedule() {
   const queryResult = useGetSchedulesQuery()
@@ -16,7 +17,8 @@ function LiveSchedule() {
   const [tab, setTab] = useState(0)
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
   const [selectedSchedule, setSelectedSchedule] = useState(null)
-
+  const userRole = useUserRole()
+  const isTeacher = userRole?.includes('teacher')
   const handleAddNew = () => {
     setSelectedSchedule(null)
     setUploadModalOpen(true)
@@ -63,7 +65,9 @@ function LiveSchedule() {
                 },
               }}
             >
-              {schedules.map((t) => <Tab key={t.id} label={t.target} />)}
+              {schedules.map((t) => (
+                <Tab key={t.id} label={t.target} />
+              ))}
             </Tabs>
           )}
         </LoadingStateComponent>
@@ -87,9 +91,11 @@ function LiveSchedule() {
               <Edit />
             </IconButton>
           )}
-          <Button variant="contained" startIcon={<Add />} onClick={handleAddNew} size="small">
-            Thêm lịch mới
-          </Button>
+          {isTeacher && (
+            <Button variant="contained" startIcon={<Add />} onClick={handleAddNew} size="small">
+              Thêm lịch mới
+            </Button>
+          )}
         </Box>
 
         {schedules.length > 0 && schedules[tab] && <LocalImageLazy src={schedules[tab].url} w="100%" />}
