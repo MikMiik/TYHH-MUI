@@ -91,6 +91,7 @@ const Profile = () => {
           avatar: relativePath,
         }).unwrap()
         toast.success('Avatar đã được cập nhật thành công!')
+
       } catch (err) {
         console.error('Update avatar in DB failed:', err)
         toast.error('Có lỗi xảy ra khi cập nhật avatar trong database')

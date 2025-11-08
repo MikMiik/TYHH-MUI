@@ -5,13 +5,16 @@ export const profileApi = baseApi.injectEndpoints({
     getOneProfile: builder.query({
       query: (userId) => `users/${userId}`,
       transformResponse: (response) => response.data,
+      providesTags: ['Profile'],
     }),
+   
     updateProfile: builder.mutation({
       query: ({ userId, data }) => ({
         url: `users/${userId}`,
         method: 'PATCH',
         body: data,
       }),
+      invalidatesTags: ['Profile'],
     }),
     uploadAvatar: builder.mutation({
       query: ({ userId, avatar }) => ({
@@ -20,6 +23,7 @@ export const profileApi = baseApi.injectEndpoints({
         body: { avatar },
       }),
       transformResponse: (response) => response.data,
+      invalidatesTags: ['Profile'],
     }),
   }),
 })
