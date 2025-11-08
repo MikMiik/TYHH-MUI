@@ -70,7 +70,7 @@ function LiveSchedule() {
 
         {/* Action buttons */}
         <Box display="flex" justifyContent="center" gap={2} mb={2}>
-          {schedules.length > 0 && schedules[tab] ? (
+          {schedules.length > 0 && schedules[tab] && (
             // Nếu có data schedule hiện tại, chỉ hiển thị nút edit
             <IconButton
               onClick={() => handleEdit(schedules[tab])}
@@ -86,12 +86,10 @@ function LiveSchedule() {
             >
               <Edit />
             </IconButton>
-          ) : (
-            // Nếu không có data hoặc tab hiện tại không có schedule, hiển thị nút thêm mới
-            <Button variant="contained" startIcon={<Add />} onClick={handleAddNew} size="small">
-              Thêm lịch mới
-            </Button>
           )}
+          <Button variant="contained" startIcon={<Add />} onClick={handleAddNew} size="small">
+            Thêm lịch mới
+          </Button>
         </Box>
 
         {schedules.length > 0 && schedules[tab] && <LocalImageLazy src={schedules[tab].url} w="100%" />}
