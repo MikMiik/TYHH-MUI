@@ -3,17 +3,15 @@ import LocalImageLazy from '@/components/LocalImageLazy'
 import ScheduleUploadModal from '@/components/ScheduleUploadModal'
 import { useGetSchedulesQuery } from '@/features/api/scheduleApi'
 import { Box, Tabs, Tab, Container, Button, IconButton } from '@mui/material'
-import { Add, Edit, Delete } from '@mui/icons-material'
+import { Add, Edit } from '@mui/icons-material'
 import { useLoadingState } from '@/components/withLoadingState'
 import { useState } from 'react'
 
 function LiveSchedule() {
   const queryResult = useGetSchedulesQuery()
-  const { data: schedules, LoadingStateComponent } = useLoadingState(queryResult, {
-    variant: 'page',
+  const { data: schedules = [], LoadingStateComponent } = useLoadingState(queryResult, {
+    variant: 'inline',
     loadingText: 'Đang tải lịch livestream...',
-    emptyText: 'Chưa có lịch livestream nào',
-    hasDataCheck: (schedules) => schedules && schedules.length > 0,
   })
   const [tab, setTab] = useState(0)
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
@@ -34,70 +32,73 @@ function LiveSchedule() {
     setSelectedSchedule(null)
   }
   return (
-    <LoadingStateComponent>
-      <Container>
-        <Box width="100%" py={2}>
-          <BreadCrumbsPath />
-          <Tabs
-            value={tab}
-            onChange={(_, v) => setTab(v)}
-            centered
-            textColor="primary"
-            indicatorColor="primary"
-            sx={{
-              borderBottom: '1px solid #eee',
-              mb: 2,
-              '& .MuiTab-root': {
-                fontWeight: 600,
-                fontSize: 14,
-                color: 'text.secondary',
-                minWidth: 120,
-              },
-              '& .Mui-selected': {
-                color: 'secondary.light',
-              },
-              '& .MuiTabs-indicator': {
-                height: 3,
-                borderRadius: 2,
-                bgcolor: 'secondary.main',
-              },
-            }}
-          >
-            {schedules && schedules.map((t) => <Tab key={t.id} label={t.target} />)}
-          </Tabs>
+    <Container>
+      <Box width="100%" py={2}>
+        <BreadCrumbsPath />
 
-          {/* Action buttons */}
-          <Box display="flex" justifyContent="center" gap={2} mb={2}>
-            {schedules && schedules.length > 0 && schedules[tab] ? (
-              // Nếu có data schedule hiện tại, chỉ hiển thị nút edit
-              <IconButton
-                onClick={() => handleEdit(schedules[tab])}
-                color="primary"
-                size="small"
-                sx={{
-                  bgcolor: 'primary.light',
-                  color: 'white',
-                  '&:hover': {
-                    bgcolor: 'primary.main',
-                  },
-                }}
-              >
-                <Edit />
-              </IconButton>
-            ) : (
-              // Nếu không có data hoặc tab hiện tại không có schedule, hiển thị nút thêm mới
-              <Button variant="contained" startIcon={<Add />} onClick={handleAddNew} size="small">
-                Thêm lịch mới
-              </Button>
-            )}
-          </Box>
+        <LoadingStateComponent>
+          {schedules.length > 0 && (
+            <Tabs
+              value={tab}
+              onChange={(_, v) => setTab(v)}
+              centered
+              textColor="primary"
+              indicatorColor="primary"
+              sx={{
+                borderBottom: '1px solid #eee',
+                mb: 2,
+                '& .MuiTab-root': {
+                  fontWeight: 600,
+                  fontSize: 14,
+                  color: 'text.secondary',
+                  minWidth: 120,
+                },
+                '& .Mui-selected': {
+                  color: 'secondary.light',
+                },
+                '& .MuiTabs-indicator': {
+                  height: 3,
+                  borderRadius: 2,
+                  bgcolor: 'secondary.main',
+                },
+              }}
+            >
+              {schedules.map((t) => <Tab key={t.id} label={t.target} />)}
+            </Tabs>
+          )}
+        </LoadingStateComponent>
 
-          {schedules && schedules[tab] && <LocalImageLazy src={schedules[tab].url} w="100%" />}
+        {/* Action buttons */}
+        <Box display="flex" justifyContent="center" gap={2} mb={2}>
+          {schedules.length > 0 && schedules[tab] ? (
+            // Nếu có data schedule hiện tại, chỉ hiển thị nút edit
+            <IconButton
+              onClick={() => handleEdit(schedules[tab])}
+              color="primary"
+              size="small"
+              sx={{
+                bgcolor: 'primary.light',
+                color: 'white',
+                '&:hover': {
+                  bgcolor: 'primary.main',
+                },
+              }}
+            >
+              <Edit />
+            </IconButton>
+          ) : (
+            // Nếu không có data hoặc tab hiện tại không có schedule, hiển thị nút thêm mới
+            <Button variant="contained" startIcon={<Add />} onClick={handleAddNew} size="small">
+              Thêm lịch mới
+            </Button>
+          )}
         </Box>
-      </Container>
+
+        {schedules.length > 0 && schedules[tab] && <LocalImageLazy src={schedules[tab].url} w="100%" />}
+      </Box>
 
       <ScheduleUploadModal open={uploadModalOpen} onClose={handleCloseModal} schedule={selectedSchedule} />
-    </LoadingStateComponent>
+    </Container>
   )
 }
 
