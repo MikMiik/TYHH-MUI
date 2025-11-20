@@ -73,9 +73,8 @@ function LiveSchedule() {
         </LoadingStateComponent>
 
         {/* Action buttons */}
-        <Box display="flex" justifyContent="center" gap={2} mb={2}>
+        {isTeacher && (<Box display="flex" justifyContent="center" gap={2} mb={2}>
           {schedules.length > 0 && schedules[tab] && (
-            // Nếu có data schedule hiện tại, chỉ hiển thị nút edit
             <IconButton
               onClick={() => handleEdit(schedules[tab])}
               color="primary"
@@ -91,12 +90,10 @@ function LiveSchedule() {
               <Edit />
             </IconButton>
           )}
-          {isTeacher && (
-            <Button variant="contained" startIcon={<Add />} onClick={handleAddNew} size="small">
-              Thêm lịch mới
-            </Button>
-          )}
-        </Box>
+          <Button variant="contained" startIcon={<Add />} onClick={handleAddNew} size="small">
+            Thêm lịch mới
+          </Button>
+        </Box>)}
 
         {schedules.length > 0 && schedules[tab] && <LocalImageLazy src={schedules[tab].url} w="100%" />}
       </Box>

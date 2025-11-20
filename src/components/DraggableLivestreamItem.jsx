@@ -145,49 +145,49 @@ const DraggableLivestreamItem = ({
             </Link>
 
             {/* Action Buttons */}
-            <Stack
-              direction="row"
-              spacing={0.5}
-              className="livestream-actions"
-              sx={{
-                opacity: 0,
-                transition: 'opacity 0.2s ease',
-              }}
-            >
-              <Tooltip title="Chỉnh sửa livestream">
-                <IconButton
-                  size="small"
-                  onClick={handleEditClick}
-                  sx={{
-                    bgcolor: 'background.paper',
-                    boxShadow: 1,
-                    '&:hover': {
-                      bgcolor: 'primary.main',
-                      color: 'white',
-                    },
-                  }}
-                >
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
+          {isTeacher &&(<Stack
+            direction="row"
+            spacing={0.5}
+            className="livestream-actions"
+            sx={{
+              opacity: 0,
+              transition: 'opacity 0.2s ease',
+            }}
+          >
+            <Tooltip title="Chỉnh sửa livestream">
+              <IconButton
+                size="small"
+                onClick={handleEditClick}
+                sx={{
+                  bgcolor: 'background.paper',
+                  boxShadow: 1,
+                  '&:hover': {
+                    bgcolor: 'primary.main',
+                    color: 'white',
+                  },
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
 
-              <Tooltip title="Xóa livestream">
-                <IconButton
-                  size="small"
-                  onClick={handleDeleteClick}
-                  sx={{
-                    bgcolor: 'background.paper',
-                    boxShadow: 1,
-                    '&:hover': {
-                      bgcolor: 'error.main',
-                      color: 'white',
-                    },
-                  }}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </Stack>
+            <Tooltip title="Xóa livestream">
+              <IconButton
+                size="small"
+                onClick={handleDeleteClick}
+                sx={{
+                  bgcolor: 'background.paper',
+                  boxShadow: 1,
+                  '&:hover': {
+                    bgcolor: 'error.main',
+                    color: 'white',
+                  },
+                }}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Stack>)}
           </Box>
         </StepLabel>
 
