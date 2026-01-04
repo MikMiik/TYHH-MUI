@@ -25,31 +25,27 @@ function FooterMainArea() {
         <ListItemStack spacing={4} sx={{ flex: 2, '& .MuiListItem-root': { display: 'flex' } }}>
           <ListItem>
             <HomeFilledIcon sx={{ mr: 1.8 }}></HomeFilledIcon>
-            <Typography>
-              Tôi Yêu Hóa Học (tyhh.online) <br /> Trực thuộc Công ty cổ phần Công nghệ và Giáo Dục Hoc 68
-            </Typography>
+            <Typography>Tôi Yêu Hóa Học (tyhh.online)</Typography>
           </ListItem>
 
           <ListItem>
             <ArticleOutlinedIcon sx={{ mr: 1.8 }}></ArticleOutlinedIcon>
-            <Typography>Mã số thuế: 0109410068</Typography>
+            <Typography>Mã số thuế: </Typography>
           </ListItem>
 
           <ListItem>
             <RoomOutlinedIcon sx={{ mr: 1.8 }}></RoomOutlinedIcon>
-            <Typography>
-              Tầng 2, số 19, N7B, KĐT Trung Hòa - Nhân Chính, Phường Nhân Chính, Quận Thanh Xuân, Hà Nội
-            </Typography>
+            <Typography>Hà Nội</Typography>
           </ListItem>
 
           <ListItem>
             <EmailOutlinedIcon sx={{ mr: 1.8 }}></EmailOutlinedIcon>
-            <Typography>thanh.k47ftu@gmail.com</Typography>
+            <Typography>tyhh@gmail.com</Typography>
           </ListItem>
 
           <ListItem>
             <LocalPhoneOutlinedIcon sx={{ mr: 1.8 }}></LocalPhoneOutlinedIcon>
-            <Typography>086.546.9889</Typography>
+            <Typography>012.345.6789</Typography>
           </ListItem>
         </ListItemStack>
       </Stack>

@@ -51,10 +51,10 @@ function Home() {
   // Lấy random introVideo từ các freeCourses có video
   const randomIntroVideo = useMemo(() => {
     // Lọc các courses có introVideo
-    const coursesWithVideo = freeCourses.filter(course => course.introVideo)
-    
+    const coursesWithVideo = freeCourses.filter((course) => course.introVideo)
+
     if (coursesWithVideo.length === 0) return null
-    
+
     // Chọn random một course
     const randomIndex = Math.floor(Math.random() * coursesWithVideo.length)
     return coursesWithVideo[randomIndex].introVideo
@@ -236,14 +236,22 @@ function Home() {
                         return null
                     }
                   })()}
-                  <Typography  fontWeight={700}>{social.platform?.charAt(0).toUpperCase() + social.platform?.slice(1)}</Typography>
+                  <Typography fontWeight={700}>
+                    {social.platform?.charAt(0).toUpperCase() + social.platform?.slice(1)}
+                  </Typography>
                 </Stack>
               </Link>
             ))}
         </Stack>
         {/* Ranking */}
-        <Box component="a" href={config.routes.ranking}>
-          <img src={rankingBanner} alt="rankingBanner" width="100%" />
+        <Box component="a" display="block" href={config.routes.ranking}>
+          <img
+            src={rankingBanner}
+            alt="rankingBanner"
+            width="100%"
+            height="200px"
+            style={{ objectFit: 'cover', objectPosition: 'top', borderRadius: '10px' }}
+          />
         </Box>
 
         {/* Video Carousels by Topic */}

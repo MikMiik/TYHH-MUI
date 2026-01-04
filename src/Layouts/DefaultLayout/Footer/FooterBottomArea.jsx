@@ -48,9 +48,9 @@ function FooterBottomArea() {
       </Box>
 
       <Stack direction="column" justifyContent="center" alignItems="center">
-        <Typography sx={{ mb: 1 }}>© Bản quyền thuộc về (Tyhh.online) | Cung cấp bởi</Typography>
+        <Typography sx={{ mb: 1 }}>© Bản quyền thuộc về ... | Cung cấp bởi</Typography>
         <Link href="https://www.facebook.com/hoan.phi.79" target="_blank">
-          K62CL4TEAM
+          Team
         </Link>
       </Stack>
 
